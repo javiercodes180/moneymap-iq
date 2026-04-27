@@ -27,10 +27,13 @@ window.onload = function () {
   }
 };
 
-// ─── ACCORDION TOGGLE ─────────────────────────────────────
-function toggleClosingBreakdown() {
-  const tooltip = document.getElementById('closingTooltip');
-  tooltip.classList.toggle('visible');
+// ─── CLOSING LEARN MORE ───────────────────────────────────
+function toggleClosingLearnMore() {
+  const section = document.getElementById('closingLearnMore');
+  const btn = document.getElementById('closingLearnMoreBtn');
+  const isVisible = section.style.display !== 'none';
+  section.style.display = isVisible ? 'none' : 'block';
+  btn.textContent = isVisible ? '📖 Learn about closing costs' : '📖 Hide closing costs info';
 }
 
 // ─── CLOSING COST % MODE ──────────────────────────────────
@@ -39,6 +42,20 @@ function setClosingPct(mode, e) {
   document.querySelectorAll('.closing-pct-btn').forEach(btn => btn.classList.remove('active'));
   e.target.classList.add('active');
   document.getElementById('customClosingPct').style.display = mode === 'custom' ? 'block' : 'none';
+
+  // Update labels based on mode
+  if (mode === 'custom') {
+    document.getElementById('closingLowLabel').textContent = 'Closing Costs (Custom %)';
+    document.getElementById('totalCashLowLabel').textContent = 'Total Cash Needed at Close';
+    document.getElementById('closingHighBox').style.display = 'none';
+    document.getElementById('totalCashHighBox').style.display = 'none';
+  } else {
+    document.getElementById('closingLowLabel').textContent = 'Closing Costs (Low Est.)';
+    document.getElementById('totalCashLowLabel').textContent = 'Total Cash Needed at Close (Low)';
+    document.getElementById('closingHighBox').style.display = 'block';
+    document.getElementById('totalCashHighBox').style.display = 'block';
+  }
+
   if (calculatedResults) recalcClosing();
 }
 
@@ -53,13 +70,10 @@ function recalcClosing() {
     if (isNaN(pct) || pct === 0) return;
     closingLow = homePrice * (pct / 100);
     closingHigh = closingLow;
-    document.getElementById('closingHighBox').style.display = 'none';
   } else {
-    // Use ZIP estimate
     const closingPct = zipEstimates ? zipEstimates.closingPct : 3.0;
     closingLow = homePrice * ((closingPct - 0.5) / 100);
     closingHigh = homePrice * ((closingPct + 0.5) / 100);
-    document.getElementById('closingHighBox').style.display = 'block';
   }
 
   animateCounter('closingLow', closingLow);
@@ -163,7 +177,6 @@ function setDownPercent(percent) {
   const percentEl = document.getElementById('downPercent');
   percentEl.dataset.raw = percent;
   percentEl.value = percent + '%';
-
   updateDownBadge(percent);
 }
 
@@ -268,25 +281,6 @@ function animateCounter(elementId, targetValue) {
   }, duration / steps);
 }
 
-// ─── ANIMATE COLOR BARS ───────────────────────────────────
-function animateColorBars(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, total) {
-  setTimeout(() => {
-    const bars = [
-      { id: 'barPI', value: monthlyPI },
-      { id: 'barTax', value: monthlyTax },
-      { id: 'barIns', value: monthlyInsurance },
-      { id: 'barPMI', value: monthlyPMI },
-    ];
-    bars.forEach(bar => {
-      const el = document.getElementById(bar.id);
-      if (el) {
-        const pct = total > 0 ? ((bar.value / total) * 100).toFixed(1) : 0;
-        el.style.width = pct + '%';
-      }
-    });
-  }, 200);
-}
-
 // ─── MAIN CALCULATE ───────────────────────────────────────
 function calculate() {
   const homePrice = getRaw('homePrice');
@@ -321,7 +315,6 @@ function calculate() {
   const totalInterest = totalPaid - loanAmount;
   const totalCost = homePrice + totalInterest + (propertyTax * loanTerm) + (insurance * loanTerm);
 
-  // Closing costs based on ZIP
   const closingPct = zipEstimates ? zipEstimates.closingPct : 3.0;
   const closingLow = homePrice * ((closingPct - 0.5) / 100);
   const closingHigh = homePrice * ((closingPct + 0.5) / 100);
@@ -351,9 +344,6 @@ function calculate() {
   animateCounter('totalCashLow', totalCashLow);
   animateCounter('totalCashHigh', totalCashHigh);
   animateCounter('downPaymentDisplay', downPayment);
-
-  // Color bars
-  animateColorBars(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, totalMonthly);
 
   // PMI
   if (monthlyPMI > 0) {
@@ -417,18 +407,18 @@ function drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, tot
         legend: {
           position: 'bottom',
           labels: {
-            color: '#888',
-            font: { size: 11 },
-            padding: 12,
+            color: '#ffffff',
+            font: { size: 12 },
+            padding: 16,
             usePointStyle: true,
-            pointStyleWidth: 8,
+            pointStyleWidth: 10,
             generateLabels: function(chart) {
               const data = chart.data;
               return data.labels.map((label, i) => {
                 const value = data.datasets[0].data[i];
                 const pct = ((value / totalMonthly) * 100).toFixed(0);
                 return {
-                  text: `${label} ${pct}%`,
+                  text: `${label} — ${formatMoney(value)} (${pct}%)`,
                   fillStyle: data.datasets[0].backgroundColor[i],
                   strokeStyle: data.datasets[0].backgroundColor[i],
                   pointStyle: 'circle',
@@ -463,13 +453,14 @@ function drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, tot
 function drawMainChart() {
   if (myChart) myChart.destroy();
   const ctx = document.getElementById('myChart').getContext('2d');
+  const monthlyRate = calculatedResults.interestRate / 100 / 12;
 
   if (chartType === 'bar') {
+    // Principal vs Interest over time
     const years = [];
     const principalData = [];
     const interestData = [];
     let balance = calculatedResults.loanAmount;
-    const monthlyRate = calculatedResults.interestRate / 100 / 12;
 
     for (let year = 1; year <= loanTerm; year++) {
       let yPrincipal = 0;
@@ -523,33 +514,46 @@ function drawMainChart() {
     });
 
   } else {
-    const r = calculatedResults;
+    // Balance over time line chart
+    const years = [];
+    const balanceData = [];
+    let balance = calculatedResults.loanAmount;
+
+    for (let year = 1; year <= loanTerm; year++) {
+      for (let month = 1; month <= 12; month++) {
+        if ((year - 1) * 12 + month > loanTerm * 12) break;
+        const interest = balance * monthlyRate;
+        const principal = calculatedResults.monthlyPI - interest;
+        balance = Math.max(balance - principal, 0);
+      }
+      years.push('Yr ' + year);
+      balanceData.push(balance.toFixed(2));
+    }
+
     myChart = new Chart(ctx, {
-      type: 'pie',
+      type: 'line',
       data: {
-        labels: ['Principal & Interest', 'Property Tax', 'Insurance',
-          ...(r.monthlyPMI > 0 ? ['PMI'] : [])],
+        labels: years,
         datasets: [{
-          data: [r.monthlyPI, r.monthlyTax, r.monthlyInsurance,
-            ...(r.monthlyPMI > 0 ? [r.monthlyPMI] : [])],
-          backgroundColor: ['#7C3AED', '#EC4899', '#14B8A6', '#2563EB'],
-          borderWidth: 3,
-          borderColor: '#1a1a24',
+          label: 'Remaining Balance',
+          data: balanceData,
+          borderColor: '#a78bfa',
+          backgroundColor: '#a78bfa22',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 6,
         }]
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: { labels: { color: '#ffffff' } },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const value = context.parsed;
-                const total = r.totalMonthly;
-                const pct = ((value / total) * 100).toFixed(1);
-                return ` ${formatMoney(value)} (${pct}%)`;
-              }
-            }
+        plugins: { legend: { labels: { color: '#ffffff' } } },
+        scales: {
+          x: { ticks: { color: '#888' }, grid: { color: '#2a2a3a' } },
+          y: {
+            ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() },
+            grid: { color: '#2a2a3a' }
           }
         }
       }
