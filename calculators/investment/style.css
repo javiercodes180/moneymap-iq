@@ -1,67 +1,351 @@
-/* ── MONEYMAP IQ NAV ──────────────────────────── */
+/* ── CALCULATOR NAV (replaces old gradient nav) ─ */
 .mmiq-nav {
-  background: linear-gradient(135deg, #7C3AED, #EC4899);
-  padding: 8px 24px;
+  background: rgba(15, 15, 19, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 24px;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid #2a2a3a;
 }
 
 .mmiq-nav-inner {
-  max-width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.mmiq-back {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 6px 14px;
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: background 0.2s;
-}
-
-.mmiq-back:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.mmiq-brand {
+.mmiq-brand-link {
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.mmiq-brand-link:hover {
+  opacity: 0.8;
 }
 
 .mmiq-logo {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
 .mmiq-name {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: white;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
   display: flex;
   align-items: baseline;
   gap: 3px;
 }
 
 .mmiq-iq {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.75);
+  background: linear-gradient(135deg, #7C3AED, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.mmiq-calculator-label {
+.mmiq-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── CALCULATOR DROPDOWN ─────────────────────── */
+.mmiq-dropdown {
+  position: relative;
+}
+
+.mmiq-menu-btn {
+  background: none;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #888;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.mmiq-menu-btn:hover {
+  border-color: #7C3AED;
+  color: #7C3AED;
+}
+
+.mmiq-icon-close {
   display: none;
 }
+
+.mmiq-dropdown.open .mmiq-icon-open {
+  display: none;
+}
+
+.mmiq-dropdown.open .mmiq-icon-close {
+  display: inline;
+  color: #7C3AED;
+}
+
+.mmiq-dropdown.open .mmiq-menu-btn {
+  border-color: #7C3AED;
+  color: #7C3AED;
+}
+
+.mmiq-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: #1a1a24;
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  padding: 16px 20px;
+  min-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 200;
+}
+
+.mmiq-dropdown.open .mmiq-dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mmiq-dd-section h4 {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 6px;
+}
+
+.mmiq-dd-section a {
+  display: block;
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  padding: 7px 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.mmiq-dd-section a:hover {
+  background: rgba(124, 58, 237, 0.15);
+  color: #a78bfa;
+}
+
+.mmiq-dd-home {
+  font-weight: 600 !important;
+  color: #ffffff !important;
+}
+
+.mmiq-dd-coming {
+  display: block;
+  font-size: 0.88rem;
+  color: #475569;
+  padding: 7px 12px;
+  cursor: default;
+  border-radius: 8px;
+}
+
+.mmiq-dd-coming em {
+  font-size: 0.65rem;
+  font-style: normal;
+  background: #2a2a3a;
+  color: #64748b;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.mmiq-dd-divider {
+  height: 1px;
+  background: #2a2a3a;
+  margin: 10px 0;
+}
+
+/* ── CALCULATOR FOOTER ───────────────────────── */
+.calc-footer {
+  background: #0a0a0e;
+  padding: 48px 24px 24px;
+  width: 100%;
+  border-top: 1px solid #2a2a3a;
+  margin-top: 40px;
+}
+
+.calc-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.calc-footer-top {
+  margin-bottom: 36px;
+}
+
+.calc-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calc-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.calc-footer-logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.calc-footer-logo .cf-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.calc-footer-logo .cf-iq {
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #7C3AED, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.calc-footer-tagline {
+  color: #475569;
+  font-size: 0.82rem;
+}
+
+.calc-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid #1a1a24;
+}
+
+.calc-footer-col h4 {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.calc-footer-col a {
+  display: block;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  padding: 4px 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.calc-footer-col a:hover {
+  color: #7C3AED;
+}
+
+.calc-footer-col .cf-coming {
+  display: block;
+  font-size: 0.82rem;
+  color: #334155;
+  padding: 4px 0;
+  cursor: default;
+}
+
+.calc-footer-bottom {
+  padding-top: 24px;
+}
+
+.calc-footer-disclaimer {
+  font-size: 0.72rem;
+  color: #334155;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-bottom: 16px;
+}
+
+.calc-footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.calc-footer-copy {
+  color: #1e293b;
+  font-size: 0.72rem;
+}
+
+.calc-footer-legal {
+  display: flex;
+  gap: 20px;
+}
+
+.calc-footer-legal a {
+  font-size: 0.72rem;
+  color: #334155;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.calc-footer-legal a:hover {
+  color: #7C3AED;
+}
+
+/* ── CALCULATOR DROPDOWN MOBILE ──────────────── */
+@media (max-width: 600px) {
+  .mmiq-dropdown-panel {
+    position: fixed;
+    top: 56px;
+    left: 16px;
+    right: 16px;
+    border-radius: 16px;
+    min-width: unset;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  .calc-footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .calc-footer-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .calc-footer-legal {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
 
 /* ── ADD INTER FONT ───────────────────────────── */
 * {

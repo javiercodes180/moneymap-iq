@@ -10,15 +10,48 @@
   </head>
   <body>
 
-    <!-- MONEYMAP IQ NAV -->
+<!-- MONEYMAP IQ NAV -->
     <nav class="mmiq-nav">
       <div class="mmiq-nav-inner">
-        <a href="../../index.html" class="mmiq-back">← Home</a>
-        <div class="mmiq-brand">
+        <a href="../../index.html" class="mmiq-brand-link">
           <img src="../../logo.png" alt="MoneyMap IQ" class="mmiq-logo" />
           <span class="mmiq-name">MoneyMap<span class="mmiq-iq">IQ</span></span>
+        </a>
+        <div class="mmiq-nav-right">
+          <div class="mmiq-dropdown">
+            <button class="mmiq-menu-btn" aria-label="Menu" onclick="toggleCalcDropdown()">
+              <span class="mmiq-icon-open">☰</span>
+              <span class="mmiq-icon-close">✕</span>
+            </button>
+            <div class="mmiq-dropdown-panel">
+              <div class="mmiq-dd-section">
+                <a href="../../index.html" class="mmiq-dd-home">Home</a>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Calculators</h4>
+                <a href="../investment/index.html">Investment Calculator</a>
+                <a href="../mortgage/index.html">Mortgage Calculator</a>
+                <span class="mmiq-dd-coming">Car Payment Calculator <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Debt Payoff Calculator <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Retirement Calculator <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Savings Goal Calculator <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Learn</h4>
+                <a href="../../index.html#how-it-works">How MoneyMap IQ Works</a>
+                <span class="mmiq-dd-coming">How the Calculators Work <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>About</h4>
+                <span class="mmiq-dd-coming">Our Story <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Blog <em>Coming Soon</em></span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="mmiq-calculator-label">📈 Investment Calculator</div>
       </div>
     </nav>
 
@@ -214,5 +247,75 @@
     </div>
 
     <script src="script.js"></script>
+
+<!-- FOOTER -->
+    <footer class="calc-footer">
+      <div class="calc-footer-inner">
+        <div class="calc-footer-top">
+          <div class="calc-footer-brand">
+            <a href="../../index.html" class="calc-footer-logo">
+              <img src="../../logo.png" alt="MoneyMap IQ" />
+              <span class="cf-name">MoneyMap</span>
+              <span class="cf-iq">IQ</span>
+            </a>
+            <p class="calc-footer-tagline">Map your money. Reach your goals.</p>
+          </div>
+        </div>
+        <div class="calc-footer-columns">
+          <div class="calc-footer-col">
+            <h4>Calculators</h4>
+            <a href="../investment/index.html">Investment Calculator</a>
+            <a href="../mortgage/index.html">Mortgage Calculator</a>
+            <span class="cf-coming">Car Payment Calculator</span>
+            <span class="cf-coming">Debt Payoff Calculator</span>
+            <span class="cf-coming">Retirement Calculator</span>
+            <span class="cf-coming">Savings Goal Calculator</span>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Features</h4>
+            <a href="../../index.html#how-it-works">How It Works</a>
+            <a href="../../index.html#calculators">All Calculators</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Privacy & Security</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Support</h4>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+          </div>
+        </div>
+        <div class="calc-footer-bottom">
+          <p class="calc-footer-disclaimer">MoneyMap IQ is for educational purposes only and does not provide financial advice. Always consult a qualified financial professional before making financial decisions.</p>
+          <div class="calc-footer-bottom-row">
+            <p class="calc-footer-copy">&copy; 2025 MoneyMap IQ. All rights reserved.</p>
+            <div class="calc-footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Use</a>
+              <a href="#">Disclaimer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Dropdown script -->
+    <script>
+      function toggleCalcDropdown() {
+        document.querySelector('.mmiq-dropdown').classList.toggle('open');
+      }
+      document.addEventListener('click', function(e) {
+        var dd = document.querySelector('.mmiq-dropdown');
+        if (!dd.contains(e.target)) dd.classList.remove('open');
+      });
+      document.querySelectorAll('.mmiq-dropdown-panel a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.querySelector('.mmiq-dropdown').classList.remove('open');
+        });
+      });
+    </script>
   </body>
 </html>
