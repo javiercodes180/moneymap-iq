@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mortgage Calculator — MoneyMap IQ</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+
+    <!-- MONEYMAP IQ NAV -->
+    <nav class="mmiq-nav">
+      <div class="mmiq-nav-inner">
+        <a href="../../index.html" class="mmiq-back">← Home</a>
+        <div class="mmiq-brand">
+          <img src="../../logo.png" alt="MoneyMap IQ" class="mmiq-logo" />
+          <span class="mmiq-name">MoneyMap<span class="mmiq-iq">IQ</span></span>
+        </div>
+        <div class="mmiq-calculator-label">🏠 Mortgage Calculator</div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="header">
+        <span class="emoji">🏠</span>
+        <h1>Mortgage Calculator</h1>
+      </div>
+      <p class="subtitle">Calculate your monthly payment, closing costs, and total cost of your home loan.</p>
+
+      <div class="form">
+
+        <!-- ZIP CODE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">1</div>
+            <label>ZIP Code <span class="optional">for local estimates</span></label>
+          </div>
+          <p class="hint">Enter your ZIP code and we'll estimate local property tax, insurance rates, and current mortgage rates for your area.</p>
+          <div class="zip-row">
+            <input type="text" id="zipCode" placeholder="e.g. 90210" maxlength="5" oninput="handleZipInput(this)" />
+            <div class="zip-status" id="zipStatus"></div>
+          </div>
+          <div class="zip-estimates" id="zipEstimates" style="display:none">
+            <div class="zip-estimate-item">
+              <span>📈 Est. Rate</span>
+              <strong id="estRate">—</strong>
+            </div>
+            <div class="zip-estimate-item">
+              <span>🏛️ Est. Property Tax</span>
+              <strong id="estTax">—</strong>
+            </div>
+            <div class="zip-estimate-item">
+              <span>🛡️ Est. Insurance</span>
+              <strong id="estInsurance">—</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOME PRICE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">2</div>
+            <label>Home Price ($)</label>
+          </div>
+          <p class="hint">The total purchase price of the home. e.g. $400,000</p>
+          <input type="text" id="homePrice" placeholder="e.g. 400,000" oninput="formatInput(this); updateDownPercent(); updateTaxEstimate();" />
+        </div>
+
+        <!-- DOWN PAYMENT -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">3</div>
+            <label>Down Payment ($)</label>
+          </div>
+          <p class="hint">How much are you putting down? Less than 20% will require PMI.</p>
+          <div class="down-payment-row">
+            <input type="text" id="downPayment" placeholder="e.g. 80,000" oninput="formatInput(this); updateDownPercent()" />
+            <div class="down-percent-badge" id="downPercentBadge">0%</div>
+          </div>
+          <div class="quick-btns">
+            <button class="quick-btn" onclick="setDownPercent(5)">5%</button>
+            <button class="quick-btn" onclick="setDownPercent(10)">10%</button>
+            <button class="quick-btn" onclick="setDownPercent(20)">20%</button>
+            <button class="quick-btn" onclick="setDownPercent(25)">25%</button>
+          </div>
+        </div>
+
+        <!-- INTEREST RATE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">4</div>
+            <label>Interest Rate (%)</label>
+          </div>
+          <p class="hint" id="rateHint">Enter your interest rate, or enter your ZIP code above for a local estimate.</p>
+          <input type="text" id="interestRate" placeholder="e.g. 6.5" oninput="formatPercent(this)" />
+        </div>
+
+        <!-- LOAN TERM -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">5</div>
+            <label>Loan Term</label>
+          </div>
+          <p class="hint">Shorter terms mean higher payments but less interest paid overall.</p>
+          <div class="term-grid">
+            <button class="term-btn active" onclick="setTerm(30, event)">
+              <span class="term-years">30 yr</span>
+              <span class="term-label">Most Popular</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(20, event)">
+              <span class="term-years">20 yr</span>
+              <span class="term-label">Balanced</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(15, event)">
+              <span class="term-years">15 yr</span>
+              <span class="term-label">Save Interest</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(10, event)">
+              <span class="term-years">10 yr</span>
+              <span class="term-label">Pay Fast</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- PROPERTY TAX -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">6</div>
+            <label>Annual Property Tax</label>
+          </div>
+          <p class="hint">Typically 1–2% of home value per year. We'll estimate based on your ZIP code.</p>
+          <div class="tax-toggle">
+            <button class="tax-btn active" onclick="setTaxMode('estimate', event)">Use Estimate</button>
+            <button class="tax-btn" onclick="setTaxMode('percent', event)">Enter %</button>
+            <button class="tax-btn" onclick="setTaxMode('dollar', event)">Enter $</button>
+          </div>
+          <div id="taxEstimateMode">
+            <div class="estimate-display" id="taxEstimateDisplay">Enter ZIP code above for estimate</div>
+          </div>
+          <div id="taxPercentMode" style="display:none">
+            <input type="text" id="taxPercent" placeholder="e.g. 1.2" oninput="formatPercent(this)" />
+          </div>
+          <div id="taxDollarMode" style="display:none">
+            <input type="text" id="propertyTax" placeholder="e.g. 5,000" oninput="formatInput(this)" />
+          </div>
+        </div>
+
+        <!-- HOME INSURANCE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">7</div>
+            <label>Annual Home Insurance</label>
+          </div>
+          <p class="hint">Typically $1,000–$2,500/year depending on location and home value.</p>
+          <div class="tax-toggle">
+            <button class="ins-btn active" onclick="setInsMode('estimate', event)">Use Estimate</button>
+            <button class="ins-btn" onclick="setInsMode('dollar', event)">Enter $</button>
+          </div>
+          <div id="insEstimateMode">
+            <div class="estimate-display" id="insEstimateDisplay">Enter ZIP code above for estimate</div>
+          </div>
+          <div id="insDollarMode" style="display:none">
+            <input type="text" id="insurance" placeholder="e.g. 1,500" oninput="formatInput(this)" />
+          </div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculate()">Calculate 🏠</button>
+
+      </div>
+
+      <!-- RESULTS -->
+      <div id="resultsSection" style="display:none">
+
+        <!-- Summary -->
+        <div class="summary-box" id="summaryBox"></div>
+
+        <!-- Monthly Payment — Side by Side -->
+        <div class="results-header">
+          <h2>Monthly Payment Breakdown</h2>
+        </div>
+
+        <div class="payment-layout">
+          <div class="payment-numbers">
+            <div class="result-box highlight">
+              <span>Total Monthly Payment</span>
+              <strong id="totalMonthly">-</strong>
+            </div>
+            <div class="result-box">
+              <span>Principal & Interest</span>
+              <strong id="principalInterest">-</strong>
+            </div>
+            <div class="result-box">
+              <span>Property Tax</span>
+              <strong id="monthlyTax">-</strong>
+            </div>
+            <div class="result-box">
+              <span>Home Insurance</span>
+              <strong id="monthlyInsurance">-</strong>
+            </div>
+            <div class="result-box" id="pmiBox" style="display:none">
+              <span>PMI <span class="info-badge" id="pmiInfo">What is PMI? 💡</span></span>
+              <strong id="monthlyPMI">-</strong>
+            </div>
+          </div>
+          <div class="payment-chart">
+            <canvas id="donutChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Loan Summary -->
+        <div class="results-header">
+          <h2>Loan Summary</h2>
+        </div>
+        <div class="results">
+          <div class="result-box">
+            <span>Loan Amount</span>
+            <strong id="loanAmount">-</strong>
+          </div>
+          <div class="result-box">
+            <span>Total Interest Paid</span>
+            <strong id="totalInterest">-</strong>
+          </div>
+          <div class="result-box">
+            <span>Total Cost of Home</span>
+            <strong id="totalCost">-</strong>
+          </div>
+        </div>
+
+        <!-- Cost to Close -->
+        <div class="closing-costs-section">
+          <div class="closing-costs-header">
+            <h2>Cost to Close</h2>
+            <span class="info-icon" id="closingInfo">ℹ️ What's included?</span>
+          </div>
+          <div class="closing-tooltip" id="closingTooltip">
+            <div class="tooltip-item">
+              <span>Loan Origination Fee</span>
+              <span>0.5–1% of loan</span>
+            </div>
+            <div class="tooltip-item">
+              <span>Appraisal Fee</span>
+              <span>$300–$500</span>
+            </div>
+            <div class="tooltip-item">
+              <span>Home Inspection</span>
+              <span>$300–$500</span>
+            </div>
+            <div class="tooltip-item">
+              <span>Title Insurance</span>
+              <span>$1,000–$2,000</span>
+            </div>
+            <div class="tooltip-item">
+              <span>Attorney Fees</span>
+              <span>$500–$1,500</span>
+            </div>
+            <div class="tooltip-item">
+              <span>Prepaid Items</span>
+              <span>$1,000–$3,000</span>
+            </div>
+          </div>
+          <div class="results">
+            <div class="result-box">
+              <span>Down Payment</span>
+              <strong id="downPaymentDisplay">-</strong>
+            </div>
+            <div class="result-box">
+              <span>Closing Costs (Low Est.)</span>
+              <strong id="closingLow">-</strong>
+            </div>
+            <div class="result-box">
+              <span>Closing Costs (High Est.)</span>
+              <strong id="closingHigh">-</strong>
+            </div>
+            <div class="result-box highlight">
+              <span>Total Cash Needed (Low)</span>
+              <strong id="totalCashLow">-</strong>
+            </div>
+            <div class="result-box highlight">
+              <span>Total Cash Needed (High)</span>
+              <strong id="totalCashHigh">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smart Connection -->
+        <div class="smart-connection">
+          <div class="smart-connection-inner">
+            <div class="smart-icon">🎯</div>
+            <div class="smart-content">
+              <h3>Need to save for your down payment?</h3>
+              <p>MoneyMap IQ can calculate exactly how much you need to save each month to reach your down payment goal.</p>
+            </div>
+            <a href="../savings/index.html" class="smart-btn">Calculate Savings →</a>
+          </div>
+        </div>
+
+        <!-- Amortization Chart -->
+        <div class="chart-section">
+          <div class="chart-toggle">
+            <button class="chart-btn active" onclick="switchChart('bar', event)">Over Time</button>
+            <button class="chart-btn" onclick="switchChart('doughnut', event)">Breakdown</button>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Amortization Table -->
+        <div class="table-section">
+          <h2>Year by Year Amortization</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Principal Paid</th>
+                <th>Interest Paid</th>
+                <th>Balance Remaining</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Share Button -->
+        <button class="share-btn" onclick="shareResults()">📤 Copy Results to Share</button>
+
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
