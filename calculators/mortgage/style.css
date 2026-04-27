@@ -910,3 +910,35 @@ tr:hover td {
     max-width: 280px;
   }
 }
+/* ── DONUT LEGEND (custom white) ──────────────── */
+.donut-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.donut-legend-text {
+  font-size: 0.82rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.donut-legend-value {
+  font-size: 0.82rem;
+  color: #888;
+}

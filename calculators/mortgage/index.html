@@ -189,67 +189,47 @@
           <h2>Monthly Payment Breakdown</h2>
         </div>
 
-        <!-- Side by side layout -->
-        <div class="payment-layout">
-
-          <!-- Left: numbers with color bars -->
-          <div class="payment-numbers">
-            <div class="result-box highlight">
-              <div class="result-box-content">
-                <span>Total Monthly Payment</span>
-                <strong id="totalMonthly">-</strong>
-              </div>
-            </div>
-
-            <div class="result-box">
-              <div class="result-box-content">
-                <span>Principal & Interest</span>
-                <strong id="principalInterest">-</strong>
-              </div>
-              <div class="color-bar-track">
-                <div class="color-bar" id="barPI" style="background:#7C3AED; width:0%"></div>
-              </div>
-            </div>
-
-            <div class="result-box">
-              <div class="result-box-content">
-                <span>Property Tax</span>
-                <strong id="monthlyTax">-</strong>
-              </div>
-              <div class="color-bar-track">
-                <div class="color-bar" id="barTax" style="background:#EC4899; width:0%"></div>
-              </div>
-            </div>
-
-            <div class="result-box">
-              <div class="result-box-content">
-                <span>Home Insurance</span>
-                <strong id="monthlyInsurance">-</strong>
-              </div>
-              <div class="color-bar-track">
-                <div class="color-bar" id="barIns" style="background:#14B8A6; width:0%"></div>
-              </div>
-            </div>
-
-            <div class="result-box" id="pmiBox" style="display:none">
-              <div class="result-box-content">
-                <span>PMI <span class="info-badge" id="pmiInfo">What is PMI? 💡</span></span>
-                <strong id="monthlyPMI">-</strong>
-              </div>
-              <div class="color-bar-track">
-                <div class="color-bar" id="barPMI" style="background:#2563EB; width:0%"></div>
-              </div>
+        <div class="results">
+          <div class="result-box highlight">
+            <div class="result-box-content">
+              <span>Total Monthly Payment</span>
+              <strong id="totalMonthly">-</strong>
             </div>
           </div>
-
-          <!-- Right: donut chart -->
-          <div class="payment-chart">
-            <div class="donut-wrapper">
-              <canvas id="donutChart"></canvas>
-              <div class="donut-center" id="donutCenter"></div>
+          <div class="result-box">
+            <div class="result-box-content">
+              <span>Principal & Interest</span>
+              <strong id="principalInterest">-</strong>
             </div>
           </div>
+          <div class="result-box">
+            <div class="result-box-content">
+              <span>Property Tax</span>
+              <strong id="monthlyTax">-</strong>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box-content">
+              <span>Home Insurance</span>
+              <strong id="monthlyInsurance">-</strong>
+            </div>
+          </div>
+          <div class="result-box" id="pmiBox" style="display:none">
+            <div class="result-box-content">
+              <span>PMI <span class="info-badge" id="pmiInfo">What is PMI? 💡</span></span>
+              <strong id="monthlyPMI">-</strong>
+            </div>
+          </div>
+        </div>
 
+        <!-- Donut Chart — Full Width -->
+        <div class="chart-section">
+          <h2 class="chart-title">Payment Breakdown</h2>
+          <div class="donut-full-wrapper">
+            <canvas id="donutChart"></canvas>
+            <div class="donut-center" id="donutCenter"></div>
+          </div>
+          <div class="donut-legend" id="donutLegend"></div>
         </div>
 
         <!-- Loan Summary -->
@@ -283,23 +263,18 @@
             <h2>Cost to Close</h2>
           </div>
 
-          <!-- Closing Cost Options -->
           <div class="closing-pct-row">
             <span class="closing-pct-label">Closing Cost Estimate</span>
             <div class="closing-pct-options">
-              <button class="closing-pct-btn active" onclick="setClosingPct('estimate', event)">
-                Use ZIP Estimate
-              </button>
-              <button class="closing-pct-btn" onclick="setClosingPct('custom', event)">
-                Enter My Own %
-              </button>
+              <button class="closing-pct-btn active" onclick="setClosingPct('estimate', event)">Use ZIP Estimate</button>
+              <button class="closing-pct-btn" onclick="setClosingPct('custom', event)">Enter My Own %</button>
             </div>
             <div id="customClosingPct" style="display:none">
               <input type="text" id="closingPctInput" placeholder="e.g. 3" oninput="formatPercent(this); recalcClosing()" />
             </div>
           </div>
 
-          <div class="results">
+          <div class="results" id="closingResults">
             <div class="result-box">
               <div class="result-box-content">
                 <span>Down Payment</span>
@@ -308,12 +283,7 @@
             </div>
             <div class="result-box" id="closingLowBox">
               <div class="result-box-content">
-                <span>
-                  Closing Costs (Low Est.)
-                  <button class="inline-breakdown-btn" onclick="toggleClosingBreakdown()">
-                    ℹ️ What's included?
-                  </button>
-                </span>
+                <span id="closingLowLabel">Closing Costs (Low Est.)</span>
                 <strong id="closingLow">-</strong>
               </div>
             </div>
@@ -323,50 +293,35 @@
                 <strong id="closingHigh">-</strong>
               </div>
             </div>
-            <div class="result-box highlight">
+            <div class="result-box highlight" id="totalCashLowBox">
               <div class="result-box-content">
-                <span>Total Cash Needed (Low)</span>
+                <span id="totalCashLowLabel">Total Cash Needed at Close (Low)</span>
                 <strong id="totalCashLow">-</strong>
               </div>
             </div>
-            <div class="result-box highlight">
+            <div class="result-box highlight" id="totalCashHighBox">
               <div class="result-box-content">
-                <span>Total Cash Needed (High)</span>
+                <span>Total Cash Needed at Close (High)</span>
                 <strong id="totalCashHigh">-</strong>
               </div>
             </div>
           </div>
 
-          <!-- Breakdown accordion -->
-          <div class="closing-tooltip" id="closingTooltip">
-            <div class="tooltip-header">
-              <span>What's included in closing costs?</span>
-              <button class="close-breakdown-btn" onclick="toggleClosingBreakdown()">✕ Close</button>
-            </div>
-            <div class="tooltip-item">
-              <span>Loan Origination Fee</span>
-              <span>0.5–1% of loan</span>
-            </div>
-            <div class="tooltip-item">
-              <span>Appraisal Fee</span>
-              <span>$300–$500</span>
-            </div>
-            <div class="tooltip-item">
-              <span>Home Inspection</span>
-              <span>$300–$500</span>
-            </div>
-            <div class="tooltip-item">
-              <span>Title Insurance</span>
-              <span>$1,000–$2,000</span>
-            </div>
-            <div class="tooltip-item">
-              <span>Attorney Fees</span>
-              <span>$500–$1,500</span>
-            </div>
-            <div class="tooltip-item">
-              <span>Prepaid Items</span>
-              <span>$1,000–$3,000</span>
-            </div>
+          <!-- Learn More about Closing Costs -->
+          <button class="learn-more-btn" onclick="toggleClosingLearnMore()" id="closingLearnMoreBtn">
+            📖 Learn more about closing costs
+          </button>
+          <div class="closing-learn-more" id="closingLearnMore" style="display:none">
+            <h3>📋 What are Closing Costs?</h3>
+            <p>Closing costs are fees and expenses you pay when finalizing your home purchase — <strong>in addition to your down payment</strong>. They typically range from 2–5% of the loan amount and are due at closing.</p>
+            <ul>
+              <li><strong>Loan Origination Fee</strong> — Charged by your lender for processing the loan (0.5–1%)</li>
+              <li><strong>Appraisal Fee</strong> — Cost to have the home professionally valued ($300–$500)</li>
+              <li><strong>Home Inspection</strong> — Professional inspection of the property ($300–$500)</li>
+              <li><strong>Title Insurance</strong> — Protects against ownership disputes ($1,000–$2,000)</li>
+              <li><strong>Attorney Fees</strong> — Legal review of closing documents ($500–$1,500)</li>
+              <li><strong>Prepaid Items</strong> — Upfront property tax and insurance deposits ($1,000–$3,000)</li>
+            </ul>
           </div>
         </div>
 
@@ -384,23 +339,21 @@
 
         <!-- PMI Explainer -->
         <div class="pmi-explainer" id="pmiExplainer" style="display:none">
-          <div class="pmi-explainer-inner">
-            <h3>📋 What is PMI?</h3>
-            <p>PMI stands for <strong>Private Mortgage Insurance</strong>. It's required by lenders when your down payment is less than 20% of the home price.</p>
-            <ul>
-              <li>Typically costs <strong>0.5–1%</strong> of the loan amount per year</li>
-              <li>Added to your monthly mortgage payment automatically</li>
-              <li>Can be removed once you reach <strong>20% equity</strong> in your home</li>
-              <li>To avoid PMI, put down <strong>20% or more</strong></li>
-            </ul>
-          </div>
+          <h3>📋 What is PMI?</h3>
+          <p>PMI stands for <strong>Private Mortgage Insurance</strong>. It's required by lenders when your down payment is less than 20% of the home price.</p>
+          <ul>
+            <li>Typically costs <strong>0.5–1%</strong> of the loan amount per year</li>
+            <li>Added to your monthly mortgage payment automatically</li>
+            <li>Can be removed once you reach <strong>20% equity</strong> in your home</li>
+            <li>To avoid PMI, put down <strong>20% or more</strong></li>
+          </ul>
         </div>
 
-        <!-- Amortization Chart -->
+        <!-- Amortization Charts -->
         <div class="chart-section">
           <div class="chart-toggle">
-            <button class="chart-btn active" onclick="switchChart('bar', event)">Over Time</button>
-            <button class="chart-btn" onclick="switchChart('pie', event)">Breakdown</button>
+            <button class="chart-btn active" onclick="switchChart('bar', event)">Principal vs Interest</button>
+            <button class="chart-btn" onclick="switchChart('line', event)">Balance Over Time</button>
           </div>
           <div class="chart-wrapper">
             <canvas id="myChart"></canvas>
