@@ -494,8 +494,7 @@ a {
 /* ── FOOTER ───────────────────────────────────── */
 .footer {
   background: #0D1B2A;
-  padding: 48px 24px;
-  text-align: center;
+  padding: 64px 24px 32px;
 }
 
 .footer-inner {
@@ -503,12 +502,21 @@ a {
   margin: 0 auto;
 }
 
+/* Top: brand */
+.footer-top {
+  margin-bottom: 48px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .footer-logo {
   display: flex;
-  justify-content: center;
   align-items: baseline;
   gap: 4px;
-  margin-bottom: 12px;
 }
 
 .footer-logo .logo-money {
@@ -519,12 +527,89 @@ a {
 .footer-tagline {
   color: #64748b;
   font-size: 0.9rem;
-  margin-bottom: 8px;
+}
+
+/* Link columns */
+.footer-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-col h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.footer-col a,
+.footer-col .footer-coming {
+  display: block;
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #7C3AED;
+}
+
+.footer-col .footer-coming {
+  color: #475569;
+  cursor: default;
+}
+
+/* Bottom: disclaimer + legal */
+.footer-bottom {
+  padding-top: 32px;
+}
+
+.footer-disclaimer {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+
+.footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .footer-copy {
   color: #334155;
   font-size: 0.8rem;
+}
+
+.footer-legal-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-legal-links a {
+  font-size: 0.8rem;
+  color: #475569;
+  transition: color 0.2s;
+}
+
+.footer-legal-links a:hover {
+  color: #7C3AED;
+}
+
+.footer-logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 /* ── MOBILE ───────────────────────────────────── */
@@ -571,14 +656,26 @@ a {
   .section-header h2 {
     font-size: 1.7rem;
   }
-}.nav-logo-img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
+
+  /* Footer mobile */
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-legal-links {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
 }
 
-.footer-logo-img {
-  width: 32px;
-  height: 32px;
+.nav-logo-img {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
