@@ -97,6 +97,112 @@ a {
   color: white !important;
 }
 
+.nav-text-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #444;
+  transition: color 0.2s;
+}
+
+.nav-text-link:hover {
+  color: #7C3AED;
+}
+
+/* ── DROPDOWN MENU ────────────────────────────── */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-menu-btn {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #444;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.nav-menu-btn:hover {
+  border-color: #7C3AED;
+  color: #7C3AED;
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: white;
+  border: 1px solid #e8eaf0;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  padding: 20px 24px;
+  min-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 200;
+}
+
+.nav-dropdown.open .dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-section h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.dropdown-section a {
+  display: block;
+  font-size: 0.9rem;
+  color: #0D1B2A;
+  padding: 8px 0;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.dropdown-section a:hover {
+  color: #7C3AED;
+}
+
+.dropdown-coming {
+  display: block;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  padding: 8px 0;
+  cursor: default;
+}
+
+.dropdown-coming em {
+  font-size: 0.7rem;
+  font-style: normal;
+  background: #f1f5f9;
+  color: #94a3b8;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #e8eaf0;
+  margin: 12px 0;
+}
+
 /* ── HERO ─────────────────────────────────────── */
 .hero {
   background: linear-gradient(135deg, #0D1B2A 0%, #1a1a3e 50%, #0D1B2A 100%);
@@ -624,6 +730,10 @@ a {
 
   .nav-links a:not(.nav-cta) {
     display: none;
+  }
+
+  .nav-dropdown {
+    display: block;
   }
 
   .card-grid {
