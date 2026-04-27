@@ -16,14 +16,17 @@ const zipData = {
   'default': { rate: 7.0, taxRate: 1.2, insurance: 1500, closingPct: 3.0 }
 };
 
-window.onload = function () {
-  const pmiInfo = document.getElementById('pmiInfo');
-  if (pmiInfo) {
-    pmiInfo.addEventListener('click', () => {
-      document.getElementById('pmiExplainer').scrollIntoView({ behavior: 'smooth' });
-    });
-  }
-};
+// ─── PMI SECTION TOGGLE ───────────────────────────────────
+function showPMISection() {
+  document.getElementById('pmiExplainer').style.display = 'block';
+  document.getElementById('pmiExplainer').scrollIntoView({ behavior: 'smooth' });
+}
+
+function togglePMISection() {
+  const section = document.getElementById('pmiExplainer');
+  const isVisible = section.style.display !== 'none';
+  section.style.display = isVisible ? 'none' : 'block';
+}
 
 // ─── CLOSING LEARN MORE ───────────────────────────────────
 function toggleClosingLearnMore() {
@@ -79,7 +82,6 @@ function recalcClosing() {
   document.getElementById('closingHigh').textContent = formatMoney(closingHigh);
   document.getElementById('totalCashLow').textContent = formatMoney(downPayment + closingLow);
   document.getElementById('totalCashHigh').textContent = formatMoney(downPayment + closingHigh);
-
   updateClosingLabels();
 
   calculatedResults.closingLow = closingLow;
@@ -107,18 +109,14 @@ function loadZipEstimates(zip) {
   const firstDigit = zip.charAt(0);
   const data = zipData[firstDigit] || zipData['default'];
   zipEstimates = data;
-
   document.getElementById('estRate').textContent = data.rate + '%';
   document.getElementById('estTax').textContent = data.taxRate + '% of home value/yr';
   document.getElementById('estInsurance').textContent = '$' + data.insurance.toLocaleString() + '/yr';
   document.getElementById('zipEstimates').style.display = 'flex';
-
   const rateEl = document.getElementById('interestRate');
   rateEl.value = data.rate + '%';
   rateEl.dataset.raw = data.rate;
-  document.getElementById('rateHint').textContent =
-    `Estimated rate for your area: ${data.rate}%. You can edit this anytime.`;
-
+  document.getElementById('rateHint').textContent = `Estimated rate for your area: ${data.rate}%. You can edit this anytime.`;
   updateTaxEstimate();
   updateInsEstimate();
 }
@@ -136,8 +134,7 @@ function updateTaxEstimate() {
   const homePrice = getRaw('homePrice');
   if (!zipEstimates || isNaN(homePrice) || homePrice === 0) return;
   const annualTax = homePrice * (zipEstimates.taxRate / 100);
-  document.getElementById('taxEstimateDisplay').textContent =
-    '$' + Math.round(annualTax).toLocaleString() + '/yr (' + zipEstimates.taxRate + '% of home value)';
+  document.getElementById('taxEstimateDisplay').textContent = '$' + Math.round(annualTax).toLocaleString() + '/yr (' + zipEstimates.taxRate + '% of home value)';
 }
 
 function setInsMode(mode, e) {
@@ -150,8 +147,7 @@ function setInsMode(mode, e) {
 
 function updateInsEstimate() {
   if (!zipEstimates) return;
-  document.getElementById('insEstimateDisplay').textContent =
-    '$' + zipEstimates.insurance.toLocaleString() + '/yr (estimated for your area)';
+  document.getElementById('insEstimateDisplay').textContent = '$' + zipEstimates.insurance.toLocaleString() + '/yr (estimated for your area)';
 }
 
 function setTerm(years, e) {
@@ -163,10 +159,7 @@ function setTerm(years, e) {
 // ─── DOWN PAYMENT ─────────────────────────────────────────
 function setDownPercent(percent) {
   const homePrice = getRaw('homePrice');
-  if (isNaN(homePrice) || homePrice === 0) {
-    alert('Please enter a home price first!');
-    return;
-  }
+  if (isNaN(homePrice) || homePrice === 0) { alert('Please enter a home price first!'); return; }
   const downAmount = homePrice * (percent / 100);
   const dollarEl = document.getElementById('downPayment');
   dollarEl.dataset.raw = Math.round(downAmount);
@@ -202,18 +195,14 @@ function syncDownFromPercent(input) {
     dollarEl.value = '$' + Math.round(downAmount).toLocaleString('en-US');
     updateDownBadge(raw);
   }
-  setTimeout(() => {
-    input.setSelectionRange(input.value.length - 1, input.value.length - 1);
-  }, 0);
+  setTimeout(() => { input.setSelectionRange(input.value.length - 1, input.value.length - 1); }, 0);
 }
 
 function updateDownBadge(percent) {
   document.getElementById('downPercentBadge').textContent = parseFloat(percent).toFixed(1) + '%';
 }
 
-function updateDownPercent() {
-  syncDownFromDollar();
-}
+function updateDownPercent() { syncDownFromDollar(); }
 
 // ─── FORMAT ───────────────────────────────────────────────
 function formatInput(input) {
@@ -228,9 +217,7 @@ function formatPercent(input) {
   input.dataset.raw = raw;
   if (raw === '') { input.value = ''; return; }
   input.value = raw + '%';
-  setTimeout(() => {
-    input.setSelectionRange(input.value.length - 1, input.value.length - 1);
-  }, 0);
+  setTimeout(() => { input.setSelectionRange(input.value.length - 1, input.value.length - 1); }, 0);
 }
 
 function getRaw(id) {
@@ -242,26 +229,20 @@ function getRaw(id) {
 
 function getAnnualTax() {
   const homePrice = getRaw('homePrice');
-  if (taxMode === 'estimate') {
-    return zipEstimates ? homePrice * (zipEstimates.taxRate / 100) : homePrice * 0.012;
-  } else if (taxMode === 'percent') {
-    return homePrice * (getRaw('taxPercent') / 100);
-  } else {
-    return getRaw('propertyTax') || 0;
-  }
+  if (taxMode === 'estimate') return zipEstimates ? homePrice * (zipEstimates.taxRate / 100) : homePrice * 0.012;
+  else if (taxMode === 'percent') return homePrice * (getRaw('taxPercent') / 100);
+  else return getRaw('propertyTax') || 0;
 }
 
 function getAnnualInsurance() {
-  if (insMode === 'estimate') {
-    return zipEstimates ? zipEstimates.insurance : 1500;
-  }
+  if (insMode === 'estimate') return zipEstimates ? zipEstimates.insurance : 1500;
   return getRaw('insurance') || 0;
 }
 
 // ─── ANIMATED COUNTER ─────────────────────────────────────
 function animateCounter(elementId, targetValue) {
   const el = document.getElementById(elementId);
-  if (!el || !el.offsetParent) return; // skip if element is hidden
+  if (!el) return;
   const duration = 1500;
   const steps = 60;
   const increment = targetValue / steps;
@@ -283,22 +264,15 @@ function calculate() {
   const propertyTax = getAnnualTax();
   const insurance = getAnnualInsurance();
 
-  if (isNaN(homePrice) || isNaN(interestRate)) {
-    alert('Please fill in Home Price and Interest Rate!');
-    return;
-  }
+  if (isNaN(homePrice) || isNaN(interestRate)) { alert('Please fill in Home Price and Interest Rate!'); return; }
 
   const loanAmount = homePrice - downPayment;
   const monthlyRate = interestRate / 100 / 12;
   const numPayments = loanTerm * 12;
 
   let monthlyPI = 0;
-  if (monthlyRate === 0) {
-    monthlyPI = loanAmount / numPayments;
-  } else {
-    monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
-      (Math.pow(1 + monthlyRate, numPayments) - 1);
-  }
+  if (monthlyRate === 0) monthlyPI = loanAmount / numPayments;
+  else monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
 
   const monthlyTax = propertyTax / 12;
   const monthlyInsurance = insurance / 12;
@@ -330,12 +304,10 @@ function calculate() {
     interestRate, loanTerm, downPercent, propertyTax, insurance
   };
 
-  // Update closing labels BEFORE showing results
   updateClosingLabels();
-
   document.getElementById('resultsSection').style.display = 'block';
 
-  // Animate numbers
+  // Animate main numbers
   animateCounter('totalMonthly', totalMonthly);
   animateCounter('principalInterest', monthlyPI);
   animateCounter('monthlyTax', monthlyTax);
@@ -345,17 +317,18 @@ function calculate() {
   animateCounter('totalCost', totalCost);
   animateCounter('downPaymentDisplay', downPayment);
 
-  // Closing — set directly (not animated) to avoid ghost number bug
+  // Closing — set directly to avoid ghost bug
   document.getElementById('closingLow').textContent = formatMoney(closingLow);
   document.getElementById('closingHigh').textContent = formatMoney(closingHigh);
   document.getElementById('totalCashLow').textContent = formatMoney(totalCashLow);
   document.getElementById('totalCashHigh').textContent = formatMoney(totalCashHigh);
 
-  // PMI
+  // PMI — show box first, THEN animate
   if (monthlyPMI > 0) {
-    animateCounter('monthlyPMI', monthlyPMI);
     document.getElementById('pmiBox').style.display = 'block';
     document.getElementById('pmiExplainer').style.display = 'block';
+    // Small delay so element is visible before animation starts
+    setTimeout(() => { animateCounter('monthlyPMI', monthlyPMI); }, 50);
   } else {
     document.getElementById('pmiBox').style.display = 'none';
     document.getElementById('pmiExplainer').style.display = 'none';
@@ -373,7 +346,7 @@ function generateSummary(r) {
   const summaryBox = document.getElementById('summaryBox');
   const downPct = r.downPercent.toFixed(0);
   const pmiNote = r.monthlyPMI > 0
-    ? ` Since your down payment is under 20%, PMI of <strong>${formatMoney(r.monthlyPMI)}/month</strong> is added — <a href="#pmiExplainer" style="color:#a78bfa">learn more about PMI below</a>.`
+    ? ` Since your down payment is under 20%, PMI of <strong>${formatMoney(r.monthlyPMI)}/month</strong> is added — <a href="#pmiExplainer" onclick="showPMISection()" style="color:#a78bfa">learn more about PMI below</a>.`
     : ' No PMI required — great down payment! ✅';
 
   summaryBox.innerHTML = `Based on a <strong>${formatMoney(r.homePrice)}</strong> home with <strong>${formatMoney(r.downPayment)}</strong> down (<strong>${downPct}%</strong>), your estimated monthly payment is <strong>${formatMoney(r.totalMonthly)}</strong> over <strong>${r.loanTerm} years</strong> at <strong>${r.interestRate}% interest</strong>. Over the life of the loan you'll pay <strong>${formatMoney(r.totalInterest)}</strong> in interest — making the true cost of your home <strong>${formatMoney(r.totalCost)}</strong>.${pmiNote}`;
@@ -454,46 +427,28 @@ function drawMainChart() {
   const monthlyRate = calculatedResults.interestRate / 100 / 12;
 
   if (chartType === 'bar') {
-    const years = [];
-    const principalData = [];
-    const interestData = [];
+    const years = [], principalData = [], interestData = [];
     let balance = calculatedResults.loanAmount;
-
     for (let year = 1; year <= loanTerm; year++) {
-      let yPrincipal = 0;
-      let yInterest = 0;
+      let yP = 0, yI = 0;
       for (let month = 1; month <= 12; month++) {
         if ((year - 1) * 12 + month > loanTerm * 12) break;
         const interest = balance * monthlyRate;
         const principal = calculatedResults.monthlyPI - interest;
-        yInterest += interest;
-        yPrincipal += principal;
+        yI += interest; yP += principal;
         balance = Math.max(balance - principal, 0);
       }
       years.push('Yr ' + year);
-      principalData.push(yPrincipal.toFixed(2));
-      interestData.push(yInterest.toFixed(2));
+      principalData.push(yP.toFixed(2));
+      interestData.push(yI.toFixed(2));
     }
-
     myChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: years,
         datasets: [
-          {
-            label: 'Principal',
-            data: principalData,
-            backgroundColor: '#7C3AED88',
-            borderColor: '#7C3AED',
-            borderWidth: 1,
-          },
-          {
-            label: 'Interest',
-            data: interestData,
-            backgroundColor: '#EC489988',
-            borderColor: '#EC4899',
-            borderWidth: 1,
-          }
+          { label: 'Principal', data: principalData, backgroundColor: '#7C3AED88', borderColor: '#7C3AED', borderWidth: 1 },
+          { label: 'Interest', data: interestData, backgroundColor: '#EC489988', borderColor: '#EC4899', borderWidth: 1 }
         ]
       },
       options: {
@@ -501,20 +456,13 @@ function drawMainChart() {
         plugins: { legend: { labels: { color: '#ffffff' } } },
         scales: {
           x: { stacked: true, ticks: { color: '#888' }, grid: { color: '#2a2a3a' } },
-          y: {
-            stacked: true,
-            ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() },
-            grid: { color: '#2a2a3a' }
-          }
+          y: { stacked: true, ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() }, grid: { color: '#2a2a3a' } }
         }
       }
     });
-
   } else {
-    const years = [];
-    const balanceData = [];
+    const years = [], balanceData = [];
     let balance = calculatedResults.loanAmount;
-
     for (let year = 1; year <= loanTerm; year++) {
       for (let month = 1; month <= 12; month++) {
         if ((year - 1) * 12 + month > loanTerm * 12) break;
@@ -525,21 +473,14 @@ function drawMainChart() {
       years.push('Yr ' + year);
       balanceData.push(balance.toFixed(2));
     }
-
     myChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: years,
         datasets: [{
-          label: 'Remaining Balance',
-          data: balanceData,
-          borderColor: '#a78bfa',
-          backgroundColor: '#a78bfa22',
-          borderWidth: 2,
-          fill: true,
-          tension: 0.4,
-          pointRadius: 0,
-          pointHoverRadius: 6,
+          label: 'Remaining Balance', data: balanceData,
+          borderColor: '#a78bfa', backgroundColor: '#a78bfa22',
+          borderWidth: 2, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 6,
         }]
       },
       options: {
@@ -547,10 +488,7 @@ function drawMainChart() {
         plugins: { legend: { labels: { color: '#ffffff' } } },
         scales: {
           x: { ticks: { color: '#888' }, grid: { color: '#2a2a3a' } },
-          y: {
-            ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() },
-            grid: { color: '#2a2a3a' }
-          }
+          y: { ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() }, grid: { color: '#2a2a3a' } }
         }
       }
     });
@@ -569,28 +507,17 @@ function buildAmortization(loanAmount, monthlyRate, numPayments, monthlyPI) {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
   let balance = loanAmount;
-
   for (let year = 1; year <= loanTerm; year++) {
-    let yearlyPrincipal = 0;
-    let yearlyInterest = 0;
-
+    let yP = 0, yI = 0;
     for (let month = 1; month <= 12; month++) {
       if ((year - 1) * 12 + month > numPayments) break;
-      const interestPayment = balance * monthlyRate;
-      const principalPayment = monthlyPI - interestPayment;
-      yearlyInterest += interestPayment;
-      yearlyPrincipal += principalPayment;
-      balance -= principalPayment;
+      const iP = balance * monthlyRate;
+      const pP = monthlyPI - iP;
+      yI += iP; yP += pP; balance -= pP;
     }
-
     if (balance < 0) balance = 0;
     const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>Year ${year}</td>
-      <td>${formatMoney(yearlyPrincipal)}</td>
-      <td>${formatMoney(yearlyInterest)}</td>
-      <td>${formatMoney(Math.max(balance, 0))}</td>
-    `;
+    row.innerHTML = `<td>Year ${year}</td><td>${formatMoney(yP)}</td><td>${formatMoney(yI)}</td><td>${formatMoney(Math.max(balance, 0))}</td>`;
     tbody.appendChild(row);
   }
 }
@@ -598,26 +525,11 @@ function buildAmortization(loanAmount, monthlyRate, numPayments, monthlyPI) {
 function shareResults() {
   if (!calculatedResults) return;
   const r = calculatedResults;
-  const text = `🏠 Mortgage Calculator — MoneyMap IQ
-
-- Home Price: ${formatMoney(r.homePrice)}
-- Down Payment: ${formatMoney(r.downPayment)} (${r.downPercent.toFixed(0)}%)
-- Loan Amount: ${formatMoney(r.loanAmount)}
-- Monthly Payment: ${formatMoney(r.totalMonthly)}
-- Total Interest Paid: ${formatMoney(r.totalInterest)}
-- Total Cash to Close: ${formatMoney(r.totalCashLow)} – ${formatMoney(r.totalCashHigh)}
-
-Try it yourself: https://moneymap-iq.vercel.app/calculators/mortgage/`;
-
-  navigator.clipboard.writeText(text).then(() => {
-    alert('✅ Results copied! Paste anywhere to share.');
-  });
+  const text = `🏠 Mortgage Calculator — MoneyMap IQ\n\n• Home Price: ${formatMoney(r.homePrice)}\n• Down Payment: ${formatMoney(r.downPayment)} (${r.downPercent.toFixed(0)}%)\n• Loan Amount: ${formatMoney(r.loanAmount)}\n• Monthly Payment: ${formatMoney(r.totalMonthly)}\n• Total Interest Paid: ${formatMoney(r.totalInterest)}\n• Total Cash to Close: ${formatMoney(r.totalCashLow)} – ${formatMoney(r.totalCashHigh)}\n\nTry it yourself: https://moneymap-iq.vercel.app/calculators/mortgage/`;
+  navigator.clipboard.writeText(text).then(() => { alert('✅ Results copied! Paste anywhere to share.'); });
 }
 
 function formatMoney(amount) {
   if (isNaN(amount)) return '$0.00';
-  return '$' + amount.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+  return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }

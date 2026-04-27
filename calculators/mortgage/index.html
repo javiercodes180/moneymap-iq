@@ -74,7 +74,7 @@
             <div class="step-number">3</div>
             <label>Down Payment</label>
           </div>
-          <p class="hint">How much are you putting down? Less than 20% will require PMI.</p>
+          <p class="hint">How much are you putting down? Less than 20% will require <a href="#pmiExplainer" class="pmi-link" onclick="showPMISection()">PMI</a>.</p>
           <div class="down-input-row">
             <div class="down-input-group">
               <span class="input-label">$ Amount</span>
@@ -178,6 +178,19 @@
 
       </div>
 
+      <!-- PMI Explainer — can appear before calculate -->
+      <div class="pmi-explainer" id="pmiExplainer" style="display:none">
+        <h3>📋 What is PMI?</h3>
+        <p>PMI stands for <strong>Private Mortgage Insurance</strong>. It's required by lenders when your down payment is less than 20% of the home price.</p>
+        <ul>
+          <li>Typically costs <strong>0.5–1%</strong> of the loan amount per year</li>
+          <li>Added to your monthly mortgage payment automatically</li>
+          <li>Can be removed once you reach <strong>20% equity</strong> in your home</li>
+          <li>To avoid PMI, put down <strong>20% or more</strong></li>
+        </ul>
+        <button class="learn-more-btn pmi-hide-btn" onclick="togglePMISection()">📖 Hide PMI info</button>
+      </div>
+
       <!-- RESULTS -->
       <div id="resultsSection" style="display:none">
 
@@ -216,7 +229,7 @@
           </div>
           <div class="result-box" id="pmiBox" style="display:none">
             <div class="result-box-content">
-              <span>PMI <span class="info-badge" id="pmiInfo">What is PMI? 💡</span></span>
+              <span>PMI</span>
               <strong id="monthlyPMI">-</strong>
             </div>
           </div>
@@ -274,6 +287,23 @@
             </div>
           </div>
 
+          <!-- Learn More — right under the options -->
+          <button class="learn-more-btn" onclick="toggleClosingLearnMore()" id="closingLearnMoreBtn">
+            📖 Learn more about closing costs
+          </button>
+          <div class="closing-learn-more" id="closingLearnMore" style="display:none">
+            <h3>📋 What are Closing Costs?</h3>
+            <p>Closing costs are fees and expenses you pay when finalizing your home purchase — <strong>in addition to your down payment</strong>. They typically range from 2–5% of the loan amount and are due at closing.</p>
+            <ul>
+              <li><strong>Loan Origination Fee</strong> — Charged by your lender for processing the loan (0.5–1%)</li>
+              <li><strong>Appraisal Fee</strong> — Cost to have the home professionally valued ($300–$500)</li>
+              <li><strong>Home Inspection</strong> — Professional inspection of the property ($300–$500)</li>
+              <li><strong>Title Insurance</strong> — Protects against ownership disputes ($1,000–$2,000)</li>
+              <li><strong>Attorney Fees</strong> — Legal review of closing documents ($500–$1,500)</li>
+              <li><strong>Prepaid Items</strong> — Upfront property tax and insurance deposits ($1,000–$3,000)</li>
+            </ul>
+          </div>
+
           <div class="results" id="closingResults">
             <div class="result-box">
               <div class="result-box-content">
@@ -306,23 +336,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Learn More about Closing Costs -->
-          <button class="learn-more-btn" onclick="toggleClosingLearnMore()" id="closingLearnMoreBtn">
-            📖 Learn more about closing costs
-          </button>
-          <div class="closing-learn-more" id="closingLearnMore" style="display:none">
-            <h3>📋 What are Closing Costs?</h3>
-            <p>Closing costs are fees and expenses you pay when finalizing your home purchase — <strong>in addition to your down payment</strong>. They typically range from 2–5% of the loan amount and are due at closing.</p>
-            <ul>
-              <li><strong>Loan Origination Fee</strong> — Charged by your lender for processing the loan (0.5–1%)</li>
-              <li><strong>Appraisal Fee</strong> — Cost to have the home professionally valued ($300–$500)</li>
-              <li><strong>Home Inspection</strong> — Professional inspection of the property ($300–$500)</li>
-              <li><strong>Title Insurance</strong> — Protects against ownership disputes ($1,000–$2,000)</li>
-              <li><strong>Attorney Fees</strong> — Legal review of closing documents ($500–$1,500)</li>
-              <li><strong>Prepaid Items</strong> — Upfront property tax and insurance deposits ($1,000–$3,000)</li>
-            </ul>
-          </div>
         </div>
 
         <!-- Smart Connection -->
@@ -335,18 +348,6 @@
             </div>
             <a href="../savings/index.html" class="smart-btn">Calculate Savings →</a>
           </div>
-        </div>
-
-        <!-- PMI Explainer -->
-        <div class="pmi-explainer" id="pmiExplainer" style="display:none">
-          <h3>📋 What is PMI?</h3>
-          <p>PMI stands for <strong>Private Mortgage Insurance</strong>. It's required by lenders when your down payment is less than 20% of the home price.</p>
-          <ul>
-            <li>Typically costs <strong>0.5–1%</strong> of the loan amount per year</li>
-            <li>Added to your monthly mortgage payment automatically</li>
-            <li>Can be removed once you reach <strong>20% equity</strong> in your home</li>
-            <li>To avoid PMI, put down <strong>20% or more</strong></li>
-          </ul>
         </div>
 
         <!-- Amortization Charts -->

@@ -514,7 +514,7 @@ input::placeholder {
 
 .donut-center {
   position: absolute;
-  top: 42%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
@@ -533,6 +533,39 @@ input::placeholder {
   color: #888;
   display: block;
   margin-top: 2px;
+}
+
+/* ── DONUT LEGEND ─────────────────────────────── */
+.donut-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.donut-legend-text {
+  font-size: 0.82rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.donut-legend-value {
+  font-size: 0.82rem;
+  color: #888;
 }
 
 /* ── CHART TOGGLE ─────────────────────────────── */
@@ -615,14 +648,15 @@ input::placeholder {
   font-weight: 600;
 }
 
-/* ── CLOSING LEARN MORE ───────────────────────── */
+/* ── CLOSING & PMI LEARN MORE ─────────────────── */
 .closing-learn-more {
   background: #1a1a24;
   border: 1px solid #2a2a3a;
   border-left: 3px solid #14B8A6;
   border-radius: 12px;
   padding: 20px 24px;
-  margin-bottom: 12px;
+  margin-top: 12px;
+  margin-bottom: 16px;
 }
 
 .closing-learn-more h3 {
@@ -675,7 +709,7 @@ input::placeholder {
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 4px;
+  margin-bottom: 16px;
   transition: all 0.2s;
   text-align: left;
 }
@@ -732,6 +766,30 @@ input::placeholder {
 
 .pmi-explainer ul li strong {
   color: #ffffff;
+}
+
+/* ── PMI LINK IN HINT ─────────────────────────── */
+.pmi-link {
+  color: #EC4899;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pmi-link:hover {
+  color: #a78bfa;
+}
+
+/* ── PMI HIDE BUTTON ──────────────────────────── */
+.pmi-hide-btn {
+  margin-top: 16px;
+  color: #EC4899;
+  border-color: #EC489944;
+}
+
+.pmi-hide-btn:hover {
+  border-color: #EC4899;
+  background: #EC489922;
 }
 
 /* ── SMART CONNECTION ─────────────────────────── */
@@ -909,36 +967,4 @@ tr:hover td {
   .donut-full-wrapper {
     max-width: 280px;
   }
-}
-/* ── DONUT LEGEND (custom white) ──────────────── */
-.donut-legend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.donut-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.donut-legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.donut-legend-text {
-  font-size: 0.82rem;
-  color: #ffffff;
-  font-weight: 500;
-}
-
-.donut-legend-value {
-  font-size: 0.82rem;
-  color: #888;
 }
