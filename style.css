@@ -749,7 +749,7 @@ a {
     gap: 20px;
   }
 
-  .nav-links a:not(.nav-cta) {
+  .nav-text-link {
     display: none;
   }
 
@@ -764,12 +764,13 @@ a {
   .dropdown-panel {
     position: fixed;
     top: 70px;
-    left: 0;
-    right: 0;
-    border-radius: 0 0 16px 16px;
+    left: 16px;
+    right: 16px;
+    border-radius: 16px;
     min-width: unset;
-    max-height: calc(100vh - 80px);
+    max-height: calc(100vh - 90px);
     overflow-y: auto;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
   }
 
   .card-grid {
