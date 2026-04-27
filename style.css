@@ -117,7 +117,7 @@ a {
   background: none;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 8px 14px;
   cursor: pointer;
   font-size: 1.2rem;
   color: #444;
@@ -133,6 +133,24 @@ a {
   color: #7C3AED;
 }
 
+/* Toggle between ☰ and ✕ */
+.menu-icon-close {
+  display: none;
+}
+
+.nav-dropdown.open .menu-icon-open {
+  display: none;
+}
+
+.nav-dropdown.open .menu-icon-close {
+  display: inline;
+}
+
+.nav-dropdown.open .nav-menu-btn {
+  border-color: #7C3AED;
+  color: #7C3AED;
+}
+
 .dropdown-panel {
   position: absolute;
   top: calc(100% + 12px);
@@ -141,8 +159,8 @@ a {
   border: 1px solid #e8eaf0;
   border-radius: 12px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-  padding: 20px 24px;
-  min-width: 280px;
+  padding: 24px;
+  min-width: 300px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px);
@@ -157,37 +175,40 @@ a {
 }
 
 .dropdown-section h4 {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
 }
 
 .dropdown-section a {
   display: block;
   font-size: 0.9rem;
   color: #0D1B2A;
-  padding: 8px 0;
+  padding: 10px 12px;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: all 0.15s;
+  border-radius: 8px;
 }
 
 .dropdown-section a:hover {
+  background: #f8f5ff;
   color: #7C3AED;
 }
 
 .dropdown-coming {
   display: block;
   font-size: 0.9rem;
-  color: #94a3b8;
-  padding: 8px 0;
+  color: #b0b8c4;
+  padding: 10px 12px;
   cursor: default;
+  border-radius: 8px;
 }
 
 .dropdown-coming em {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-style: normal;
   background: #f1f5f9;
   color: #94a3b8;
@@ -200,7 +221,7 @@ a {
 .dropdown-divider {
   height: 1px;
   background: #e8eaf0;
-  margin: 12px 0;
+  margin: 14px 0;
 }
 
 /* ── HERO ─────────────────────────────────────── */
@@ -732,8 +753,23 @@ a {
     display: none;
   }
 
+  .nav-cta-desktop {
+    display: none !important;
+  }
+
   .nav-dropdown {
     display: block;
+  }
+
+  .dropdown-panel {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    border-radius: 0 0 16px 16px;
+    min-width: unset;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
   }
 
   .card-grid {

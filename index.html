@@ -22,20 +22,21 @@
         </div>
         <div class="nav-links">
           <a href="#how-it-works" class="nav-text-link">How It Works</a>
-          <a href="#calculators" class="nav-cta">Start Planning</a>
+          <a href="#calculators" class="nav-cta nav-cta-desktop">Start Planning</a>
           <div class="nav-dropdown">
-            <button class="nav-menu-btn" aria-label="Menu" onclick="document.querySelector('.nav-dropdown').classList.toggle('open')">
-              <span class="menu-icon">☰</span>
+            <button class="nav-menu-btn" aria-label="Menu" onclick="toggleDropdown()">
+              <span class="menu-icon-open">☰</span>
+              <span class="menu-icon-close">✕</span>
             </button>
             <div class="dropdown-panel">
               <div class="dropdown-section">
                 <h4>Calculators</h4>
-                <a href="calculators/investment/index.html">📈 Investment Calculator</a>
-                <a href="calculators/mortgage/index.html">🏠 Mortgage Calculator</a>
-                <span class="dropdown-coming">🚗 Car Payment Calculator <em>Coming Soon</em></span>
-                <span class="dropdown-coming">💳 Debt Payoff Calculator <em>Coming Soon</em></span>
-                <span class="dropdown-coming">🏖️ Retirement Calculator <em>Coming Soon</em></span>
-                <span class="dropdown-coming">🎯 Savings Goal Calculator <em>Coming Soon</em></span>
+                <a href="calculators/investment/index.html">Investment Calculator</a>
+                <a href="calculators/mortgage/index.html">Mortgage Calculator</a>
+                <span class="dropdown-coming">Car Payment Calculator <em>Coming Soon</em></span>
+                <span class="dropdown-coming">Debt Payoff Calculator <em>Coming Soon</em></span>
+                <span class="dropdown-coming">Retirement Calculator <em>Coming Soon</em></span>
+                <span class="dropdown-coming">Savings Goal Calculator <em>Coming Soon</em></span>
               </div>
               <div class="dropdown-divider"></div>
               <div class="dropdown-section">
@@ -43,6 +44,13 @@
                 <a href="#how-it-works">How MoneyMap IQ Works</a>
                 <span class="dropdown-coming">How the Investment Calculator Works <em>Coming Soon</em></span>
                 <span class="dropdown-coming">How the Mortgage Calculator Works <em>Coming Soon</em></span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-section">
+                <h4>About</h4>
+                <span class="dropdown-coming">Our Story <em>Coming Soon</em></span>
+                <span class="dropdown-coming">Blog <em>Coming Soon</em></span>
+                <span class="dropdown-coming">Contact <em>Coming Soon</em></span>
               </div>
             </div>
           </div>
@@ -297,15 +305,19 @@
       </div>
     </footer>
 
-    <!-- Close dropdown when clicking outside -->
+    <!-- Dropdown menu script -->
     <script>
+      function toggleDropdown() {
+        document.querySelector('.nav-dropdown').classList.toggle('open');
+      }
+
       document.addEventListener('click', function(e) {
-        const dropdown = document.querySelector('.nav-dropdown');
+        var dropdown = document.querySelector('.nav-dropdown');
         if (!dropdown.contains(e.target)) {
           dropdown.classList.remove('open');
         }
       });
-      // Close dropdown when clicking a link inside it
+
       document.querySelectorAll('.dropdown-panel a').forEach(function(link) {
         link.addEventListener('click', function() {
           document.querySelector('.nav-dropdown').classList.remove('open');
