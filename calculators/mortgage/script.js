@@ -277,7 +277,7 @@ function calculate() {
   const monthlyTax = propertyTax / 12;
   const monthlyInsurance = insurance / 12;
   const downPercent = (downPayment / homePrice) * 100;
-  const monthlyPMI = downPercent < 20 ? (loanAmount * 0.008) / 12 : 0;
+  const monthlyPMI = downPercent < 20 ? (loanAmount * 0.005) / 12 : 0;
   const totalMonthly = monthlyPI + monthlyTax + monthlyInsurance + monthlyPMI;
   const totalPaid = monthlyPI * numPayments;
   const totalInterest = totalPaid - loanAmount;
@@ -346,7 +346,7 @@ function generateSummary(r) {
   const summaryBox = document.getElementById('summaryBox');
   const downPct = r.downPercent.toFixed(0);
   const pmiNote = r.monthlyPMI > 0
-    ? ` Since your down payment is under 20%, PMI of <strong>${formatMoney(r.monthlyPMI)}/month</strong> is added — <a href="#pmiExplainer" onclick="showPMISection()" style="color:#a78bfa">learn more about PMI below</a>.`
+    ? ` Since your down payment is under 20%, PMI of <strong>${formatMoney(r.monthlyPMI)}/month</strong> is added — <a href="#pmiExplainer" onclick="showPMISection()" style="color:#a78bfa">learn more about PMI</a>.`
     : ' No PMI required — great down payment! ✅';
 
   summaryBox.innerHTML = `Based on a <strong>${formatMoney(r.homePrice)}</strong> home with <strong>${formatMoney(r.downPayment)}</strong> down (<strong>${downPct}%</strong>), your estimated monthly payment is <strong>${formatMoney(r.totalMonthly)}</strong> over <strong>${r.loanTerm} years</strong> at <strong>${r.interestRate}% interest</strong>. Over the life of the loan you'll pay <strong>${formatMoney(r.totalInterest)}</strong> in interest — making the true cost of your home <strong>${formatMoney(r.totalCost)}</strong>.${pmiNote}`;
