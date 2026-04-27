@@ -5,46 +5,79 @@ let chartType = 'bar';
 let calculatedResults = null;
 let taxMode = 'estimate';
 let insMode = 'estimate';
+let closingPctMode = 'estimate';
 let zipEstimates = null;
 
 // ─── REGIONAL RATE DATABASE ───────────────────────────────
 const zipData = {
-  // California
-  '9': { rate: 7.1, taxRate: 1.1, insurance: 1800 },
-  // New York
-  '1': { rate: 7.2, taxRate: 1.7, insurance: 1600 },
-  // Texas
-  '7': { rate: 6.9, taxRate: 1.8, insurance: 2200 },
-  // Florida
-  '3': { rate: 7.0, taxRate: 0.9, insurance: 2800 },
-  // Default
-  'default': { rate: 7.0, taxRate: 1.2, insurance: 1500 }
+  '9': { rate: 7.1, taxRate: 1.1, insurance: 1800, closingPct: 2.5 },
+  '1': { rate: 7.2, taxRate: 1.7, insurance: 1600, closingPct: 3.0 },
+  '7': { rate: 6.9, taxRate: 1.8, insurance: 2200, closingPct: 2.8 },
+  '3': { rate: 7.0, taxRate: 0.9, insurance: 2800, closingPct: 3.2 },
+  'default': { rate: 7.0, taxRate: 1.2, insurance: 1500, closingPct: 3.0 }
 };
 
 // ─── ON PAGE LOAD ─────────────────────────────────────────
 window.onload = function () {
-  const infoIcon = document.getElementById('closingInfo');
-  const tooltip = document.getElementById('closingTooltip');
-  if (infoIcon && tooltip) {
-    infoIcon.addEventListener('mouseenter', () => tooltip.classList.add('visible'));
-    infoIcon.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
-    infoIcon.addEventListener('click', () => tooltip.classList.toggle('visible'));
-  }
-
   const pmiInfo = document.getElementById('pmiInfo');
   if (pmiInfo) {
     pmiInfo.addEventListener('click', () => {
-      alert('PMI (Private Mortgage Insurance) is required when your down payment is less than 20% of the home price. It typically costs 0.5–1% of the loan amount per year and protects the lender if you default. Once you reach 20% equity, you can request to remove PMI.');
+      document.getElementById('pmiExplainer').scrollIntoView({ behavior: 'smooth' });
     });
   }
 };
 
-// ─── ZIP CODE HANDLER ─────────────────────────────────────
+// ─── ACCORDION TOGGLE ─────────────────────────────────────
+function toggleClosingBreakdown() {
+  const tooltip = document.getElementById('closingTooltip');
+  tooltip.classList.toggle('visible');
+}
+
+// ─── CLOSING COST % MODE ──────────────────────────────────
+function setClosingPct(mode, e) {
+  closingPctMode = mode;
+  document.querySelectorAll('.closing-pct-btn').forEach(btn => btn.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('customClosingPct').style.display = mode === 'custom' ? 'block' : 'none';
+  if (calculatedResults) recalcClosing();
+}
+
+function recalcClosing() {
+  if (!calculatedResults) return;
+  const homePrice = calculatedResults.homePrice;
+  const downPayment = calculatedResults.downPayment;
+  let closingLow, closingHigh;
+
+  if (closingPctMode === 'custom') {
+    const pct = getRaw('closingPctInput');
+    if (isNaN(pct) || pct === 0) return;
+    closingLow = homePrice * (pct / 100);
+    closingHigh = closingLow;
+    document.getElementById('closingHighBox').style.display = 'none';
+  } else {
+    // Use ZIP estimate
+    const closingPct = zipEstimates ? zipEstimates.closingPct : 3.0;
+    closingLow = homePrice * ((closingPct - 0.5) / 100);
+    closingHigh = homePrice * ((closingPct + 0.5) / 100);
+    document.getElementById('closingHighBox').style.display = 'block';
+  }
+
+  animateCounter('closingLow', closingLow);
+  animateCounter('closingHigh', closingHigh);
+  animateCounter('totalCashLow', downPayment + closingLow);
+  animateCounter('totalCashHigh', downPayment + closingHigh);
+
+  calculatedResults.closingLow = closingLow;
+  calculatedResults.closingHigh = closingHigh;
+  calculatedResults.totalCashLow = downPayment + closingLow;
+  calculatedResults.totalCashHigh = downPayment + closingHigh;
+}
+
+// ─── ZIP CODE ─────────────────────────────────────────────
 function handleZipInput(input) {
   const zip = input.value.replace(/[^0-9]/g, '');
   input.value = zip;
   const status = document.getElementById('zipStatus');
-
   if (zip.length === 5) {
     status.textContent = '✅ Estimates loaded!';
     status.style.color = '#14B8A6';
@@ -65,13 +98,12 @@ function loadZipEstimates(zip) {
   document.getElementById('estInsurance').textContent = '$' + data.insurance.toLocaleString() + '/yr';
   document.getElementById('zipEstimates').style.display = 'flex';
 
-  // Auto fill rate
   const rateEl = document.getElementById('interestRate');
   rateEl.value = data.rate + '%';
   rateEl.dataset.raw = data.rate;
-  document.getElementById('rateHint').textContent = `Estimated rate for your area: ${data.rate}%. You can edit this.`;
+  document.getElementById('rateHint').textContent =
+    `Estimated rate for your area: ${data.rate}%. You can edit this anytime.`;
 
-  // Update tax estimate display
   updateTaxEstimate();
   updateInsEstimate();
 }
@@ -124,22 +156,55 @@ function setDownPercent(percent) {
     return;
   }
   const downAmount = homePrice * (percent / 100);
-  const el = document.getElementById('downPayment');
-  el.dataset.raw = Math.round(downAmount);
-  el.value = '$' + Math.round(downAmount).toLocaleString('en-US');
-  updateDownPercent();
+  const dollarEl = document.getElementById('downPayment');
+  dollarEl.dataset.raw = Math.round(downAmount);
+  dollarEl.value = '$' + Math.round(downAmount).toLocaleString('en-US');
+
+  const percentEl = document.getElementById('downPercent');
+  percentEl.dataset.raw = percent;
+  percentEl.value = percent + '%';
+
+  updateDownBadge(percent);
+}
+
+function syncDownFromDollar() {
+  const homePrice = getRaw('homePrice');
+  const downPayment = getRaw('downPayment');
+  if (!isNaN(homePrice) && homePrice > 0 && !isNaN(downPayment)) {
+    const percent = ((downPayment / homePrice) * 100).toFixed(1);
+    const percentEl = document.getElementById('downPercent');
+    percentEl.dataset.raw = percent;
+    percentEl.value = percent + '%';
+    updateDownBadge(percent);
+  }
+}
+
+function syncDownFromPercent(input) {
+  let raw = input.value.replace(/[^0-9.]/g, '');
+  input.dataset.raw = raw;
+  if (raw === '') { input.value = ''; return; }
+  input.value = raw + '%';
+
+  const homePrice = getRaw('homePrice');
+  if (!isNaN(homePrice) && homePrice > 0) {
+    const downAmount = homePrice * (parseFloat(raw) / 100);
+    const dollarEl = document.getElementById('downPayment');
+    dollarEl.dataset.raw = Math.round(downAmount);
+    dollarEl.value = '$' + Math.round(downAmount).toLocaleString('en-US');
+    updateDownBadge(raw);
+  }
+
+  setTimeout(() => {
+    input.setSelectionRange(input.value.length - 1, input.value.length - 1);
+  }, 0);
+}
+
+function updateDownBadge(percent) {
+  document.getElementById('downPercentBadge').textContent = parseFloat(percent).toFixed(1) + '%';
 }
 
 function updateDownPercent() {
-  const homePrice = getRaw('homePrice');
-  const downPayment = getRaw('downPayment');
-  const badge = document.getElementById('downPercentBadge');
-  if (!isNaN(homePrice) && !isNaN(downPayment) && homePrice > 0) {
-    const percent = ((downPayment / homePrice) * 100).toFixed(1);
-    badge.textContent = percent + '%';
-  } else {
-    badge.textContent = '0%';
-  }
+  syncDownFromDollar();
 }
 
 // ─── FORMAT INPUT ─────────────────────────────────────────
@@ -167,32 +232,29 @@ function getRaw(id) {
   return parseFloat(raw);
 }
 
-// ─── GET PROPERTY TAX ─────────────────────────────────────
+// ─── GET TAX & INSURANCE ──────────────────────────────────
 function getAnnualTax() {
   const homePrice = getRaw('homePrice');
   if (taxMode === 'estimate') {
-    if (zipEstimates) return homePrice * (zipEstimates.taxRate / 100);
-    return homePrice * 0.012;
+    return zipEstimates ? homePrice * (zipEstimates.taxRate / 100) : homePrice * 0.012;
   } else if (taxMode === 'percent') {
-    const pct = getRaw('taxPercent');
-    return homePrice * (pct / 100);
+    return homePrice * (getRaw('taxPercent') / 100);
   } else {
     return getRaw('propertyTax') || 0;
   }
 }
 
-// ─── GET INSURANCE ────────────────────────────────────────
 function getAnnualInsurance() {
   if (insMode === 'estimate') {
     return zipEstimates ? zipEstimates.insurance : 1500;
-  } else {
-    return getRaw('insurance') || 0;
   }
+  return getRaw('insurance') || 0;
 }
 
 // ─── ANIMATED COUNTER ─────────────────────────────────────
 function animateCounter(elementId, targetValue) {
   const el = document.getElementById(elementId);
+  if (!el) return;
   const duration = 1500;
   const steps = 60;
   const increment = targetValue / steps;
@@ -204,6 +266,25 @@ function animateCounter(elementId, targetValue) {
     el.textContent = formatMoney(current);
     if (step >= steps) clearInterval(timer);
   }, duration / steps);
+}
+
+// ─── ANIMATE COLOR BARS ───────────────────────────────────
+function animateColorBars(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, total) {
+  setTimeout(() => {
+    const bars = [
+      { id: 'barPI', value: monthlyPI },
+      { id: 'barTax', value: monthlyTax },
+      { id: 'barIns', value: monthlyInsurance },
+      { id: 'barPMI', value: monthlyPMI },
+    ];
+    bars.forEach(bar => {
+      const el = document.getElementById(bar.id);
+      if (el) {
+        const pct = total > 0 ? ((bar.value / total) * 100).toFixed(1) : 0;
+        el.style.width = pct + '%';
+      }
+    });
+  }, 200);
 }
 
 // ─── MAIN CALCULATE ───────────────────────────────────────
@@ -227,7 +308,8 @@ function calculate() {
   if (monthlyRate === 0) {
     monthlyPI = loanAmount / numPayments;
   } else {
-    monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+    monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
+      (Math.pow(1 + monthlyRate, numPayments) - 1);
   }
 
   const monthlyTax = propertyTax / 12;
@@ -238,8 +320,11 @@ function calculate() {
   const totalPaid = monthlyPI * numPayments;
   const totalInterest = totalPaid - loanAmount;
   const totalCost = homePrice + totalInterest + (propertyTax * loanTerm) + (insurance * loanTerm);
-  const closingLow = homePrice * 0.02;
-  const closingHigh = homePrice * 0.05;
+
+  // Closing costs based on ZIP
+  const closingPct = zipEstimates ? zipEstimates.closingPct : 3.0;
+  const closingLow = homePrice * ((closingPct - 0.5) / 100);
+  const closingHigh = homePrice * ((closingPct + 0.5) / 100);
   const totalCashLow = downPayment + closingLow;
   const totalCashHigh = downPayment + closingHigh;
 
@@ -251,7 +336,6 @@ function calculate() {
     interestRate, loanTerm, downPercent, propertyTax, insurance
   };
 
-  // Show results
   document.getElementById('resultsSection').style.display = 'block';
 
   // Animate numbers
@@ -268,24 +352,23 @@ function calculate() {
   animateCounter('totalCashHigh', totalCashHigh);
   animateCounter('downPaymentDisplay', downPayment);
 
+  // Color bars
+  animateColorBars(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, totalMonthly);
+
   // PMI
   if (monthlyPMI > 0) {
     animateCounter('monthlyPMI', monthlyPMI);
-    document.getElementById('pmiBox').style.display = 'flex';
+    document.getElementById('pmiBox').style.display = 'block';
+    document.getElementById('pmiExplainer').style.display = 'block';
   } else {
     document.getElementById('pmiBox').style.display = 'none';
+    document.getElementById('pmiExplainer').style.display = 'none';
   }
 
-  // Summary
   generateSummary(calculatedResults);
-
-  // Charts
-  drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI);
+  drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, totalMonthly);
   drawMainChart();
-
-  // Table
   buildAmortization(loanAmount, monthlyRate, numPayments, monthlyPI);
-
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -294,16 +377,17 @@ function generateSummary(r) {
   const summaryBox = document.getElementById('summaryBox');
   const downPct = r.downPercent.toFixed(0);
   const pmiNote = r.monthlyPMI > 0
-    ? ` Since your down payment is under 20%, PMI of <strong>${formatMoney(r.monthlyPMI)}/month</strong> is included.`
+    ? ` Since your down payment is under 20%, PMI of <strong>${formatMoney(r.monthlyPMI)}/month</strong> is added — <a href="#pmiExplainer" style="color:#a78bfa">learn more about PMI below</a>.`
     : ' No PMI required — great down payment! ✅';
 
   summaryBox.innerHTML = `Based on a <strong>${formatMoney(r.homePrice)}</strong> home with <strong>${formatMoney(r.downPayment)}</strong> down (<strong>${downPct}%</strong>), your estimated monthly payment is <strong>${formatMoney(r.totalMonthly)}</strong> over <strong>${r.loanTerm} years</strong> at <strong>${r.interestRate}% interest</strong>. Over the life of the loan you'll pay <strong>${formatMoney(r.totalInterest)}</strong> in interest — making the true cost of your home <strong>${formatMoney(r.totalCost)}</strong>.${pmiNote}`;
 }
 
-// ─── DONUT CHART (payment breakdown) ─────────────────────
-function drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI) {
+// ─── DONUT CHART ──────────────────────────────────────────
+function drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, totalMonthly) {
   if (donutChart) donutChart.destroy();
   const ctx = document.getElementById('donutChart').getContext('2d');
+
   const labels = ['Principal & Interest', 'Property Tax', 'Insurance'];
   const data = [monthlyPI, monthlyTax, monthlyInsurance];
   const colors = ['#7C3AED', '#EC4899', '#14B8A6'];
@@ -321,19 +405,58 @@ function drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI) {
       datasets: [{
         data,
         backgroundColor: colors,
-        borderWidth: 0,
+        borderWidth: 3,
+        borderColor: '#1a1a24',
+        hoverBorderWidth: 0,
       }]
     },
     options: {
       responsive: true,
+      cutout: '68%',
       plugins: {
         legend: {
           position: 'bottom',
-          labels: { color: '#888', font: { size: 11 } }
+          labels: {
+            color: '#888',
+            font: { size: 11 },
+            padding: 12,
+            usePointStyle: true,
+            pointStyleWidth: 8,
+            generateLabels: function(chart) {
+              const data = chart.data;
+              return data.labels.map((label, i) => {
+                const value = data.datasets[0].data[i];
+                const pct = ((value / totalMonthly) * 100).toFixed(0);
+                return {
+                  text: `${label} ${pct}%`,
+                  fillStyle: data.datasets[0].backgroundColor[i],
+                  strokeStyle: data.datasets[0].backgroundColor[i],
+                  pointStyle: 'circle',
+                  index: i
+                };
+              });
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const value = context.parsed;
+              const pct = ((value / totalMonthly) * 100).toFixed(1);
+              return ` ${formatMoney(value)} (${pct}%)`;
+            }
+          }
         }
       }
     }
   });
+
+  // Center label
+  const centerEl = document.getElementById('donutCenter');
+  centerEl.innerHTML = `
+    <span class="donut-center-amount">${formatMoney(totalMonthly)}</span>
+    <span class="donut-center-label">per month</span>
+  `;
 }
 
 // ─── MAIN CHART ───────────────────────────────────────────
@@ -342,7 +465,6 @@ function drawMainChart() {
   const ctx = document.getElementById('myChart').getContext('2d');
 
   if (chartType === 'bar') {
-    // Over time — principal vs interest per year
     const years = [];
     const principalData = [];
     const interestData = [];
@@ -390,11 +512,7 @@ function drawMainChart() {
         responsive: true,
         plugins: { legend: { labels: { color: '#ffffff' } } },
         scales: {
-          x: {
-            stacked: true,
-            ticks: { color: '#888' },
-            grid: { color: '#2a2a3a' }
-          },
+          x: { stacked: true, ticks: { color: '#888' }, grid: { color: '#2a2a3a' } },
           y: {
             stacked: true,
             ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() },
@@ -403,14 +521,39 @@ function drawMainChart() {
         }
       }
     });
+
   } else {
-    // Breakdown doughnut
-    drawDonutChart(
-      calculatedResults.monthlyPI,
-      calculatedResults.monthlyTax,
-      calculatedResults.monthlyInsurance,
-      calculatedResults.monthlyPMI
-    );
+    const r = calculatedResults;
+    myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Principal & Interest', 'Property Tax', 'Insurance',
+          ...(r.monthlyPMI > 0 ? ['PMI'] : [])],
+        datasets: [{
+          data: [r.monthlyPI, r.monthlyTax, r.monthlyInsurance,
+            ...(r.monthlyPMI > 0 ? [r.monthlyPMI] : [])],
+          backgroundColor: ['#7C3AED', '#EC4899', '#14B8A6', '#2563EB'],
+          borderWidth: 3,
+          borderColor: '#1a1a24',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#ffffff' } },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = context.parsed;
+                const total = r.totalMonthly;
+                const pct = ((value / total) * 100).toFixed(1);
+                return ` ${formatMoney(value)} (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
   }
 }
 
@@ -476,5 +619,8 @@ Try it yourself: https://moneymap-iq.vercel.app/calculators/mortgage/`;
 // ─── FORMAT MONEY ─────────────────────────────────────────
 function formatMoney(amount) {
   if (isNaN(amount)) return '$0.00';
-  return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return '$' + amount.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }

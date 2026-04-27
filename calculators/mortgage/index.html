@@ -18,7 +18,6 @@
           <img src="../../logo.png" alt="MoneyMap IQ" class="mmiq-logo" />
           <span class="mmiq-name">MoneyMap<span class="mmiq-iq">IQ</span></span>
         </div>
-        <div class="mmiq-calculator-label">🏠 Mortgage Calculator</div>
       </div>
     </nav>
 
@@ -38,7 +37,7 @@
             <div class="step-number">1</div>
             <label>ZIP Code <span class="optional">for local estimates</span></label>
           </div>
-          <p class="hint">Enter your ZIP code and we'll estimate local property tax, insurance rates, and current mortgage rates for your area.</p>
+          <p class="hint">Enter your ZIP code and we'll estimate local property tax, insurance, and current mortgage rates. <strong>You can edit any of these estimates below anytime.</strong></p>
           <div class="zip-row">
             <input type="text" id="zipCode" placeholder="e.g. 90210" maxlength="5" oninput="handleZipInput(this)" />
             <div class="zip-status" id="zipStatus"></div>
@@ -73,11 +72,19 @@
         <div class="input-group">
           <div class="step-label">
             <div class="step-number">3</div>
-            <label>Down Payment ($)</label>
+            <label>Down Payment</label>
           </div>
           <p class="hint">How much are you putting down? Less than 20% will require PMI.</p>
-          <div class="down-payment-row">
-            <input type="text" id="downPayment" placeholder="e.g. 80,000" oninput="formatInput(this); updateDownPercent()" />
+          <div class="down-input-row">
+            <div class="down-input-group">
+              <span class="input-label">$ Amount</span>
+              <input type="text" id="downPayment" placeholder="e.g. 80,000" oninput="formatInput(this); syncDownFromDollar()" />
+            </div>
+            <div class="down-divider">or</div>
+            <div class="down-input-group">
+              <span class="input-label">% of Price</span>
+              <input type="text" id="downPercent" placeholder="e.g. 20" oninput="syncDownFromPercent(this)" />
+            </div>
             <div class="down-percent-badge" id="downPercentBadge">0%</div>
           </div>
           <div class="quick-btns">
@@ -177,37 +184,72 @@
         <!-- Summary -->
         <div class="summary-box" id="summaryBox"></div>
 
-        <!-- Monthly Payment — Side by Side -->
+        <!-- Monthly Payment Breakdown -->
         <div class="results-header">
           <h2>Monthly Payment Breakdown</h2>
         </div>
 
+        <!-- Side by side layout -->
         <div class="payment-layout">
+
+          <!-- Left: numbers with color bars -->
           <div class="payment-numbers">
             <div class="result-box highlight">
-              <span>Total Monthly Payment</span>
-              <strong id="totalMonthly">-</strong>
+              <div class="result-box-content">
+                <span>Total Monthly Payment</span>
+                <strong id="totalMonthly">-</strong>
+              </div>
             </div>
+
             <div class="result-box">
-              <span>Principal & Interest</span>
-              <strong id="principalInterest">-</strong>
+              <div class="result-box-content">
+                <span>Principal & Interest</span>
+                <strong id="principalInterest">-</strong>
+              </div>
+              <div class="color-bar-track">
+                <div class="color-bar" id="barPI" style="background:#7C3AED; width:0%"></div>
+              </div>
             </div>
+
             <div class="result-box">
-              <span>Property Tax</span>
-              <strong id="monthlyTax">-</strong>
+              <div class="result-box-content">
+                <span>Property Tax</span>
+                <strong id="monthlyTax">-</strong>
+              </div>
+              <div class="color-bar-track">
+                <div class="color-bar" id="barTax" style="background:#EC4899; width:0%"></div>
+              </div>
             </div>
+
             <div class="result-box">
-              <span>Home Insurance</span>
-              <strong id="monthlyInsurance">-</strong>
+              <div class="result-box-content">
+                <span>Home Insurance</span>
+                <strong id="monthlyInsurance">-</strong>
+              </div>
+              <div class="color-bar-track">
+                <div class="color-bar" id="barIns" style="background:#14B8A6; width:0%"></div>
+              </div>
             </div>
+
             <div class="result-box" id="pmiBox" style="display:none">
-              <span>PMI <span class="info-badge" id="pmiInfo">What is PMI? 💡</span></span>
-              <strong id="monthlyPMI">-</strong>
+              <div class="result-box-content">
+                <span>PMI <span class="info-badge" id="pmiInfo">What is PMI? 💡</span></span>
+                <strong id="monthlyPMI">-</strong>
+              </div>
+              <div class="color-bar-track">
+                <div class="color-bar" id="barPMI" style="background:#2563EB; width:0%"></div>
+              </div>
             </div>
           </div>
+
+          <!-- Right: donut chart -->
           <div class="payment-chart">
-            <canvas id="donutChart"></canvas>
+            <div class="donut-wrapper">
+              <canvas id="donutChart"></canvas>
+              <div class="donut-center" id="donutCenter"></div>
+            </div>
           </div>
+
         </div>
 
         <!-- Loan Summary -->
@@ -216,16 +258,22 @@
         </div>
         <div class="results">
           <div class="result-box">
-            <span>Loan Amount</span>
-            <strong id="loanAmount">-</strong>
+            <div class="result-box-content">
+              <span>Loan Amount</span>
+              <strong id="loanAmount">-</strong>
+            </div>
           </div>
           <div class="result-box">
-            <span>Total Interest Paid</span>
-            <strong id="totalInterest">-</strong>
+            <div class="result-box-content">
+              <span>Total Interest Paid</span>
+              <strong id="totalInterest">-</strong>
+            </div>
           </div>
           <div class="result-box">
-            <span>Total Cost of Home</span>
-            <strong id="totalCost">-</strong>
+            <div class="result-box-content">
+              <span>Total Cost of Home</span>
+              <strong id="totalCost">-</strong>
+            </div>
           </div>
         </div>
 
@@ -233,9 +281,68 @@
         <div class="closing-costs-section">
           <div class="closing-costs-header">
             <h2>Cost to Close</h2>
-            <span class="info-icon" id="closingInfo">ℹ️ What's included?</span>
           </div>
+
+          <!-- Closing Cost Options -->
+          <div class="closing-pct-row">
+            <span class="closing-pct-label">Closing Cost Estimate</span>
+            <div class="closing-pct-options">
+              <button class="closing-pct-btn active" onclick="setClosingPct('estimate', event)">
+                Use ZIP Estimate
+              </button>
+              <button class="closing-pct-btn" onclick="setClosingPct('custom', event)">
+                Enter My Own %
+              </button>
+            </div>
+            <div id="customClosingPct" style="display:none">
+              <input type="text" id="closingPctInput" placeholder="e.g. 3" oninput="formatPercent(this); recalcClosing()" />
+            </div>
+          </div>
+
+          <div class="results">
+            <div class="result-box">
+              <div class="result-box-content">
+                <span>Down Payment</span>
+                <strong id="downPaymentDisplay">-</strong>
+              </div>
+            </div>
+            <div class="result-box" id="closingLowBox">
+              <div class="result-box-content">
+                <span>
+                  Closing Costs (Low Est.)
+                  <button class="inline-breakdown-btn" onclick="toggleClosingBreakdown()">
+                    ℹ️ What's included?
+                  </button>
+                </span>
+                <strong id="closingLow">-</strong>
+              </div>
+            </div>
+            <div class="result-box" id="closingHighBox">
+              <div class="result-box-content">
+                <span>Closing Costs (High Est.)</span>
+                <strong id="closingHigh">-</strong>
+              </div>
+            </div>
+            <div class="result-box highlight">
+              <div class="result-box-content">
+                <span>Total Cash Needed (Low)</span>
+                <strong id="totalCashLow">-</strong>
+              </div>
+            </div>
+            <div class="result-box highlight">
+              <div class="result-box-content">
+                <span>Total Cash Needed (High)</span>
+                <strong id="totalCashHigh">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Breakdown accordion -->
           <div class="closing-tooltip" id="closingTooltip">
+            <div class="tooltip-header">
+              <span>What's included in closing costs?</span>
+              <button class="close-breakdown-btn" onclick="toggleClosingBreakdown()">✕ Close</button>
+            </div>
             <div class="tooltip-item">
               <span>Loan Origination Fee</span>
               <span>0.5–1% of loan</span>
@@ -261,28 +368,6 @@
               <span>$1,000–$3,000</span>
             </div>
           </div>
-          <div class="results">
-            <div class="result-box">
-              <span>Down Payment</span>
-              <strong id="downPaymentDisplay">-</strong>
-            </div>
-            <div class="result-box">
-              <span>Closing Costs (Low Est.)</span>
-              <strong id="closingLow">-</strong>
-            </div>
-            <div class="result-box">
-              <span>Closing Costs (High Est.)</span>
-              <strong id="closingHigh">-</strong>
-            </div>
-            <div class="result-box highlight">
-              <span>Total Cash Needed (Low)</span>
-              <strong id="totalCashLow">-</strong>
-            </div>
-            <div class="result-box highlight">
-              <span>Total Cash Needed (High)</span>
-              <strong id="totalCashHigh">-</strong>
-            </div>
-          </div>
         </div>
 
         <!-- Smart Connection -->
@@ -297,11 +382,25 @@
           </div>
         </div>
 
+        <!-- PMI Explainer -->
+        <div class="pmi-explainer" id="pmiExplainer" style="display:none">
+          <div class="pmi-explainer-inner">
+            <h3>📋 What is PMI?</h3>
+            <p>PMI stands for <strong>Private Mortgage Insurance</strong>. It's required by lenders when your down payment is less than 20% of the home price.</p>
+            <ul>
+              <li>Typically costs <strong>0.5–1%</strong> of the loan amount per year</li>
+              <li>Added to your monthly mortgage payment automatically</li>
+              <li>Can be removed once you reach <strong>20% equity</strong> in your home</li>
+              <li>To avoid PMI, put down <strong>20% or more</strong></li>
+            </ul>
+          </div>
+        </div>
+
         <!-- Amortization Chart -->
         <div class="chart-section">
           <div class="chart-toggle">
             <button class="chart-btn active" onclick="switchChart('bar', event)">Over Time</button>
-            <button class="chart-btn" onclick="switchChart('doughnut', event)">Breakdown</button>
+            <button class="chart-btn" onclick="switchChart('pie', event)">Breakdown</button>
           </div>
           <div class="chart-wrapper">
             <canvas id="myChart"></canvas>
