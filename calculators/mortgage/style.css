@@ -409,7 +409,7 @@ h1 {
   flex-direction: column;
   gap: 32px;
   margin-bottom: 24px;
-  border: 1px solid #e8eaf0;
+  border: 1px solid #7C3AED30;
 }
 
 .input-group {
@@ -426,7 +426,7 @@ h1 {
 
 .step-number {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: #0D1B2A;
+  color: white;
   font-size: 0.75rem;
   font-weight: 700;
   width: 24px;
@@ -554,7 +554,7 @@ input::placeholder {
 
 .down-percent-badge {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: #0D1B2A;
+  color: white;
   font-size: 0.85rem;
   font-weight: 700;
   padding: 8px 16px;
@@ -609,7 +609,7 @@ input::placeholder {
 }
 
 .term-btn.active {
-  background: linear-gradient(135deg, #7C3AED10, #EC489910);
+  background: linear-gradient(135deg, #7C3AED15, #EC489915);
   border-color: #7C3AED;
   color: #0D1B2A;
 }
@@ -651,13 +651,13 @@ input::placeholder {
 .ins-btn.active {
   background: #7C3AED;
   border-color: #7C3AED;
-  color: #0D1B2A;
+  color: white;
   font-weight: 600;
 }
 
 .estimate-display {
-  background: #f8f9fb;
-  border: 1px solid #e8eaf0;
+  background: #f5f3ff;
+  border: 1px solid #7C3AED30;
   border-radius: 8px;
   padding: 14px 16px;
   color: #7C3AED;
@@ -668,7 +668,7 @@ input::placeholder {
 /* ── CALCULATE BUTTON ─────────────────────────── */
 .calculate-btn {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: #0D1B2A;
+  color: white;
   border: none;
   padding: 18px;
   font-size: 1rem;
@@ -785,7 +785,7 @@ input::placeholder {
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
-  border: 1px solid #e8eaf0;
+  border: 1px solid #7C3AED30;
 }
 
 .chart-title {
@@ -878,7 +878,7 @@ input::placeholder {
 .chart-btn.active {
   background: #7C3AED;
   border-color: #7C3AED;
-  color: #0D1B2A;
+  color: white;
   font-weight: 600;
 }
 
@@ -933,14 +933,14 @@ input::placeholder {
 .closing-pct-btn.active {
   background: #7C3AED;
   border-color: #7C3AED;
-  color: #0D1B2A;
+  color: white;
   font-weight: 600;
 }
 
 /* ── CLOSING & PMI LEARN MORE ─────────────────── */
 .closing-learn-more {
-  background: white;
-  border: 1px solid #e8eaf0;
+  background: #f0fdfa;
+  border: 1px solid #14B8A630;
   border-left: 3px solid #14B8A6;
   border-radius: 12px;
   padding: 20px 24px;
@@ -991,8 +991,8 @@ input::placeholder {
 .learn-more-btn {
   width: 100%;
   padding: 12px;
-  background: white;
-  border: 1px solid #e8eaf0;
+  background: #f0fdfa;
+  border: 1px solid #14B8A630;
   border-radius: 8px;
   color: #14B8A6;
   font-size: 0.88rem;
@@ -1010,8 +1010,8 @@ input::placeholder {
 
 /* ── PMI EXPLAINER ────────────────────────────── */
 .pmi-explainer {
-  background: white;
-  border: 1px solid #e8eaf0;
+  background: #fdf2f8;
+  border: 1px solid #EC489930;
   border-left: 3px solid #EC4899;
   border-radius: 12px;
   padding: 20px 24px;
@@ -1121,7 +1121,7 @@ input::placeholder {
 
 .smart-btn {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: #0D1B2A;
+  color: white;
   padding: 12px 20px;
   border-radius: 8px;
   font-weight: 600;
@@ -1141,7 +1141,7 @@ input::placeholder {
   background: white;
   border-radius: 16px;
   padding: 24px;
-  border: 1px solid #e8eaf0;
+  border: 1px solid #7C3AED30;
   margin-bottom: 16px;
   overflow-x: auto;
 }

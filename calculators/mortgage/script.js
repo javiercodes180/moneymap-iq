@@ -375,7 +375,7 @@ function drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, tot
         data,
         backgroundColor: colors,
         borderWidth: 3,
-        borderColor: '#1a1a24',
+        borderColor: '#ffffff',
         hoverBorderWidth: 0,
       }]
     },
@@ -453,10 +453,10 @@ function drawMainChart() {
       },
       options: {
         responsive: true,
-        plugins: { legend: { labels: { color: '#ffffff' } } },
+        plugins: { legend: { labels: { color: '#0D1B2A', font: { family: 'Inter' } } } },
         scales: {
-          x: { stacked: true, ticks: { color: '#888' }, grid: { color: '#2a2a3a' } },
-          y: { stacked: true, ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() }, grid: { color: '#2a2a3a' } }
+          x: { stacked: true, ticks: { color: '#64748b', font: { family: 'Inter' } }, grid: { color: '#e8eaf0' } },
+          y: { stacked: true, ticks: { color: '#64748b', font: { family: 'Inter' }, callback: v => '$' + Number(v).toLocaleString() }, grid: { color: '#e8eaf0' } }
         }
       }
     });
@@ -479,16 +479,16 @@ function drawMainChart() {
         labels: years,
         datasets: [{
           label: 'Remaining Balance', data: balanceData,
-          borderColor: '#a78bfa', backgroundColor: '#a78bfa22',
+          borderColor: '#7C3AED', backgroundColor: '#7C3AED15',
           borderWidth: 2, fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 6,
         }]
       },
       options: {
         responsive: true,
-        plugins: { legend: { labels: { color: '#ffffff' } } },
+        plugins: { legend: { labels: { color: '#0D1B2A', font: { family: 'Inter' } } } },
         scales: {
-          x: { ticks: { color: '#888' }, grid: { color: '#2a2a3a' } },
-          y: { ticks: { color: '#888', callback: v => '$' + Number(v).toLocaleString() }, grid: { color: '#2a2a3a' } }
+          x: { ticks: { color: '#64748b', font: { family: 'Inter' } }, grid: { color: '#e8eaf0' } },
+          y: { ticks: { color: '#64748b', font: { family: 'Inter' }, callback: v => '$' + Number(v).toLocaleString() }, grid: { color: '#e8eaf0' } }
         }
       }
     });

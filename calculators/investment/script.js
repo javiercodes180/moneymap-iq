@@ -349,16 +349,16 @@ function drawChart() {
     },
     options: {
       responsive: true,
-      plugins: { legend: { labels: { color: '#ffffff' } } },
+      plugins: { legend: { labels: { color: '#0D1B2A', font: { family: 'Inter' } } } },
       scales: {
         x: {
-          ticks: { color: '#888' },
-          grid: { color: '#2a2a3a' },
+          ticks: { color: '#64748b', font: { family: 'Inter' } },
+          grid: { color: '#e8eaf0' },
           stacked: chartType === 'bar',
         },
         y: {
-          ticks: { color: '#888', callback: value => '$' + Number(value).toLocaleString() },
-          grid: { color: '#2a2a3a' },
+          ticks: { color: '#64748b', font: { family: 'Inter' }, callback: value => '$' + Number(value).toLocaleString() },
+          grid: { color: '#e8eaf0' },
           stacked: chartType === 'bar',
         }
       }
