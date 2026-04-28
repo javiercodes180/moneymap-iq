@@ -697,9 +697,9 @@ input::placeholder {
 
 /* ── SUMMARY ──────────────────────────────────── */
 .summary-box {
-  background: white;
-  border: 1px solid #e8eaf0;
-  border-left: 3px solid #a78bfa;
+  background: #f5f3ff;
+  border: 1px solid #7C3AED30;
+  border-left: 3px solid #7C3AED;
   border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 24px;
@@ -715,6 +715,7 @@ input::placeholder {
 .summary-box a {
   color: #7C3AED;
   text-decoration: underline;
+  font-weight: 600;
 }
 
 /* ── RESULT BOXES ─────────────────────────────── */
