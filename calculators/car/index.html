@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Payment Calculator — MoneyMap IQ</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+
+    <!-- MONEYMAP IQ NAV -->
+    <nav class="mmiq-nav">
+      <div class="mmiq-nav-inner">
+        <a href="../../index.html" class="mmiq-brand-link">
+          <img src="../../logo.png" alt="MoneyMap IQ" class="mmiq-logo" />
+          <span class="mmiq-name">MoneyMap<span class="mmiq-iq">IQ</span></span>
+        </a>
+        <div class="mmiq-nav-right">
+          <div class="mmiq-dropdown">
+            <button class="mmiq-menu-btn" aria-label="Menu" onclick="toggleCalcDropdown()">
+              <span class="mmiq-icon-open">☰</span>
+              <span class="mmiq-icon-close">✕</span>
+            </button>
+            <div class="mmiq-dropdown-panel">
+              <div class="mmiq-dd-section">
+                <a href="../../index.html" class="mmiq-dd-home">Home</a>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Calculators</h4>
+                <a href="../investment/index.html">Investment Calculator</a>
+                <a href="../mortgage/index.html">Mortgage Calculator</a>
+                <a href="../car/index.html">Car Payment Calculator</a>
+                <span class="mmiq-dd-coming">Debt Payoff Calculator <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Retirement Calculator <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Savings Goal Calculator <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Learn</h4>
+                <a href="../../index.html#how-it-works">How MoneyMap IQ Works</a>
+                <span class="mmiq-dd-coming">How the Calculators Work <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>About</h4>
+                <span class="mmiq-dd-coming">Our Story <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Blog <em>Coming Soon</em></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="header">
+        <span class="emoji">🚗</span>
+        <h1>Car Payment Calculator</h1>
+      </div>
+      <p class="subtitle">Figure out your monthly payments and total cost of your car loan. Get the full picture before you buy.</p>
+
+      <div class="form">
+
+        <!-- VEHICLE PRICE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">1</div>
+            <label>Vehicle Price ($)</label>
+          </div>
+          <p class="hint">The total price of the car you're looking at. e.g. $35,000</p>
+          <input type="text" id="vehiclePrice" placeholder="e.g. 35,000" oninput="formatInput(this)" />
+        </div>
+
+        <!-- DOWN PAYMENT -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">2</div>
+            <label>Down Payment</label>
+          </div>
+          <p class="hint">Cash you're putting down upfront. A larger down payment means a smaller loan and lower monthly payments.</p>
+          <div class="down-input-row">
+            <div class="down-input-group">
+              <span class="input-label">$ Amount</span>
+              <input type="text" id="downPayment" placeholder="e.g. 5,000" oninput="formatInput(this); syncDownFromDollar()" />
+            </div>
+            <div class="down-divider">or</div>
+            <div class="down-input-group">
+              <span class="input-label">% of Price</span>
+              <input type="text" id="downPercent" placeholder="e.g. 20" oninput="syncDownFromPercent(this)" />
+            </div>
+            <div class="down-percent-badge" id="downPercentBadge">0%</div>
+          </div>
+          <div class="quick-btns">
+            <button class="quick-btn" onclick="setDownPercent(0)">$0</button>
+            <button class="quick-btn" onclick="setDownPercent(10)">10%</button>
+            <button class="quick-btn" onclick="setDownPercent(20)">20%</button>
+            <button class="quick-btn" onclick="setDownPercent(30)">30%</button>
+          </div>
+        </div>
+
+        <!-- TRADE-IN -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">3</div>
+            <label>Trade-In Value ($) <span class="optional">optional</span></label>
+          </div>
+          <p class="hint">What your current car is worth. This reduces the amount you need to borrow.</p>
+          <input type="text" id="tradeIn" placeholder="e.g. 8,000" oninput="formatInput(this)" />
+        </div>
+
+        <!-- SALES TAX -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">4</div>
+            <label>Sales Tax (%)</label>
+          </div>
+          <p class="hint">
+            Your state/local sales tax rate. Common rates:
+            <br />• <strong>0%</strong> — Oregon, Montana, Delaware, New Hampshire
+            <br />• <strong>6–7%</strong> — Most states
+            <br />• <strong>8–10%+</strong> — California, Tennessee, Louisiana (with local taxes)
+          </p>
+          <input type="text" id="salesTax" placeholder="e.g. 8" oninput="formatPercent(this)" />
+        </div>
+
+        <!-- INTEREST RATE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">5</div>
+            <label>Interest Rate (APR %)</label>
+          </div>
+          <p class="hint">
+            Your annual percentage rate. Not sure? Here are some benchmarks:
+            <br />• <strong>4–6%</strong> — Excellent credit (750+), new car
+            <br />• <strong>6–8%</strong> — Good credit (700–749), new car
+            <br />• <strong>8–12%</strong> — Average credit (650–699)
+            <br />• <strong>5–7%</strong> — Credit union rates (often lower)
+            <br />• <strong>7–10%+</strong> — Used car (typically 1–2% higher than new)
+          </p>
+          <input type="text" id="interestRate" placeholder="e.g. 6.5" oninput="formatPercent(this)" />
+        </div>
+
+        <!-- LOAN TERM -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">6</div>
+            <label>Loan Term</label>
+          </div>
+          <p class="hint">Shorter terms = higher payments but less interest paid overall. Most experts recommend 60 months or less.</p>
+          <div class="term-grid">
+            <button class="term-btn" onclick="setTerm(24, event)">
+              <span class="term-months">24 mo</span>
+              <span class="term-label">2 Years</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(36, event)">
+              <span class="term-months">36 mo</span>
+              <span class="term-label">3 Years</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(48, event)">
+              <span class="term-months">48 mo</span>
+              <span class="term-label">4 Years</span>
+            </button>
+            <button class="term-btn active" onclick="setTerm(60, event)">
+              <span class="term-months">60 mo</span>
+              <span class="term-label">Most Common</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(72, event)">
+              <span class="term-months">72 mo</span>
+              <span class="term-label">6 Years</span>
+            </button>
+            <button class="term-btn" onclick="setTerm(84, event)">
+              <span class="term-months">84 mo</span>
+              <span class="term-label">7 Years</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MONTHLY INSURANCE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">7</div>
+            <label>Monthly Insurance ($) <span class="optional">optional</span></label>
+          </div>
+          <p class="hint">Your estimated monthly car insurance. The national average is around $180/month, but varies widely by age, location, and driving history.</p>
+          <input type="text" id="monthlyInsurance" placeholder="e.g. 180" oninput="formatInput(this)" />
+        </div>
+
+        <!-- TITLE, REGISTRATION & FEES -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">8</div>
+            <label>Title, Registration & Fees ($) <span class="optional">optional</span></label>
+          </div>
+          <p class="hint">One-time costs for title, registration, and dealer fees. Typically $200–$1,000 depending on your state.</p>
+          <input type="text" id="fees" placeholder="e.g. 500" oninput="formatInput(this)" />
+        </div>
+
+        <button class="calculate-btn" onclick="calculate()">Calculate 🚗</button>
+
+      </div>
+
+      <!-- RESULTS -->
+      <div id="resultsSection" style="display:none">
+
+        <!-- Summary -->
+        <div class="summary-box" id="summaryBox"></div>
+
+        <!-- Monthly Payment Breakdown -->
+        <div class="results-header">
+          <h2>Monthly Payment Breakdown</h2>
+        </div>
+        <div class="results">
+          <div class="result-box highlight">
+            <div class="result-box-content">
+              <span>Total Monthly Cost</span>
+              <strong id="totalMonthlyCost">-</strong>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box-content">
+              <span>Monthly Loan Payment</span>
+              <strong id="monthlyPayment">-</strong>
+            </div>
+          </div>
+          <div class="result-box" id="insuranceRow" style="display:none">
+            <div class="result-box-content">
+              <span>Monthly Insurance</span>
+              <strong id="monthlyIns">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loan Summary -->
+        <div class="results-header">
+          <h2>Loan Summary</h2>
+        </div>
+        <div class="results">
+          <div class="result-box">
+            <div class="result-box-content">
+              <span>Loan Amount</span>
+              <strong id="loanAmount">-</strong>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box-content">
+              <span>Total Interest Paid</span>
+              <strong id="totalInterest">-</strong>
+            </div>
+          </div>
+          <div class="result-box" id="taxRow">
+            <div class="result-box-content">
+              <span>Sales Tax</span>
+              <strong id="salesTaxAmount">-</strong>
+            </div>
+          </div>
+          <div class="result-box" id="feesRow" style="display:none">
+            <div class="result-box-content">
+              <span>Title, Registration & Fees</span>
+              <strong id="feesAmount">-</strong>
+            </div>
+          </div>
+          <div class="result-box highlight">
+            <div class="result-box-content">
+              <span>True Cost of the Car</span>
+              <strong id="totalCost">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Donut Chart -->
+        <div class="chart-section">
+          <h2 class="chart-title">Payment Breakdown</h2>
+          <div class="donut-full-wrapper">
+            <canvas id="donutChart"></canvas>
+            <div class="donut-center" id="donutCenter"></div>
+          </div>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+
+        <!-- Educational Section: New vs Used -->
+        <button class="learn-more-btn" onclick="toggleLearnMore('newVsUsed')" id="newVsUsedBtn">
+          📖 New vs Used: How it affects your rate
+        </button>
+        <div class="learn-more-section" id="newVsUsed" style="display:none">
+          <h3>🚘 New vs Used Car Rates</h3>
+          <p>Used car loans typically come with <strong>higher interest rates</strong> than new car loans — usually 1–2% more. Here's why:</p>
+          <ul>
+            <li><strong>Higher risk for lenders</strong> — Used cars depreciate faster and have less value as collateral</li>
+            <li><strong>No manufacturer incentives</strong> — New cars often come with promotional 0% or low-rate financing</li>
+            <li><strong>Shorter loan terms recommended</strong> — Experts suggest keeping used car loans to 48 months or less to avoid being "underwater" (owing more than the car is worth)</li>
+          </ul>
+        </div>
+
+        <!-- Educational Section: Loan Term -->
+        <button class="learn-more-btn" onclick="toggleLearnMore('loanTermInfo')" id="loanTermInfoBtn">
+          📖 Why shorter loan terms save you money
+        </button>
+        <div class="learn-more-section" id="loanTermInfo" style="display:none">
+          <h3>⏱️ The Hidden Cost of Long Loans</h3>
+          <p>A longer loan term means lower monthly payments, but you'll pay <strong>significantly more in interest</strong> over the life of the loan.</p>
+          <ul>
+            <li><strong>36 months</strong> — Highest payments, least interest. Best if you can afford it.</li>
+            <li><strong>60 months</strong> — The sweet spot. Most common term, reasonable payments.</li>
+            <li><strong>72–84 months</strong> — Lowest payments, but you could end up "underwater" — owing more than the car is worth for years.</li>
+          </ul>
+        </div>
+
+        <!-- Educational Section: Gap Insurance -->
+        <button class="learn-more-btn" onclick="toggleLearnMore('gapInfo')" id="gapInfoBtn">
+          📖 Gap insurance: do you need it?
+        </button>
+        <div class="learn-more-section" id="gapInfo" style="display:none">
+          <h3>🛡️ What is Gap Insurance?</h3>
+          <p><strong>Gap insurance</strong> covers the difference between what your car is worth and what you still owe on the loan if your car is totaled or stolen.</p>
+          <ul>
+            <li><strong>You probably need it if:</strong> You put less than 20% down, have a loan longer than 60 months, or drive a car that depreciates quickly</li>
+            <li><strong>You probably don't need it if:</strong> You put 20%+ down, have a short loan term, or the car holds its value well</li>
+            <li><strong>Cost:</strong> Typically $20–$40/month through your insurance company (often cheaper than the dealer's price)</li>
+          </ul>
+        </div>
+
+        <!-- Smart Connection -->
+        <div class="smart-connection">
+          <div class="smart-connection-inner">
+            <div class="smart-icon">🎯</div>
+            <div class="smart-content">
+              <h3>Need to save for your down payment?</h3>
+              <p>MoneyMap IQ can calculate exactly how much you need to save each month to reach your down payment goal.</p>
+            </div>
+            <a href="../savings/index.html" class="smart-btn">Calculate Savings →</a>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-section">
+          <div class="chart-toggle">
+            <button class="chart-btn active" onclick="switchChart('bar', event)">Principal vs Interest</button>
+            <button class="chart-btn" onclick="switchChart('line', event)">Balance Over Time</button>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Amortization Table -->
+        <div class="table-section">
+          <h2>Month by Month Breakdown</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Payment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Share Button -->
+        <button class="share-btn" onclick="shareResults()">📤 Copy Results to Share</button>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="calc-footer">
+      <div class="calc-footer-inner">
+        <div class="calc-footer-top">
+          <div class="calc-footer-brand">
+            <a href="../../index.html" class="calc-footer-logo">
+              <img src="../../logo.png" alt="MoneyMap IQ" />
+              <span class="cf-name">MoneyMap</span>
+              <span class="cf-iq">IQ</span>
+            </a>
+            <p class="calc-footer-tagline">Map your money. Reach your goals.</p>
+          </div>
+        </div>
+        <div class="calc-footer-columns">
+          <div class="calc-footer-col">
+            <h4>Calculators</h4>
+            <a href="../investment/index.html">Investment Calculator</a>
+            <a href="../mortgage/index.html">Mortgage Calculator</a>
+            <a href="../car/index.html">Car Payment Calculator</a>
+            <span class="cf-coming">Debt Payoff Calculator</span>
+            <span class="cf-coming">Retirement Calculator</span>
+            <span class="cf-coming">Savings Goal Calculator</span>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Features</h4>
+            <a href="../../index.html#how-it-works">How It Works</a>
+            <a href="../../index.html#calculators">All Calculators</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Privacy & Security</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Support</h4>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+          </div>
+        </div>
+        <div class="calc-footer-bottom">
+          <p class="calc-footer-disclaimer">MoneyMap IQ is for educational purposes only and does not provide financial advice. Always consult a qualified financial professional before making financial decisions.</p>
+          <div class="calc-footer-bottom-row">
+            <p class="calc-footer-copy">&copy; 2025 MoneyMap IQ. All rights reserved.</p>
+            <div class="calc-footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Use</a>
+              <a href="#">Disclaimer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- Dropdown script -->
+    <script>
+      function toggleCalcDropdown() {
+        document.querySelector('.mmiq-dropdown').classList.toggle('open');
+      }
+      document.addEventListener('click', function(e) {
+        var dd = document.querySelector('.mmiq-dropdown');
+        if (!dd.contains(e.target)) dd.classList.remove('open');
+      });
+      document.querySelectorAll('.mmiq-dropdown-panel a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.querySelector('.mmiq-dropdown').classList.remove('open');
+        });
+      });
+    </script>
+  </body>
+</html>
