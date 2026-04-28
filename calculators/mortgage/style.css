@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #0f0f13;
-  color: #ffffff;
+  background-color: #f8f9fb;
+  color: #0D1B2A;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,14 +19,14 @@ body {
 
 /* ── CALCULATOR NAV (replaces old gradient nav) ─ */
 .mmiq-nav {
-  background: rgba(15, 15, 19, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   padding: 12px 24px;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid #2a2a3a;
+  border-bottom: 1px solid #e8eaf0;
 }
 
 .mmiq-nav-inner {
@@ -58,7 +58,7 @@ body {
 .mmiq-name {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #0D1B2A;
   display: flex;
   align-items: baseline;
   gap: 3px;
@@ -85,12 +85,12 @@ body {
 
 .mmiq-menu-btn {
   background: none;
-  border: 1px solid #2a2a3a;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
   font-size: 1.2rem;
-  color: #888;
+  color: #64748b;
   transition: all 0.2s;
   display: flex;
   align-items: center;
@@ -125,8 +125,8 @@ body {
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  background: #1a1a24;
-  border: 1px solid #2a2a3a;
+  background: white;
+  border: 1px solid #e8eaf0;
   border-radius: 12px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   padding: 16px 20px;
@@ -156,7 +156,7 @@ body {
 .mmiq-dd-section a {
   display: block;
   font-size: 0.88rem;
-  color: #cbd5e1;
+  color: #0D1B2A;
   padding: 7px 12px;
   font-weight: 500;
   transition: all 0.15s;
@@ -165,13 +165,13 @@ body {
 }
 
 .mmiq-dd-section a:hover {
-  background: rgba(124, 58, 237, 0.15);
-  color: #a78bfa;
+  background: #f8f5ff;
+  color: #7C3AED;
 }
 
 .mmiq-dd-home {
   font-weight: 600 !important;
-  color: #ffffff !important;
+  color: #0D1B2A !important;
 }
 
 .mmiq-dd-coming {
@@ -186,7 +186,7 @@ body {
 .mmiq-dd-coming em {
   font-size: 0.65rem;
   font-style: normal;
-  background: #2a2a3a;
+  background: #f1f5f9;
   color: #64748b;
   padding: 2px 8px;
   border-radius: 100px;
@@ -196,16 +196,16 @@ body {
 
 .mmiq-dd-divider {
   height: 1px;
-  background: #2a2a3a;
+  background: #f1f5f9;
   margin: 10px 0;
 }
 
 /* ── CALCULATOR FOOTER ───────────────────────── */
 .calc-footer {
-  background: #0a0a0e;
+  background: #0D1B2A;
   padding: 48px 24px 24px;
   width: 100%;
-  border-top: 1px solid #2a2a3a;
+  
   margin-top: 40px;
 }
 
@@ -240,7 +240,7 @@ body {
 .calc-footer-logo .cf-name {
   font-size: 1rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #0D1B2A;
 }
 
 .calc-footer-logo .cf-iq {
@@ -261,7 +261,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
   padding-bottom: 36px;
-  border-bottom: 1px solid #1a1a24;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .calc-footer-col h4 {
@@ -388,13 +388,13 @@ body {
 h1 {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #a78bfa, #60a5fa);
+  background: linear-gradient(135deg, #7C3AED, #EC4899);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-  color: #888;
+  color: #64748b;
   margin-bottom: 24px;
   line-height: 1.6;
   font-size: 0.95rem;
@@ -402,14 +402,14 @@ h1 {
 
 /* ── FORM ─────────────────────────────────────── */
 .form {
-  background: #1a1a24;
+  background: white;
   border-radius: 16px;
   padding: 40px;
   display: flex;
   flex-direction: column;
   gap: 32px;
   margin-bottom: 24px;
-  border: 1px solid #2a2a3a;
+  border: 1px solid #e8eaf0;
 }
 
 .input-group {
@@ -426,7 +426,7 @@ h1 {
 
 .step-number {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: white;
+  color: #0D1B2A;
   font-size: 0.75rem;
   font-weight: 700;
   width: 24px;
@@ -441,45 +441,45 @@ h1 {
 label {
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #0D1B2A;
 }
 
 .optional {
   font-size: 0.75rem;
-  color: #888;
+  color: #64748b;
   font-weight: 400;
   margin-left: 6px;
 }
 
 .hint {
   font-size: 0.85rem;
-  color: #888;
+  color: #64748b;
   line-height: 1.7;
 }
 
 .hint strong {
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 input[type="text"],
 input[type="number"] {
   padding: 14px 16px;
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
   font-size: 1rem;
-  color: #ffffff;
+  color: #0D1B2A;
   outline: none;
   transition: border 0.2s;
   width: 100%;
 }
 
 input:focus {
-  border-color: #a78bfa;
+  border-color: #7C3AED;
 }
 
 input::placeholder {
-  color: #444;
+  color: #94a3b8;
 }
 
 /* ── ZIP CODE ─────────────────────────────────── */
@@ -491,7 +491,7 @@ input::placeholder {
 
 .zip-status {
   font-size: 0.85rem;
-  color: #888;
+  color: #64748b;
   white-space: nowrap;
 }
 
@@ -503,8 +503,8 @@ input::placeholder {
 }
 
 .zip-estimate-item {
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
   padding: 10px 14px;
   display: flex;
@@ -516,12 +516,12 @@ input::placeholder {
 
 .zip-estimate-item span {
   font-size: 0.75rem;
-  color: #888;
+  color: #64748b;
 }
 
 .zip-estimate-item strong {
   font-size: 0.95rem;
-  color: #a78bfa;
+  color: #7C3AED;
   font-weight: 700;
 }
 
@@ -541,12 +541,12 @@ input::placeholder {
 
 .input-label {
   font-size: 0.75rem;
-  color: #888;
+  color: #64748b;
   font-weight: 500;
 }
 
 .down-divider {
-  color: #444;
+  color: #94a3b8;
   font-size: 0.85rem;
   text-align: center;
   padding-top: 20px;
@@ -554,7 +554,7 @@ input::placeholder {
 
 .down-percent-badge {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: white;
+  color: #0D1B2A;
   font-size: 0.85rem;
   font-weight: 700;
   padding: 8px 16px;
@@ -573,18 +573,18 @@ input::placeholder {
 
 .quick-btn {
   padding: 8px 16px;
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
-  color: #888;
+  color: #64748b;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .quick-btn:hover {
-  border-color: #a78bfa;
-  color: #a78bfa;
+  border-color: #7C3AED;
+  color: #7C3AED;
 }
 
 /* ── LOAN TERM ────────────────────────────────── */
@@ -596,10 +596,10 @@ input::placeholder {
 
 .term-btn {
   padding: 12px 8px;
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
-  color: #888;
+  color: #64748b;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -609,9 +609,9 @@ input::placeholder {
 }
 
 .term-btn.active {
-  background: linear-gradient(135deg, #7C3AED22, #EC489922);
-  border-color: #a78bfa;
-  color: white;
+  background: linear-gradient(135deg, #7C3AED10, #EC489910);
+  border-color: #7C3AED;
+  color: #0D1B2A;
 }
 
 .term-years {
@@ -621,11 +621,11 @@ input::placeholder {
 
 .term-label {
   font-size: 0.7rem;
-  color: #888;
+  color: #64748b;
 }
 
 .term-btn.active .term-label {
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 /* ── TAX & INSURANCE TOGGLES ──────────────────── */
@@ -638,10 +638,10 @@ input::placeholder {
 .tax-btn,
 .ins-btn {
   padding: 8px 16px;
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
-  color: #888;
+  color: #64748b;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
@@ -649,18 +649,18 @@ input::placeholder {
 
 .tax-btn.active,
 .ins-btn.active {
-  background: #a78bfa;
-  border-color: #a78bfa;
-  color: white;
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: #0D1B2A;
   font-weight: 600;
 }
 
 .estimate-display {
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
   padding: 14px 16px;
-  color: #a78bfa;
+  color: #7C3AED;
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -668,7 +668,7 @@ input::placeholder {
 /* ── CALCULATE BUTTON ─────────────────────────── */
 .calculate-btn {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: white;
+  color: #0D1B2A;
   border: none;
   padding: 18px;
   font-size: 1rem;
@@ -692,28 +692,28 @@ input::placeholder {
 .results-header h2 {
   font-size: 1rem;
   font-weight: 600;
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 /* ── SUMMARY ──────────────────────────────────── */
 .summary-box {
-  background: #1a1a24;
-  border: 1px solid #2a2a3a;
+  background: white;
+  border: 1px solid #e8eaf0;
   border-left: 3px solid #a78bfa;
   border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 24px;
-  color: #ccc;
+  color: #475569;
   font-size: 0.95rem;
   line-height: 1.7;
 }
 
 .summary-box strong {
-  color: #ffffff;
+  color: #0D1B2A;
 }
 
 .summary-box a {
-  color: #a78bfa;
+  color: #7C3AED;
   text-decoration: underline;
 }
 
@@ -726,9 +726,9 @@ input::placeholder {
 }
 
 .result-box {
-  background: #1a1a24;
+  background: white;
   border-radius: 8px;
-  border: 1px solid #2a2a3a;
+  border: 1px solid #e8eaf0;
   overflow: hidden;
 }
 
@@ -740,7 +740,7 @@ input::placeholder {
 }
 
 .result-box span {
-  color: #888;
+  color: #64748b;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
@@ -750,28 +750,28 @@ input::placeholder {
 
 .result-box strong {
   font-size: 1.1rem;
-  color: #ffffff;
+  color: #0D1B2A;
   white-space: nowrap;
 }
 
 .result-box.highlight {
-  background: linear-gradient(90deg, #a78bfa22, #60a5fa22);
-  border-color: #a78bfa;
+  background: linear-gradient(135deg, #7C3AED10, #EC489910);
+  border-color: #7C3AED;
 }
 
 .result-box.highlight .result-box-content span {
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 .result-box.highlight strong {
-  color: #ffffff;
+  color: #0D1B2A;
   font-size: 1.3rem;
 }
 
 /* ── INFO BADGE ───────────────────────────────── */
 .info-badge {
-  background: #2a2a3a;
-  color: #a78bfa;
+  background: #f1f5f9;
+  color: #7C3AED;
   font-size: 0.72rem;
   padding: 2px 8px;
   border-radius: 100px;
@@ -781,17 +781,17 @@ input::placeholder {
 
 /* ── DONUT CHART — FULL WIDTH ─────────────────── */
 .chart-section {
-  background: #1a1a24;
+  background: white;
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
-  border: 1px solid #2a2a3a;
+  border: 1px solid #e8eaf0;
 }
 
 .chart-title {
   font-size: 1rem;
   font-weight: 600;
-  color: #a78bfa;
+  color: #7C3AED;
   margin-bottom: 20px;
 }
 
@@ -813,13 +813,13 @@ input::placeholder {
 .donut-center-amount {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #0D1B2A;
   display: block;
 }
 
 .donut-center-label {
   font-size: 0.7rem;
-  color: #888;
+  color: #64748b;
   display: block;
   margin-top: 2px;
 }
@@ -848,13 +848,13 @@ input::placeholder {
 
 .donut-legend-text {
   font-size: 0.82rem;
-  color: #ffffff;
+  color: #0D1B2A;
   font-weight: 500;
 }
 
 .donut-legend-value {
   font-size: 0.82rem;
-  color: #888;
+  color: #64748b;
 }
 
 /* ── CHART TOGGLE ─────────────────────────────── */
@@ -866,19 +866,19 @@ input::placeholder {
 
 .chart-btn {
   padding: 8px 20px;
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 6px;
-  color: #888;
+  color: #64748b;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .chart-btn.active {
-  background: #a78bfa;
-  border-color: #a78bfa;
-  color: white;
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: #0D1B2A;
   font-weight: 600;
 }
 
@@ -898,7 +898,7 @@ input::placeholder {
 .closing-costs-header h2 {
   font-size: 1rem;
   font-weight: 600;
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 .closing-pct-row {
@@ -910,7 +910,7 @@ input::placeholder {
 
 .closing-pct-label {
   font-size: 0.85rem;
-  color: #888;
+  color: #64748b;
 }
 
 .closing-pct-options {
@@ -921,26 +921,26 @@ input::placeholder {
 
 .closing-pct-btn {
   padding: 8px 14px;
-  background: #0f0f13;
-  border: 1px solid #2a2a3a;
+  background: #f8f9fb;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
-  color: #888;
+  color: #64748b;
   font-size: 0.82rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .closing-pct-btn.active {
-  background: #a78bfa;
-  border-color: #a78bfa;
-  color: white;
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: #0D1B2A;
   font-weight: 600;
 }
 
 /* ── CLOSING & PMI LEARN MORE ─────────────────── */
 .closing-learn-more {
-  background: #1a1a24;
-  border: 1px solid #2a2a3a;
+  background: white;
+  border: 1px solid #e8eaf0;
   border-left: 3px solid #14B8A6;
   border-radius: 12px;
   padding: 20px 24px;
@@ -951,13 +951,13 @@ input::placeholder {
 .closing-learn-more h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #0D1B2A;
   margin-bottom: 12px;
 }
 
 .closing-learn-more p {
   font-size: 0.88rem;
-  color: #ccc;
+  color: #475569;
   line-height: 1.7;
   margin-bottom: 12px;
 }
@@ -971,7 +971,7 @@ input::placeholder {
 
 .closing-learn-more ul li {
   font-size: 0.88rem;
-  color: #888;
+  color: #64748b;
   padding-left: 16px;
   position: relative;
   line-height: 1.5;
@@ -985,14 +985,14 @@ input::placeholder {
 }
 
 .closing-learn-more ul li strong {
-  color: #ffffff;
+  color: #0D1B2A;
 }
 
 .learn-more-btn {
   width: 100%;
   padding: 12px;
-  background: #1a1a24;
-  border: 1px solid #2a2a3a;
+  background: white;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
   color: #14B8A6;
   font-size: 0.88rem;
@@ -1005,13 +1005,13 @@ input::placeholder {
 
 .learn-more-btn:hover {
   border-color: #14B8A6;
-  background: #14B8A622;
+  background: #f0fdfa;
 }
 
 /* ── PMI EXPLAINER ────────────────────────────── */
 .pmi-explainer {
-  background: #1a1a24;
-  border: 1px solid #2a2a3a;
+  background: white;
+  border: 1px solid #e8eaf0;
   border-left: 3px solid #EC4899;
   border-radius: 12px;
   padding: 20px 24px;
@@ -1021,13 +1021,13 @@ input::placeholder {
 .pmi-explainer h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #0D1B2A;
   margin-bottom: 12px;
 }
 
 .pmi-explainer p {
   font-size: 0.88rem;
-  color: #ccc;
+  color: #475569;
   line-height: 1.7;
   margin-bottom: 12px;
 }
@@ -1041,7 +1041,7 @@ input::placeholder {
 
 .pmi-explainer ul li {
   font-size: 0.88rem;
-  color: #888;
+  color: #64748b;
   padding-left: 16px;
   position: relative;
 }
@@ -1054,7 +1054,7 @@ input::placeholder {
 }
 
 .pmi-explainer ul li strong {
-  color: #ffffff;
+  color: #0D1B2A;
 }
 
 /* ── PMI LINK IN HINT ─────────────────────────── */
@@ -1066,24 +1066,24 @@ input::placeholder {
 }
 
 .pmi-link:hover {
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 /* ── PMI HIDE BUTTON ──────────────────────────── */
 .pmi-hide-btn {
   margin-top: 16px;
   color: #EC4899;
-  border-color: #EC489944;
+  border-color: #EC489966;
 }
 
 .pmi-hide-btn:hover {
   border-color: #EC4899;
-  background: #EC489922;
+  background: #fdf2f8;
 }
 
 /* ── SMART CONNECTION ─────────────────────────── */
 .smart-connection {
-  background: linear-gradient(135deg, #7C3AED22, #EC489922);
+  background: linear-gradient(135deg, #7C3AED10, #EC489910);
   border: 1px solid #7C3AED;
   border-radius: 16px;
   padding: 24px;
@@ -1109,19 +1109,19 @@ input::placeholder {
 .smart-content h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: white;
+  color: #0D1B2A;
   margin-bottom: 4px;
 }
 
 .smart-content p {
   font-size: 0.85rem;
-  color: #888;
+  color: #64748b;
   line-height: 1.5;
 }
 
 .smart-btn {
   background: linear-gradient(135deg, #7C3AED, #EC4899);
-  color: white;
+  color: #0D1B2A;
   padding: 12px 20px;
   border-radius: 8px;
   font-weight: 600;
@@ -1138,10 +1138,10 @@ input::placeholder {
 
 /* ── TABLE ────────────────────────────────────── */
 .table-section {
-  background: #1a1a24;
+  background: white;
   border-radius: 16px;
   padding: 24px;
-  border: 1px solid #2a2a3a;
+  border: 1px solid #e8eaf0;
   margin-bottom: 16px;
   overflow-x: auto;
 }
@@ -1150,7 +1150,7 @@ input::placeholder {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 16px;
-  color: #a78bfa;
+  color: #7C3AED;
 }
 
 table {
@@ -1163,29 +1163,29 @@ table {
 th {
   text-align: left;
   padding: 10px 12px;
-  color: #888;
+  color: #64748b;
   font-weight: 600;
-  border-bottom: 1px solid #2a2a3a;
+  border-bottom: 1px solid #e8eaf0;
 }
 
 td {
   padding: 10px 12px;
-  color: #ffffff;
-  border-bottom: 1px solid #1a1a24;
+  color: #0D1B2A;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 tr:hover td {
-  background: #0f0f13;
+  background: #f8f9fb;
 }
 
 /* ── SHARE ────────────────────────────────────── */
 .share-btn {
   width: 100%;
   padding: 14px;
-  background: #1a1a24;
-  border: 1px solid #2a2a3a;
+  background: white;
+  border: 1px solid #e8eaf0;
   border-radius: 8px;
-  color: #a78bfa;
+  color: #7C3AED;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -1194,8 +1194,8 @@ tr:hover td {
 }
 
 .share-btn:hover {
-  border-color: #a78bfa;
-  background: #a78bfa22;
+  border-color: #7C3AED;
+  background: #f8f5ff;
 }
 
 /* ── MOBILE ───────────────────────────────────── */
