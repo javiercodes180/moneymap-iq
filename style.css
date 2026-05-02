@@ -746,7 +746,17 @@ a {
   .hero-title {
     font-size: 2.2rem;
   }
+.hero-ctas {
+    flex-direction: column;
+    align-items: center;
+  }
 
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-secondary {
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+  }
   .hero-stats {
     gap: 20px;
   }
