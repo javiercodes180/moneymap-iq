@@ -232,7 +232,8 @@ body {
 .calc-footer-logo .cf-name {
   font-size: 1rem;
   font-weight: 800;
-  color: #0D1B2A;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .calc-footer-logo .cf-iq {
