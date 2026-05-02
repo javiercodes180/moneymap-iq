@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Savings Goal Calculator — MoneyMap IQ</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="../../logo.png" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+
+    <!-- NAV -->
+    <nav class="mmiq-nav">
+      <div class="mmiq-nav-inner">
+        <a href="../../index.html" class="mmiq-brand-link">
+          <img src="../../logo.png" alt="MoneyMap IQ" class="mmiq-logo" />
+          <span class="mmiq-name">MoneyMap<span class="mmiq-iq">IQ</span></span>
+        </a>
+        <div class="mmiq-nav-right">
+          <div class="mmiq-dropdown">
+            <button class="mmiq-menu-btn" aria-label="Menu" onclick="toggleCalcDropdown()">
+              <span class="mmiq-icon-open">☰</span>
+              <span class="mmiq-icon-close">✕</span>
+            </button>
+            <div class="mmiq-dropdown-panel">
+              <div class="mmiq-dd-section">
+                <a href="../../index.html" class="mmiq-dd-home">Home</a>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Calculators</h4>
+                <a href="../investment/index.html">Investment Calculator</a>
+                <a href="../mortgage/index.html">Mortgage Calculator</a>
+                <a href="../car/index.html">Car Payment Calculator</a>
+                <a href="../savings/index.html">Savings Goal Calculator</a>
+                <span class="mmiq-dd-coming">Debt Payoff Calculator <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Retirement Calculator <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Learn</h4>
+                <a href="../../index.html#how-it-works">How MoneyMap IQ Works</a>
+                <span class="mmiq-dd-coming">How the Calculators Work <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>About</h4>
+                <span class="mmiq-dd-coming">Our Story <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Blog <em>Coming Soon</em></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <!-- TITLE -->
+      <div class="header">
+        <span class="emoji">🎯</span>
+        <h1>Savings Goal Planner</h1>
+      </div>
+      <p class="subtitle">Set a target, track your progress, and see how to get there faster.</p>
+
+      <div class="form">
+
+        <!-- GOAL SELECTOR -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">1</div>
+            <label>What are you saving for?</label>
+          </div>
+          <p class="hint">Select a goal to get started. We'll help you estimate how much you need.</p>
+          <div class="goal-grid" id="goalGrid">
+            <button class="goal-card" data-goal="home" onclick="selectGoal('home', this)">
+              <span class="goal-icon">🏠</span>
+              <span class="goal-name">Home</span>
+              <span class="goal-sub">Down payment + closing costs</span>
+            </button>
+            <button class="goal-card" data-goal="car" onclick="selectGoal('car', this)">
+              <span class="goal-icon">🚗</span>
+              <span class="goal-name">Car</span>
+              <span class="goal-sub">Down payment or full purchase</span>
+            </button>
+            <button class="goal-card active" data-goal="emergency" onclick="selectGoal('emergency', this)">
+              <span class="goal-icon">🛡️</span>
+              <span class="goal-name">Emergency Fund</span>
+              <span class="goal-sub">3–6 months of expenses</span>
+            </button>
+            <button class="goal-card" data-goal="wedding" onclick="selectGoal('wedding', this)">
+              <span class="goal-icon">💍</span>
+              <span class="goal-name">Wedding</span>
+              <span class="goal-sub">Big day planning</span>
+            </button>
+            <button class="goal-card" data-goal="travel" onclick="selectGoal('travel', this)">
+              <span class="goal-icon">✈️</span>
+              <span class="goal-name">Travel</span>
+              <span class="goal-sub">Trips and adventures</span>
+            </button>
+            <button class="goal-card" data-goal="home_improvement" onclick="selectGoal('home_improvement', this)">
+              <span class="goal-icon">🔨</span>
+              <span class="goal-name">Home Improvement</span>
+              <span class="goal-sub">Renovations & repairs</span>
+            </button>
+            <button class="goal-card" data-goal="education" onclick="selectGoal('education', this)">
+              <span class="goal-icon">🎓</span>
+              <span class="goal-name">Education</span>
+              <span class="goal-sub">Tuition & learning</span>
+            </button>
+            <button class="goal-card" data-goal="family" onclick="selectGoal('family', this)">
+              <span class="goal-icon">👨‍👩‍👧</span>
+              <span class="goal-name">Family</span>
+              <span class="goal-sub">Growing your family</span>
+            </button>
+            <button class="goal-card" data-goal="custom" onclick="selectGoal('custom', this)">
+              <span class="goal-icon">⭐</span>
+              <span class="goal-name">Custom Goal</span>
+              <span class="goal-sub">Something else entirely</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- DYNAMIC HELPER MODULE -->
+        <div class="helper-module" id="helperModule">
+
+          <!-- Emergency Fund (default) -->
+          <div class="helper-content" id="helper-emergency">
+            <h3 class="helper-title">💡 How much should you save?</h3>
+            <p class="helper-desc">Most financial experts recommend 3–6 months of living expenses as an emergency fund.</p>
+            <div class="helper-inputs">
+              <div class="helper-input-group">
+                <label>Monthly Expenses ($)</label>
+                <input type="text" id="efMonthlyExpenses" placeholder="e.g. 4,000" oninput="formatHelperInput(this); calcEmergencyFund()" />
+              </div>
+              <div class="helper-input-group">
+                <label>Months of Coverage</label>
+                <div class="toggle-group">
+                  <button class="toggle-btn" onclick="setEfMonths(3, this)">3 mo</button>
+                  <button class="toggle-btn active" onclick="setEfMonths(6, this)">6 mo</button>
+                  <button class="toggle-btn" onclick="setEfMonths(9, this)">9 mo</button>
+                </div>
+              </div>
+            </div>
+            <div class="helper-output" id="efOutput" style="display:none">
+              <span class="helper-output-label">Recommended Goal:</span>
+              <span class="helper-output-value" id="efOutputValue">—</span>
+              <button class="helper-use-btn" onclick="useHelperAmount('efOutputValue')">Use this amount →</button>
+            </div>
+          </div>
+
+          <!-- Home -->
+          <div class="helper-content" id="helper-home" style="display:none">
+            <h3 class="helper-title">🏠 Estimate your down payment</h3>
+            <p class="helper-desc">Your down payment affects your loan size, monthly payment, and whether you'll need PMI.</p>
+            <div class="helper-inputs">
+              <div class="helper-input-group">
+                <label>Home Price ($)</label>
+                <input type="text" id="homePrice" placeholder="e.g. 400,000" oninput="formatHelperInput(this); calcHomeDown()" />
+              </div>
+              <div class="helper-input-group">
+                <label>Down Payment</label>
+                <div class="toggle-group">
+                  <button class="toggle-btn" onclick="setHomeDown(3, this)">3%</button>
+                  <button class="toggle-btn" onclick="setHomeDown(10, this)">10%</button>
+                  <button class="toggle-btn active" onclick="setHomeDown(20, this)">20%</button>
+                </div>
+              </div>
+            </div>
+            <div class="helper-output" id="homeOutput" style="display:none">
+              <span class="helper-output-label">Down Payment Goal:</span>
+              <span class="helper-output-value" id="homeOutputValue">—</span>
+              <button class="helper-use-btn" onclick="useHelperAmount('homeOutputValue')">Use this amount →</button>
+            </div>
+          </div>
+
+          <!-- Car -->
+          <div class="helper-content" id="helper-car" style="display:none">
+            <h3 class="helper-title">🚗 Plan your down payment</h3>
+            <p class="helper-desc">Putting 10–20% down reduces your loan amount and monthly payments.</p>
+            <div class="helper-inputs">
+              <div class="helper-input-group">
+                <label>Car Price ($)</label>
+                <input type="text" id="carPrice" placeholder="e.g. 35,000" oninput="formatHelperInput(this); calcCarDown()" />
+              </div>
+              <div class="helper-input-group">
+                <label>Down Payment</label>
+                <div class="toggle-group">
+                  <button class="toggle-btn" onclick="setCarDown(10, this)">10%</button>
+                  <button class="toggle-btn active" onclick="setCarDown(20, this)">20%</button>
+                  <button class="toggle-btn" onclick="setCarDown(30, this)">30%</button>
+                </div>
+              </div>
+            </div>
+            <div class="helper-output" id="carOutput" style="display:none">
+              <span class="helper-output-label">Down Payment Goal:</span>
+              <span class="helper-output-value" id="carOutputValue">—</span>
+              <button class="helper-use-btn" onclick="useHelperAmount('carOutputValue')">Use this amount →</button>
+            </div>
+          </div>
+
+          <!-- Generic (wedding, travel, etc) -->
+          <div class="helper-content" id="helper-generic" style="display:none">
+            <h3 class="helper-title" id="genericHelperTitle">💡 Set your goal</h3>
+            <p class="helper-desc" id="genericHelperDesc">Enter your target amount below and we'll build a savings plan for you.</p>
+          </div>
+
+        </div>
+
+        <!-- GOAL AMOUNT -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">2</div>
+            <label>Goal Amount ($)</label>
+          </div>
+          <p class="hint">How much do you need to save in total?</p>
+          <input type="text" id="goalAmount" placeholder="e.g. 25,000" oninput="formatInput(this)" />
+        </div>
+
+        <!-- CURRENT SAVINGS -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">3</div>
+            <label>Current Savings ($) <span class="optional">optional</span></label>
+          </div>
+          <p class="hint">Any money you've already set aside toward this goal.</p>
+          <input type="text" id="currentSavings" placeholder="e.g. 5,000" oninput="formatInput(this)" />
+        </div>
+
+        <!-- CALC MODE TOGGLE -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">4</div>
+            <label>How do you want to calculate?</label>
+          </div>
+          <p class="hint">Choose whether you want to set a monthly contribution and find out when you'll reach your goal, or set a deadline and find out how much to save each month.</p>
+          <div class="toggle-group" style="margin-top: 8px;">
+            <button class="toggle-btn active" onclick="setCalcMode('monthly', this)">I'll save a set amount/month</button>
+            <button class="toggle-btn" onclick="setCalcMode('deadline', this)">I have a deadline</button>
+          </div>
+        </div>
+
+        <!-- MONTHLY CONTRIBUTION (mode 1) -->
+        <div class="input-group" id="monthlyContribGroup">
+          <div class="step-label">
+            <div class="step-number">5</div>
+            <label>Monthly Contribution ($)</label>
+          </div>
+          <p class="hint">How much can you realistically set aside each month?</p>
+          <input type="text" id="monthlyContrib" placeholder="e.g. 500" oninput="formatInput(this)" />
+        </div>
+
+        <!-- DEADLINE (mode 2) -->
+        <div class="input-group" id="deadlineGroup" style="display:none">
+          <div class="step-label">
+            <div class="step-number">5</div>
+            <label>Target Date</label>
+          </div>
+          <p class="hint">When do you need to reach this goal?</p>
+          <input type="month" id="targetDate" />
+        </div>
+
+        <!-- SAVING STRATEGY -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">6</div>
+            <label>Saving Strategy</label>
+          </div>
+          <div class="toggle-group" style="margin-top: 8px;">
+            <button class="toggle-btn active" onclick="setStrategy('hysa', this)">💰 Cash / HYSA</button>
+            <button class="toggle-btn" onclick="setStrategy('invest', this)">📈 Invest While Saving</button>
+          </div>
+
+          <!-- Strategy explainer -->
+          <div class="strategy-explainer" id="strategyExplainer">
+            <div id="explainer-hysa">
+              <strong>Safer approach</strong>
+              <p>For short-term goals and big life purchases, saving in cash, a high-yield savings account (HYSA), or a money market fund is typically recommended. Your money stays stable and available when you need it.</p>
+              <p class="explainer-tip">Not sure? For goals under ~3 years, most people stick with cash or HYSA.</p>
+            </div>
+            <div id="explainer-invest" style="display:none">
+              <strong>Higher potential, more risk</strong>
+              <p>Investing can help your savings grow faster, but values can fluctuate in the short term. This may make sense if your timeline is longer or you're comfortable with market ups and downs.</p>
+              <p class="explainer-tip">Not sure? For goals under ~3 years, most people stick with cash or HYSA.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPECTED RETURN -->
+        <div class="input-group">
+          <div class="step-label">
+            <div class="step-number">7</div>
+            <label>Expected Annual Return (%)</label>
+          </div>
+          <p class="hint" id="returnHint">
+            Based on your strategy, here are some benchmarks:
+            <br />• <strong>4–5%</strong> — High-Yield Savings Account (HYSA)
+            <br />• <strong>5–6%</strong> — Money market / short-term bonds
+            <br />• <strong>7%</strong> — Balanced stock/bond mix
+            <br />• <strong>10%</strong> — S&P 500 index ETF (historical average)
+          </p>
+          <input type="text" id="annualReturn" placeholder="e.g. 4.5" oninput="formatPercentInput(this)" />
+        </div>
+
+        <button class="calculate-btn" onclick="calculate()">Calculate 🎯</button>
+
+      </div>
+
+      <!-- RESULTS -->
+      <div id="resultsSection" style="display:none">
+
+        <div class="summary-box" id="summaryBox"></div>
+
+        <!-- Key Results -->
+        <div class="results-header"><h2>Your Savings Plan</h2></div>
+        <div class="results" id="resultsCards"></div>
+
+        <!-- What-If -->
+        <div class="what-if-box" id="whatIfBox">
+          <h3 class="what-if-title">💡 What if I saved more?</h3>
+          <div class="what-if-row">
+            <label>New monthly contribution ($)</label>
+            <input type="text" id="whatIfAmount" placeholder="e.g. 800" oninput="formatInput(this)" />
+            <button class="what-if-btn" onclick="calcWhatIf()">Recalculate</button>
+          </div>
+          <div class="what-if-result" id="whatIfResult" style="display:none"></div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-section">
+          <div class="chart-toggle">
+            <button class="chart-btn active" onclick="switchChart('line', event)">Savings Growth</button>
+            <button class="chart-btn" onclick="switchChart('bar', event)">Year by Year</button>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Year by Year Table -->
+        <div class="table-section">
+          <h2>Year by Year Breakdown</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Contributed</th>
+                <th>Interest Earned</th>
+                <th>Total Saved</th>
+                <th>Goal Progress</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Cross-Linking -->
+        <div class="cross-link-section">
+          <h3 class="cross-link-title">Take the next step</h3>
+          <div class="cross-link-grid">
+            <a href="../mortgage/index.html" class="cross-link-card">
+              <span class="cross-link-icon">🏠</span>
+              <div>
+                <strong>Buying a home</strong>
+                <p>Mortgage Calculator</p>
+              </div>
+              <span class="cross-link-arrow">→</span>
+            </a>
+            <a href="../car/index.html" class="cross-link-card">
+              <span class="cross-link-icon">🚗</span>
+              <div>
+                <strong>Financing a car</strong>
+                <p>Car Payment Calculator</p>
+              </div>
+              <span class="cross-link-arrow">→</span>
+            </a>
+            <a href="../investment/index.html" class="cross-link-card">
+              <span class="cross-link-icon">📈</span>
+              <div>
+                <strong>Grow your savings</strong>
+                <p>Investment Calculator</p>
+              </div>
+              <span class="cross-link-arrow">→</span>
+            </a>
+            <a href="#" class="cross-link-card coming">
+              <span class="cross-link-icon">💳</span>
+              <div>
+                <strong>Paying off debt</strong>
+                <p>Debt Payoff Calculator <em>Coming Soon</em></p>
+              </div>
+              <span class="cross-link-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <button class="share-btn" onclick="shareResults()">📤 Copy Results to Share</button>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="calc-footer">
+      <div class="calc-footer-inner">
+        <div class="calc-footer-top">
+          <div class="calc-footer-brand">
+            <a href="../../index.html" class="calc-footer-logo">
+              <img src="../../logo.png" alt="MoneyMap IQ" />
+              <span class="cf-name">MoneyMap</span>
+              <span class="cf-iq">IQ</span>
+            </a>
+            <p class="calc-footer-tagline">Map your money. Reach your goals.</p>
+          </div>
+        </div>
+        <div class="calc-footer-columns">
+          <div class="calc-footer-col">
+            <h4>Calculators</h4>
+            <a href="../investment/index.html">Investment Calculator</a>
+            <a href="../mortgage/index.html">Mortgage Calculator</a>
+            <a href="../car/index.html">Car Payment Calculator</a>
+            <a href="../savings/index.html">Savings Goal Calculator</a>
+            <span class="cf-coming">Debt Payoff Calculator</span>
+            <span class="cf-coming">Retirement Calculator</span>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Features</h4>
+            <a href="../../index.html#how-it-works">How It Works</a>
+            <a href="../../index.html#calculators">All Calculators</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Privacy &amp; Security</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Support</h4>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+          </div>
+        </div>
+        <div class="calc-footer-bottom">
+          <p class="calc-footer-disclaimer">MoneyMap IQ is for educational purposes only and does not provide financial advice. Always consult a qualified financial professional before making financial decisions.</p>
+          <div class="calc-footer-bottom-row">
+            <p class="calc-footer-copy">&copy; 2025 MoneyMap IQ. All rights reserved.</p>
+            <div class="calc-footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Use</a>
+              <a href="#">Disclaimer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+      function toggleCalcDropdown() {
+        document.querySelector('.mmiq-dropdown').classList.toggle('open');
+      }
+      document.addEventListener('click', function(e) {
+        var dd = document.querySelector('.mmiq-dropdown');
+        if (!dd.contains(e.target)) dd.classList.remove('open');
+      });
+      document.querySelectorAll('.mmiq-dropdown-panel a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          document.querySelector('.mmiq-dropdown').classList.remove('open');
+        });
+      });
+    </script>
+  </body>
+</html>
