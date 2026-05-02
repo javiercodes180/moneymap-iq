@@ -1397,3 +1397,12 @@ tr:hover td {
   .override-row { flex-wrap: wrap; }
   .zip-input, .override-input { max-width: 100%; width: 100%; }
 }
+
+/* ── HINT LINK ───────────────────────────────── */
+.hint-link {
+  color: #7C3AED;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.hint-link:hover { opacity: 0.75; }

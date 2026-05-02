@@ -213,9 +213,13 @@ function formatPercentInput(el) {
   if (el.id === 'interestRate') el.dataset.manualOverride = '1';
   let raw = el.value.replace(/[^0-9.]/g, '');
   if (!raw) { el.value = ''; if (el.id === 'interestRate') delete el.dataset.manualOverride; return; }
+  // Only add % if not already there
   el.value = raw + '%';
-  let pos = el.value.length - 1;
-  el.setSelectionRange(pos, pos);
+  // Place cursor before the %
+  setTimeout(() => {
+    let pos = el.value.length - 1;
+    el.setSelectionRange(pos, pos);
+  }, 0);
 }
 
 function getPercentValue(id) {

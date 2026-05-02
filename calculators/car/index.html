@@ -113,23 +113,14 @@
           <input type="text" id="tradeIn" placeholder="e.g. 8,000" oninput="formatInput(this)" />
         </div>
 
-        <!-- SALES TAX — ZIP DRIVEN -->
+        <!-- SALES TAX -->
         <div class="input-group">
           <div class="step-label">
             <div class="step-number">4</div>
             <label>Sales Tax (%)</label>
           </div>
-          <p class="hint">Enter your ZIP code to auto-fill your state's base sales tax rate.</p>
-
-          <div class="zip-row">
-            <input type="text" id="salesTaxZip" placeholder="Enter ZIP code" maxlength="5" oninput="handleZipInput()" class="zip-input" />
-          </div>
-          <p class="hint zip-result" id="zipHint">Enter your 5-digit ZIP to auto-fill your state's base sales tax rate.</p>
-
-          <div class="override-row">
-            <span class="override-label">Override rate:</span>
-            <input type="text" id="salesTax" placeholder="e.g. 8%" oninput="formatPercentInput(this)" class="override-input" />
-          </div>
+          <p class="hint">Enter your sales tax rate. Don't know your sales tax? <a href="https://www.avalara.com/us/en/taxrates/calculator.html" target="_blank" rel="noopener" class="hint-link">Calculate here →</a></p>
+          <input type="text" id="salesTax" placeholder="e.g. 8%" oninput="formatPercentInput(this)" />
         </div>
 
         <!-- INTEREST RATE — CREDIT SCORE DRIVEN -->
@@ -212,8 +203,8 @@
             <div class="step-number">8</div>
             <label>Title, Registration & Fees ($)</label>
           </div>
-          <p class="hint" id="feesHint">One-time costs for title, registration, and dealer fees. Typically $200–$1,000 depending on your state. Enter your ZIP in section 4 to get a state-based estimate.</p>
-          <input type="text" id="fees" placeholder="e.g. 500" oninput="formatInput(this)" />
+          <p class="hint">One-time costs for title, registration, and dealer fees. The national average is around <strong>$500</strong>. This is pre-filled but you can adjust it to match your state or dealer's estimate.</p>
+          <input type="text" id="fees" placeholder="e.g. 500" oninput="formatInput(this)" value="$500" />
         </div>
 
         <button class="calculate-btn" onclick="calculate()">Calculate 🚗</button>
