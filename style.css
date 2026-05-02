@@ -754,7 +754,7 @@ a {
   .hero-ctas .btn-primary,
   .hero-ctas .btn-secondary {
     width: 100%;
-    max-width: 240px;
+    max-width: 200px;
     text-align: center;
   }
   .hero-stats {
