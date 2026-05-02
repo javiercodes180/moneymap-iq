@@ -21,14 +21,14 @@
 .mmiq-brand-link {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   text-decoration: none;
   transition: opacity 0.2s;
 }
 
 .mmiq-brand-link:hover { opacity: 0.8; }
 
-.mmiq-logo { width: 28px; height: 28px; object-fit: contain; }
+.mmiq-logo { width: 40px; height: 40px; object-fit: contain; margin-right: -8px; }
 
 .mmiq-name {
   font-size: 1.05rem;
@@ -326,7 +326,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   display: flex; align-items: center; gap: 6px; text-decoration: none;
 }
 
-.calc-footer-logo img { width: 24px; height: 24px; object-fit: contain; }
+.calc-footer-logo img { width: 36px; height: 36px; object-fit: contain; position: relative; top: 2px; }
 .calc-footer-logo .cf-name { font-size: 1rem; font-weight: 800; color: #ffffff; }
 
 .calc-footer-logo .cf-iq {
