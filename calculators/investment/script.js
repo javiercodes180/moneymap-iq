@@ -1,7 +1,7 @@
 let investmentType = 'monthly';
 let currentMode = 'grow';
 let myChart = null;
-let chartType = 'bar';
+let chartType = 'balance';
 let yearlyData = [];
 
 // ─── ON PAGE LOAD — RESTORE SAVED INPUTS ─────────────────
@@ -26,7 +26,7 @@ window.onload = function () {
   if (saved.rate) {
     const rateEl = document.getElementById('rate');
     rateEl.dataset.raw = saved.rate;
-    rateEl.value = saved.rate + '%';
+    rateEl.value = saved.rate;
   }
   if (saved.years) document.getElementById('years').value = saved.years;
   if (saved.inflation) document.getElementById('inflationToggle').checked = true;
@@ -35,7 +35,7 @@ window.onload = function () {
     if (saved.investmentType === 'yearly') {
       document.querySelectorAll('.toggle-btn')[1].classList.add('active');
       document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
-      document.getElementById('amountLabel').textContent = 'Yearly Contribution ($)';
+      document.getElementById('amountLabel').textContent = 'Yearly Contribution';
       document.getElementById('amountHint').textContent = 'How much will you invest each year? e.g. $6,000';
     } else if (saved.investmentType === 'none') {
       document.querySelectorAll('.toggle-btn')[2].classList.add('active');
@@ -48,8 +48,9 @@ window.onload = function () {
 function setInputValue(id, value) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.dataset.raw = value;
-  el.value = '$' + Number(value).toLocaleString('en-US');
+  const raw = String(value).replace(/[^0-9.]/g, '');
+  el.dataset.raw = raw;
+  el.value = Number(raw).toLocaleString('en-US');
 }
 
 // ─── SAVE INPUTS ──────────────────────────────────────────
@@ -68,21 +69,50 @@ function saveInputs() {
   localStorage.setItem('javierCalc', JSON.stringify(data));
 }
 
+function setResultsVisible(isVisible) {
+  document.body.classList.toggle('has-results', isVisible);
+  const tableSection = document.getElementById('tableSection');
+  if (tableSection) tableSection.style.display = isVisible ? 'block' : 'none';
+  if (!isVisible) updateHeroSubtext('');
+}
+
+function scrollToResultsIfNeeded() {
+  if (window.matchMedia('(max-width: 980px)').matches) {
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function showHeroResult(type) {
+  document.getElementById('growHeroResult').style.display = type === 'grow' ? 'block' : 'none';
+  document.getElementById('goalHeroResult').style.display = type === 'goal' ? 'block' : 'none';
+}
+
+function formatYearsLabel(yearsValue) {
+  const label = String(yearsValue).trim();
+  return `${label} ${Number(label) === 1 ? 'year' : 'years'}`;
+}
+
+function updateHeroSubtext(yearsValue) {
+  const text = yearsValue ? `At the end of ${formatYearsLabel(yearsValue)}` : '';
+  document.getElementById('growHeroSubtext').textContent = text;
+  document.getElementById('goalHeroSubtext').textContent = text;
+}
+
 // ─── MODE SWITCHING ───────────────────────────────────────
 function setMode(mode, e) {
   currentMode = mode;
   document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-  e.target.classList.add('active');
+  e.currentTarget.classList.add('active');
   document.getElementById('growMode').style.display = mode === 'grow' ? 'block' : 'none';
   document.getElementById('goalMode').style.display = mode === 'goal' ? 'block' : 'none';
-  document.getElementById('resultsSection').style.display = 'none';
+  setResultsVisible(false);
 }
 
 // ─── INVESTMENT TYPE ──────────────────────────────────────
 function setType(type, e) {
   investmentType = type;
   document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
-  e.target.classList.add('active');
+  e.currentTarget.classList.add('active');
   const contributionGroup = document.getElementById('contributionGroup');
   const label = document.getElementById('amountLabel');
   const hint = document.getElementById('amountHint');
@@ -91,10 +121,10 @@ function setType(type, e) {
   } else {
     contributionGroup.style.display = 'flex';
     if (type === 'monthly') {
-      label.textContent = 'Monthly Contribution ($)';
+      label.textContent = 'Monthly Contribution';
       hint.textContent = 'How much will you invest each month? e.g. $500';
     } else {
-      label.textContent = 'Yearly Contribution ($)';
+      label.textContent = 'Yearly Contribution';
       hint.textContent = 'How much will you invest each year? e.g. $6,000';
     }
   }
@@ -103,9 +133,9 @@ function setType(type, e) {
 // ─── FORMAT INPUT AS CURRENCY ─────────────────────────────
 function formatInput(input) {
   let raw = input.value.replace(/[^0-9]/g, '');
-  if (raw === '') { input.value = ''; return; }
   input.dataset.raw = raw;
-  input.value = '$' + Number(raw).toLocaleString('en-US');
+  if (raw === '') { input.value = ''; return; }
+  input.value = Number(raw).toLocaleString('en-US');
 }
 
 // ─── FORMAT INPUT AS PERCENTAGE ───────────────────────────
@@ -113,10 +143,7 @@ function formatPercent(input) {
   let raw = input.value.replace(/[^0-9.]/g, '');
   input.dataset.raw = raw;
   if (raw === '') { input.value = ''; return; }
-  input.value = raw + '%';
-  setTimeout(() => {
-    input.setSelectionRange(input.value.length - 1, input.value.length - 1);
-  }, 0);
+  input.value = raw;
 }
 
 // ─── GET RAW NUMBER ───────────────────────────────────────
@@ -161,7 +188,8 @@ function calculate() {
   const lumpsum = getRaw('lumpsum') || 0;
   const amount = investmentType === 'none' ? 0 : getRaw('amount') || 0;
   const rate = getRaw('rate');
-  const years = parseFloat(document.getElementById('years').value);
+  const yearsInput = document.getElementById('years').value;
+  const years = parseFloat(yearsInput);
   const adjustInflation = document.getElementById('inflationToggle').checked;
 
   if (isNaN(rate) || isNaN(years)) {
@@ -209,10 +237,13 @@ function calculate() {
   const final = yearlyData[yearlyData.length - 1];
 
   // Show results
+  setResultsVisible(true);
+  showHeroResult('grow');
+  updateHeroSubtext(yearsInput);
   document.getElementById('growResults').style.display = 'flex';
   document.getElementById('goalResult').style.display = 'none';
-  document.getElementById('resultsSection').style.display = 'block';
 
+  animateCounter('heroFinalValue', final.portfolioValue);
   animateCounter('totalInvested', final.totalInvested);
   animateCounter('totalInterest', final.growth);
   animateCounter('finalValue', final.portfolioValue);
@@ -227,7 +258,7 @@ function calculate() {
   generateSummary(final, rate, years, lumpsum, amount, adjustInflation);
   drawChart();
   drawTable();
-  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+  scrollToResultsIfNeeded();
 }
 
 // ─── GOAL MODE ────────────────────────────────────────────
@@ -235,7 +266,8 @@ function calculateGoal() {
   const goal = getRaw('goalAmount');
   const lumpsum = getRaw('goalLumpsum') || 0;
   const rate = getRaw('rate');
-  const years = parseFloat(document.getElementById('years').value);
+  const yearsInput = document.getElementById('years').value;
+  const years = parseFloat(yearsInput);
   const adjustInflation = document.getElementById('inflationToggle').checked;
 
   if (isNaN(goal) || isNaN(rate) || isNaN(years)) {
@@ -262,10 +294,13 @@ function calculateGoal() {
   const goalDate = getGoalDate(years);
   const alreadyFunded = lumpFV >= goal;
 
+  setResultsVisible(true);
+  showHeroResult('goal');
+  updateHeroSubtext(yearsInput);
   document.getElementById('growResults').style.display = 'none';
   document.getElementById('goalResult').style.display = 'flex';
-  document.getElementById('resultsSection').style.display = 'block';
 
+  animateCounter('heroRequiredMonthly', requiredMonthly);
   animateCounter('requiredMonthly', requiredMonthly);
   animateCounter('goalTotalInvested', totalInvested);
   animateCounter('goalGrowth', growth);
@@ -296,19 +331,19 @@ function calculateGoal() {
   if (alreadyFunded) {
     summaryBox.innerHTML = `Your starting investment of <strong>${formatMoney(lumpsum)}</strong> is already enough to reach your <strong>${formatMoney(goal)}</strong> goal by <strong>${goalDate}</strong>. Required monthly savings: <strong>${formatMoney(0)}/month</strong>.${adjustInflation ? ` In today's dollars, your inflation-adjusted target is <strong>${formatMoney(inflationAdjustedTarget)}</strong>.` : ''}`;
   } else {
-    summaryBox.innerHTML = `To reach your goal of <strong>${formatMoney(goal)}</strong> by <strong>${goalDate}</strong> with a <strong>${rate}% annual return</strong>, you need to save <strong>${formatMoney(requiredMonthly)}/month</strong>. The market does the rest — <strong>${formatMoney(growth)}</strong> of your final balance comes from investment growth, not your own pocket.${adjustInflation ? ` In today's dollars, your inflation-adjusted target is <strong>${formatMoney(inflationAdjustedTarget)}</strong>.` : ''}`;
+    summaryBox.innerHTML = `To reach your goal of <strong>${formatMoney(goal)}</strong> by <strong>${goalDate}</strong> with a <strong class="text-growth">${rate}% annual return</strong>, you need to save <strong>${formatMoney(requiredMonthly)}/month</strong>. The market does the rest - <strong class="text-growth">${formatMoney(growth)}</strong> of your final balance comes from investment growth, not your own pocket.${adjustInflation ? ` In today's dollars, your inflation-adjusted target is <strong>${formatMoney(inflationAdjustedTarget)}</strong>.` : ''}`;
   }
 
   drawChart();
   drawTable();
-  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+  scrollToResultsIfNeeded();
 }
 
 // ─── PLAIN ENGLISH SUMMARY ────────────────────────────────
 function generateSummary(final, rate, years, lumpsum, amount, adjustInflation) {
   const growthPercent = ((final.growth / final.totalInvested) * 100).toFixed(0);
   const summaryBox = document.getElementById('summaryBox');
-  let text = `If you invest at a <strong>${rate}% annual return</strong> over <strong>${years} years</strong> `;
+  let text = `If you invest at a <strong class="text-growth">${rate}% annual return</strong> over <strong>${formatYearsLabel(years)}</strong> `;
 
   if (lumpsum > 0 && amount > 0) {
     text += `starting with <strong>${formatMoney(lumpsum)}</strong> plus <strong>${formatMoney(amount)}/${investmentType === 'monthly' ? 'month' : 'year'}</strong>, `;
@@ -319,7 +354,7 @@ function generateSummary(final, rate, years, lumpsum, amount, adjustInflation) {
   }
 
   text += `your total balance will reach <strong>${formatMoney(final.portfolioValue)}</strong> by <strong>${final.date}</strong>. `;
-  text += `You'll personally invest <strong>${formatMoney(final.totalInvested)}</strong> — the market generates <strong>${formatMoney(final.growth)}</strong> in growth (<strong>${growthPercent}%</strong> return on what you put in).`;
+  text += `You'll personally invest <strong>${formatMoney(final.totalInvested)}</strong> - the market generates <strong class="text-growth">${formatMoney(final.growth)}</strong> in growth (<strong class="text-growth">${growthPercent}%</strong> return on what you put in).`;
 
   if (adjustInflation && final.adjustedValue) {
     text += ` Adjusted for inflation, your Total Balance is worth <strong>${formatMoney(final.adjustedValue)}</strong> in today's dollars.`;
@@ -330,49 +365,122 @@ function generateSummary(final, rate, years, lumpsum, amount, adjustInflation) {
 
 // ─── CHART ────────────────────────────────────────────────
 function drawChart() {
-  const labels = yearlyData.map(d => 'Year ' + d.year);
-  const invested = yearlyData.map(d => d.totalInvested.toFixed(2));
-  const growth = yearlyData.map(d => d.growth.toFixed(2));
+  const labels = yearlyData.map(d => d.year);
+  const invested = yearlyData.map(d => Number(d.totalInvested.toFixed(2)));
+  const growth = yearlyData.map(d => Number(d.growth.toFixed(2)));
+  const balances = yearlyData.map(d => Number(d.portfolioValue.toFixed(2)));
+  const maxValue = Math.max(...balances, ...invested, ...growth, 0);
+  const view = chartType || 'balance';
 
   if (myChart) myChart.destroy();
 
   const ctx = document.getElementById('myChart').getContext('2d');
+  const datasets = [];
+
+  if (view === 'balance') {
+    datasets.push(
+      {
+        type: 'line',
+        label: 'Total Balance',
+        data: balances,
+        borderColor: '#5b2fd6',
+        backgroundColor: '#ffffff',
+        borderWidth: 3,
+        pointRadius: 4,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#ffffff',
+        pointBorderColor: '#5b2fd6',
+        pointBorderWidth: 3,
+        tension: 0.28,
+        order: 0
+      },
+      {
+        type: 'bar',
+        label: 'Total Invested',
+        data: invested,
+        backgroundColor: '#c9bff4',
+        borderColor: '#c9bff4',
+        borderWidth: 1,
+        borderRadius: 3,
+        stack: 'balance',
+        order: 1
+      },
+      {
+        type: 'bar',
+        label: 'Investment Growth',
+        data: growth,
+        backgroundColor: '#69bd8d',
+        borderColor: '#69bd8d',
+        borderWidth: 1,
+        borderRadius: 3,
+        stack: 'balance',
+        order: 1
+      }
+    );
+  } else if (view === 'invested') {
+    datasets.push({
+      type: 'bar',
+      label: 'Total Invested',
+      data: invested,
+      backgroundColor: '#c9bff4',
+      borderColor: '#b5a7ef',
+      borderWidth: 1,
+      borderRadius: 3
+    });
+  } else {
+    datasets.push({
+      type: 'bar',
+      label: 'Investment Growth',
+      data: growth,
+      backgroundColor: '#69bd8d',
+      borderColor: '#55a976',
+      borderWidth: 1,
+      borderRadius: 3
+    });
+  }
+
   myChart = new Chart(ctx, {
-    type: chartType,
+    type: 'bar',
     data: {
       labels,
-      datasets: [
-        {
-          label: 'Total Invested',
-          data: invested,
-          backgroundColor: '#60a5fa88',
-          borderColor: '#60a5fa',
-          borderWidth: 2,
-          fill: chartType === 'line',
-        },
-        {
-          label: 'Investment Growth',
-          data: growth,
-          backgroundColor: '#a78bfa88',
-          borderColor: '#a78bfa',
-          borderWidth: 2,
-          fill: chartType === 'line',
-        }
-      ]
+      datasets
     },
     options: {
       responsive: true,
-      plugins: { legend: { labels: { color: '#0D1B2A', font: { family: 'Inter' } } } },
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0d1b2a',
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          padding: 12,
+          callbacks: {
+            label: context => `${context.dataset.label}: ${formatMoney(context.parsed.y)}`
+          }
+        }
+      },
       scales: {
         x: {
           ticks: { color: '#64748b', font: { family: 'Inter' } },
           grid: { color: '#e8eaf0' },
-          stacked: chartType === 'bar',
+          stacked: view === 'balance',
+          title: { display: true, text: 'Years', color: '#64748b', font: { family: 'Inter', weight: '600' } }
         },
         y: {
-          ticks: { color: '#64748b', font: { family: 'Inter' }, callback: value => '$' + Number(value).toLocaleString() },
+          beginAtZero: true,
+          suggestedMax: maxValue * 1.12,
+          ticks: {
+            color: '#64748b',
+            font: { family: 'Inter' },
+            callback: value => {
+              if (value === 0) return '$0';
+              return '$' + (Number(value) / 1000).toFixed(0) + 'K';
+            }
+          },
           grid: { color: '#e8eaf0' },
-          stacked: chartType === 'bar',
+          stacked: view === 'balance',
         }
       }
     }
@@ -399,25 +507,25 @@ function drawTable() {
 // ─── CHART TOGGLE ─────────────────────────────────────────
 function switchChart(type, e) {
   chartType = type;
-  document.querySelectorAll('.chart-btn').forEach(btn => btn.classList.remove('active'));
-  e.target.classList.add('active');
-  drawChart();
+  const chartView = document.getElementById('chartView');
+  if (chartView && chartView.value !== type) chartView.value = type;
+  if (yearlyData.length > 0) drawChart();
 }
 
 // ─── SHARE ────────────────────────────────────────────────
 function shareResults() {
   if (yearlyData.length === 0) return;
   const final = yearlyData[yearlyData.length - 1];
-  const text = `💰 Javier's Investment Calculator Results
+  const text = `MoneyMap IQ Investment Calculator Results
 
 - Total Invested: ${formatMoney(final.totalInvested)}
 - Investment Growth: ${formatMoney(final.growth)}
 - Total Balance: ${formatMoney(final.portfolioValue)}
 
-Try it yourself: https://investment-calculator-zeta-ten.vercel.app/`;
+Try it yourself: https://moneymap-iq.vercel.app/calculators/investment/`;
 
   navigator.clipboard.writeText(text).then(() => {
-    alert('✅ Results copied! Paste anywhere to share.');
+    alert('Results copied. Paste anywhere to share.');
   });
 }
 

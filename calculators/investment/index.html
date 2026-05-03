@@ -56,196 +56,320 @@
       </div>
     </nav>
 
-    <div class="container">
+    <main class="calculator-page">
+      <section class="calculator-shell">
+        <div class="calculator-left">
+          <section class="calculator-header">
+            <div>
+              <p class="eyebrow">Investment Planning</p>
+              <h1>Investment Calculator</h1>
+              <p class="subtitle">Project your growth, compare assumptions, and see the path to your goal.</p>
+            </div>
+          </section>
 
-      <div class="header">
-        <span class="emoji">📈</span>
-        <h1>Investment Calculator</h1>
+        <div class="input-panel form">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">Inputs</p>
+              <h2>Build your projection</h2>
+              <p class="panel-note">Start with what you know. You can change assumptions and recalculate anytime.</p>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h3 class="section-title"><span class="section-index">1.</span> Plan type</h3>
+            <div class="mode-toggle">
+              <button class="mode-btn active" onclick="setMode('grow', event)">
+                <span class="button-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-8"/><path d="M14 7h6v6"/></svg>
+                </span>
+                Grow Money
+              </button>
+              <button class="mode-btn" onclick="setMode('goal', event)">
+                <span class="button-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                </span>
+                Reach Goal
+              </button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h3 class="section-title"><span class="section-index">2.</span> Starting point</h3>
+
+            <!-- GROW MODE -->
+            <div id="growMode">
+              <div class="input-group">
+                <div class="step-label">
+                  <div class="step-number">1</div>
+                  <label>One-Time Investment <span class="optional">optional</span></label>
+                </div>
+                <p class="hint">A lump sum you're investing today.</p>
+                <div class="input-pill">
+                  <span class="input-prefix" aria-hidden="true">$</span>
+                  <input type="text" id="lumpsum" placeholder="e.g. 10,000" oninput="formatInput(this)" />
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="step-label">
+                  <div class="step-number">2</div>
+                  <label>Contribution Frequency</label>
+                </div>
+                <p class="hint">Choose how often you plan to add money.</p>
+                <div class="toggle-group">
+                  <button class="toggle-btn active" onclick="setType('monthly', event)">Monthly</button>
+                  <button class="toggle-btn" onclick="setType('yearly', event)">Yearly</button>
+                  <button class="toggle-btn" onclick="setType('none', event)">None</button>
+                </div>
+              </div>
+
+              <div class="input-group" id="contributionGroup">
+                <label id="amountLabel">Monthly Contribution</label>
+                <p class="hint" id="amountHint">How much will you invest each month?</p>
+                <div class="input-pill">
+                  <span class="input-prefix" aria-hidden="true">$</span>
+                  <input type="text" id="amount" placeholder="e.g. 500" oninput="formatInput(this)" />
+                </div>
+              </div>
+            </div>
+
+            <!-- GOAL MODE -->
+            <div id="goalMode" style="display:none">
+              <div class="field-grid">
+                <div class="input-group">
+                  <div class="step-label">
+                    <div class="step-number">1</div>
+                    <label>Target Amount</label>
+                  </div>
+                  <p class="hint">How much do you want to end up with?</p>
+                  <div class="input-pill">
+                    <span class="input-prefix" aria-hidden="true">$</span>
+                    <input type="text" id="goalAmount" placeholder="e.g. 1,000,000" oninput="formatInput(this)" />
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <div class="step-label">
+                    <div class="step-number">2</div>
+                    <label>Starting Investment <span class="optional">optional</span></label>
+                  </div>
+                  <p class="hint">Any lump sum you're starting with today.</p>
+                  <div class="input-pill">
+                    <span class="input-prefix" aria-hidden="true">$</span>
+                    <input type="text" id="goalLumpsum" placeholder="e.g. 10,000" oninput="formatInput(this)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h3 class="section-title"><span class="section-index">3.</span> Assumptions</h3>
+            <div class="field-grid">
+              <div class="input-group">
+                <div class="step-label">
+                  <div class="step-number">3</div>
+                  <label>Annual Return</label>
+                </div>
+                <p class="hint">Your expected yearly return.</p>
+                <div class="input-pill">
+                  <input type="text" id="rate" placeholder="e.g. 7" oninput="formatPercent(this)" />
+                  <span class="input-suffix" aria-hidden="true">%</span>
+                </div>
+                <div class="assumption-note">
+                  <strong>Not sure what yearly return to use?</strong>
+                  <span>Here are some benchmarks:</span>
+                  <ul>
+                    <li><strong>3.5%</strong> - High Yield Savings Account (HYSA)</li>
+                    <li><strong>5%</strong> - Conservative bond portfolio</li>
+                    <li><strong>7%</strong> - Balanced stock/bond mix</li>
+                    <li><strong>10%</strong> - S&amp;P 500 index ETF historical average</li>
+                    <li><strong>12%+</strong> - Aggressive growth / individual stocks</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="step-label">
+                  <div class="step-number">4</div>
+                  <label>Number of Years</label>
+                </div>
+                <p class="hint">How long will you let it grow?</p>
+                <div class="input-pill">
+                  <input type="number" id="years" placeholder="e.g. 10" />
+                  <span class="input-suffix input-suffix-wide" aria-hidden="true">years</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group inflation-row">
+              <div>
+                <label>Adjust for Inflation</label>
+                <p class="hint">Shows what the result may be worth in today's dollars using an estimated 3% annual inflation rate.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="inflationToggle" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <button class="calculate-btn" onclick="calculate()">
+              <span class="button-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M16 15h0M8 18h2M12 18h2M16 18h0"/></svg>
+              </span>
+              Calculate
+            </button>
+          </div>
+        </div>
+        </div>
+
+        <aside class="result-panel" aria-label="Investment projection results">
+          <!-- RESULTS -->
+          <div id="resultsSection">
+            <div class="result-empty" id="resultEmpty">
+              <div class="empty-visual" aria-hidden="true">
+                <div class="empty-bars">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <div>
+                <p class="panel-kicker">Projection</p>
+                <h2>Your projection will appear here</h2>
+                <p>Enter your starting point, return assumption, and time horizon to see your total balance, growth, and year-by-year path.</p>
+              </div>
+              <ul class="empty-checklist">
+                <li>Choose grow money or reach a goal</li>
+                <li>Add your investment assumptions</li>
+                <li>Calculate to reveal chart and results</li>
+              </ul>
+            </div>
+
+            <div class="result-content">
+              <div class="result-toolbar">
+                <span>Projection</span>
+                <button class="share-btn share-btn-top" onclick="shareResults()">Copy Results</button>
+              </div>
+
+              <div class="hero-result" id="growHeroResult">
+                <span>Total Balance</span>
+                <strong id="heroFinalValue">-</strong>
+                <p class="hero-subtext" id="growHeroSubtext"></p>
+              </div>
+              <div class="hero-result" id="goalHeroResult" style="display:none">
+                <span>Required Monthly Savings</span>
+                <strong id="heroRequiredMonthly">-</strong>
+                <p class="hero-subtext" id="goalHeroSubtext"></p>
+              </div>
+
+              <!-- Grow Results -->
+              <div class="results" id="growResults">
+                <div class="result-box metric-invested">
+                  <span class="result-icon icon-invested" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12"/><path d="M16 13h6v4h-6a2 2 0 0 1 0-4z"/><path d="M6 5l9-3 1 3"/></svg>
+                  </span>
+                  <span>Total Invested</span>
+                  <strong id="totalInvested">-</strong>
+                </div>
+                <div class="result-box metric-growth">
+                  <span class="result-icon icon-growth" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 16v-4"/><path d="M12 16V8"/><path d="M17 16v-6"/><path d="M8 9l4-4 3 3 5-5"/></svg>
+                  </span>
+                  <span>Investment Growth</span>
+                  <strong id="totalInterest">-</strong>
+                </div>
+                <div class="result-box highlight">
+                  <span>Total Balance</span>
+                  <strong id="finalValue">-</strong>
+                </div>
+                <div class="result-box metric-dollars" id="inflationBox" style="display:none">
+                  <span class="result-icon icon-dollars" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v12"/><path d="M15.5 8.5c-.7-.8-1.8-1.2-3.2-1.2-1.8 0-3 .9-3 2.2 0 3.2 6.4 1.5 6.4 5 0 1.3-1.2 2.2-3.2 2.2-1.5 0-2.8-.5-3.6-1.5"/></svg>
+                  </span>
+                  <span>Today's Dollars</span>
+                  <strong id="inflationValue">-</strong>
+                </div>
+              </div>
+
+              <!-- Goal Results -->
+              <div class="results" id="goalResult" style="display:none">
+                <div class="result-box highlight">
+                  <span>Required Monthly Savings</span>
+                  <strong id="requiredMonthly">-</strong>
+                </div>
+                <div class="result-box metric-invested">
+                  <span class="result-icon icon-invested" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12"/><path d="M16 13h6v4h-6a2 2 0 0 1 0-4z"/><path d="M6 5l9-3 1 3"/></svg>
+                  </span>
+                  <span>Total You'll Invest</span>
+                  <strong id="goalTotalInvested">-</strong>
+                </div>
+                <div class="result-box metric-growth">
+                  <span class="result-icon icon-growth" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 16v-4"/><path d="M12 16V8"/><path d="M17 16v-6"/><path d="M8 9l4-4 3 3 5-5"/></svg>
+                  </span>
+                  <span>Growth That Does the Work</span>
+                  <strong id="goalGrowth">-</strong>
+                </div>
+                <div class="result-box metric-dollars" id="goalInflationBox" style="display:none">
+                  <span class="result-icon icon-dollars" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v12"/><path d="M15.5 8.5c-.7-.8-1.8-1.2-3.2-1.2-1.8 0-3 .9-3 2.2 0 3.2 6.4 1.5 6.4 5 0 1.3-1.2 2.2-3.2 2.2-1.5 0-2.8-.5-3.6-1.5"/></svg>
+                  </span>
+                  <span>Target in Today's Dollars</span>
+                  <strong id="goalInflationValue">-</strong>
+                </div>
+              </div>
+
+              <!-- Summary -->
+              <div class="summary-box" id="summaryBox"></div>
+
+              <!-- Chart -->
+              <div class="chart-section">
+                <div class="chart-header">
+                  <h3>Balance over time</h3>
+                  <label class="chart-view-control">
+                    <span>View:</span>
+                    <select id="chartView" onchange="switchChart(this.value, event)">
+                      <option value="balance">Balance</option>
+                      <option value="invested">Invested</option>
+                      <option value="growth">Growth</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="chart-legend" aria-label="Chart legend">
+                  <span><i class="legend-line"></i>Total Balance</span>
+                  <span><i class="legend-invested"></i>Total Invested</span>
+                  <span><i class="legend-growth"></i>Investment Growth</span>
+                </div>
+                <div class="chart-wrapper">
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Year by Year Table -->
+      <div class="table-section" id="tableSection" style="display:none">
+        <h2>Year by Year Breakdown</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Date</th>
+              <th>Total Invested</th>
+              <th>Growth</th>
+              <th>Total Balance</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
       </div>
-      <p class="subtitle">See how your money grows over time. Enter your investment details below to get started.</p>
-
-      <!-- Mode Toggle -->
-      <div class="mode-toggle">
-        <button class="mode-btn active" onclick="setMode('grow', event)">💰 Grow My Money</button>
-        <button class="mode-btn" onclick="setMode('goal', event)">🎯 Reach a Goal</button>
-      </div>
-
-      <div class="form">
-
-        <!-- GROW MODE -->
-        <div id="growMode">
-          <div class="input-group">
-            <div class="step-label">
-              <div class="step-number">1</div>
-              <label>One-Time Investment ($) <span class="optional">optional</span></label>
-            </div>
-            <p class="hint">A lump sum you're investing today. e.g. $10,000</p>
-            <input type="text" id="lumpsum" placeholder="e.g. 10,000" oninput="formatInput(this)" />
-          </div>
-
-          <div class="input-group" style="margin-top: 32px;">
-            <div class="step-label">
-              <div class="step-number">2</div>
-              <label>Ongoing Contribution</label>
-            </div>
-            <p class="hint">How much will you keep adding regularly?</p>
-            <div class="toggle-group">
-              <button class="toggle-btn active" onclick="setType('monthly', event)">Monthly</button>
-              <button class="toggle-btn" onclick="setType('yearly', event)">Yearly</button>
-              <button class="toggle-btn" onclick="setType('none', event)">None</button>
-            </div>
-          </div>
-
-          <div class="input-group" id="contributionGroup" style="margin-top: 16px;">
-            <label id="amountLabel">Monthly Contribution ($)</label>
-            <p class="hint" id="amountHint">How much will you invest each month? e.g. $500</p>
-            <input type="text" id="amount" placeholder="e.g. 500" oninput="formatInput(this)" />
-          </div>
-        </div>
-
-        <!-- GOAL MODE -->
-        <div id="goalMode" style="display:none">
-          <div class="input-group">
-            <div class="step-label">
-              <div class="step-number">1</div>
-              <label>Target Amount ($)</label>
-            </div>
-            <p class="hint">How much do you want to end up with? e.g. $1,000,000</p>
-            <input type="text" id="goalAmount" placeholder="e.g. 1,000,000" oninput="formatInput(this)" />
-          </div>
-
-          <div class="input-group" style="margin-top: 32px;">
-            <div class="step-label">
-              <div class="step-number">2</div>
-              <label>One-Time Investment ($) <span class="optional">optional</span></label>
-            </div>
-            <p class="hint">Any lump sum you're starting with today.</p>
-            <input type="text" id="goalLumpsum" placeholder="e.g. 10,000" oninput="formatInput(this)" />
-          </div>
-        </div>
-
-        <!-- SHARED FIELDS -->
-        <div class="input-group">
-          <div class="step-label">
-            <div class="step-number">3</div>
-            <label>Annual Return (%)</label>
-          </div>
-          <p class="hint">
-            Your expected yearly return. Not sure? Here are some benchmarks:
-            <br />• <strong>3.5%</strong> — High Yield Savings Account (HYSA)
-            <br />• <strong>5%</strong> — Conservative bond portfolio
-            <br />• <strong>7%</strong> — Balanced stock/bond mix
-            <br />• <strong>10%</strong> — S&P 500 index ETF (historical average)
-            <br />• <strong>12%+</strong> — Aggressive growth / individual stocks
-          </p>
-          <input type="text" id="rate" placeholder="e.g. 7" oninput="formatPercent(this)" />
-        </div>
-
-        <div class="input-group">
-          <div class="step-label">
-            <div class="step-number">4</div>
-            <label>Number of Years</label>
-          </div>
-          <p class="hint">How long will you let your investment grow?</p>
-          <input type="number" id="years" placeholder="e.g. 10" />
-        </div>
-
-        <!-- Inflation Toggle -->
-        <div class="input-group inflation-row">
-          <div>
-            <label>Adjust for Inflation</label>
-            <p class="hint">Shows what your Total Balance will be worth in today's dollars, assuming ~3% annual inflation. Useful for understanding your real purchasing power.</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="inflationToggle" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <button class="calculate-btn" onclick="calculate()">Calculate 💰</button>
-
-      </div>
-
-      <!-- RESULTS -->
-      <div id="resultsSection" style="display:none">
-
-        <!-- Summary -->
-        <div class="summary-box" id="summaryBox"></div>
-
-        <!-- Grow Results -->
-        <div class="results" id="growResults">
-          <div class="result-box">
-            <span>Total Invested</span>
-            <strong id="totalInvested">-</strong>
-          </div>
-          <div class="result-box">
-            <span>Investment Growth</span>
-            <strong id="totalInterest">-</strong>
-          </div>
-          <div class="result-box highlight">
-            <span>Total Balance</span>
-            <strong id="finalValue">-</strong>
-          </div>
-          <div class="result-box" id="inflationBox" style="display:none">
-            <span>Total Balance (Inflation-Adjusted) 💡</span>
-            <strong id="inflationValue">-</strong>
-          </div>
-        </div>
-
-        <!-- Goal Results -->
-        <div class="results" id="goalResult" style="display:none">
-          <div class="result-box highlight">
-            <span>Required Monthly Savings</span>
-            <strong id="requiredMonthly">-</strong>
-          </div>
-          <div class="result-box">
-            <span>Total You'll Invest</span>
-            <strong id="goalTotalInvested">-</strong>
-          </div>
-          <div class="result-box">
-            <span>Growth That Does the Work</span>
-            <strong id="goalGrowth">-</strong>
-          </div>
-          <div class="result-box" id="goalInflationBox" style="display:none">
-            <span>Target in Today's Dollars 💡</span>
-            <strong id="goalInflationValue">-</strong>
-          </div>
-        </div>
-
-        <!-- Chart -->
-        <div class="chart-section">
-          <div class="chart-toggle">
-            <button class="chart-btn active" onclick="switchChart('bar', event)">Bar Chart</button>
-            <button class="chart-btn" onclick="switchChart('line', event)">Line Chart</button>
-          </div>
-          <div class="chart-wrapper">
-            <canvas id="myChart"></canvas>
-            <div class="rocket-emoji">🚀</div>
-          </div>
-        </div>
-
-        <!-- Year by Year Table -->
-        <div class="table-section">
-          <h2>Year by Year Breakdown</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Year</th>
-                <th>Date</th>
-                <th>Total Invested</th>
-                <th>Growth</th>
-                <th>Total Balance</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-          </table>
-        </div>
-
-        <!-- Share Button -->
-        <button class="share-btn" onclick="shareResults()">📤 Copy Results to Share</button>
-
-      </div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 
