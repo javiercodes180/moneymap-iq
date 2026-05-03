@@ -347,14 +347,13 @@
                   <label class="chart-view-control">
                     <span>View:</span>
                     <select id="chartView" onchange="switchChart(this.value, event)">
-                      <option value="balance">Balance</option>
-                      <option value="invested">Invested</option>
-                      <option value="growth">Growth</option>
+                      <option value="bar">Bar</option>
+                      <option value="line">Line</option>
                     </select>
                   </label>
                 </div>
                 <div class="chart-legend" aria-label="Chart legend">
-                  <span><i class="legend-line"></i>Total Balance</span>
+                  <span id="legendBalance"><i class="legend-line"></i>Total Balance</span>
                   <span><i class="legend-invested"></i>Total Invested</span>
                   <span><i class="legend-growth"></i>Investment Growth</span>
                 </div>

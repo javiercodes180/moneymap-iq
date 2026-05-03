@@ -1,7 +1,7 @@
 let investmentType = 'monthly';
 let currentMode = 'grow';
 let myChart = null;
-let chartType = 'balance';
+let chartType = 'bar';
 let yearlyData = [];
 
 function setResultsVisible(isVisible) {
@@ -14,6 +14,8 @@ function setResultsVisible(isVisible) {
 function scrollToResultsIfNeeded() {
   if (window.matchMedia('(max-width: 1120px)').matches) {
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -301,14 +303,16 @@ function drawChart() {
   const growth = yearlyData.map(d => Number(d.growth.toFixed(2)));
   const balances = yearlyData.map(d => Number(d.portfolioValue.toFixed(2)));
   const maxValue = Math.max(...balances, ...invested, ...growth, 0);
-  const view = chartType || 'balance';
+  const view = chartType || 'bar';
 
   if (myChart) myChart.destroy();
 
   const ctx = document.getElementById('myChart').getContext('2d');
   const datasets = [];
+  const legendBalance = document.getElementById('legendBalance');
+  if (legendBalance) legendBalance.style.display = 'inline-flex';
 
-  if (view === 'balance') {
+  if (view === 'bar') {
     datasets.push(
       {
         type: 'line',
@@ -348,26 +352,57 @@ function drawChart() {
         order: 1
       }
     );
-  } else if (view === 'invested') {
-    datasets.push({
-      type: 'bar',
-      label: 'Total Invested',
-      data: invested,
-      backgroundColor: '#c9bff4',
-      borderColor: '#b5a7ef',
-      borderWidth: 1,
-      borderRadius: 3
-    });
   } else {
-    datasets.push({
-      type: 'bar',
-      label: 'Investment Growth',
-      data: growth,
-      backgroundColor: '#69bd8d',
-      borderColor: '#55a976',
-      borderWidth: 1,
-      borderRadius: 3
-    });
+    datasets.push(
+      {
+        type: 'line',
+        label: 'Total Balance',
+        data: balances,
+        borderColor: '#5b2fd6',
+        backgroundColor: '#ffffff',
+        borderWidth: 4,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#ffffff',
+        pointBorderColor: '#5b2fd6',
+        pointBorderWidth: 3,
+        fill: false,
+        tension: 0.3,
+        order: 0
+      },
+      {
+        type: 'line',
+        label: 'Total Invested',
+        data: invested,
+        borderColor: '#9b8ff0',
+        backgroundColor: 'rgba(201, 191, 244, 0.16)',
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#ffffff',
+        pointBorderColor: '#9b8ff0',
+        pointBorderWidth: 2.5,
+        fill: true,
+        tension: 0.32,
+        order: 1
+      },
+      {
+        type: 'line',
+        label: 'Investment Growth',
+        data: growth,
+        borderColor: '#159457',
+        backgroundColor: 'rgba(105, 189, 141, 0.14)',
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#ffffff',
+        pointBorderColor: '#159457',
+        pointBorderWidth: 2.5,
+        fill: true,
+        tension: 0.32,
+        order: 1
+      }
+    );
   }
 
   myChart = new Chart(ctx, {
@@ -396,7 +431,7 @@ function drawChart() {
         x: {
           ticks: { color: '#64748b', font: { family: 'Inter' } },
           grid: { color: '#e8eaf0' },
-          stacked: view === 'balance',
+          stacked: view === 'bar',
           title: { display: true, text: 'Years', color: '#64748b', font: { family: 'Inter', weight: '600' } }
         },
         y: {
@@ -411,7 +446,7 @@ function drawChart() {
             }
           },
           grid: { color: '#e8eaf0' },
-          stacked: view === 'balance',
+          stacked: view === 'bar',
         }
       }
     }
