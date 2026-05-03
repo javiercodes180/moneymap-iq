@@ -44,7 +44,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .mmiq-nav-inner {
-  max-width: 1180px;
+  max-width: 1560px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -214,7 +214,7 @@ h1 {
 
 .calculator-shell {
   display: grid;
-  grid-template-columns: minmax(420px, 0.74fr) minmax(620px, 1fr);
+  grid-template-columns: minmax(560px, 1.05fr) minmax(500px, 0.95fr);
   gap: 24px;
   align-items: start;
 }
@@ -496,33 +496,57 @@ input::placeholder { color: #a7b0bf; }
   box-shadow: 0 8px 18px rgba(109, 93, 252, 0.22);
 }
 
-.assumption-note {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #9aa8bc;
+  border-radius: 50%;
+  color: #64748b;
+  cursor: help;
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tooltip-panel {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 30;
+  display: grid;
+  width: min(300px, calc(100vw - 48px));
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-control);
-  padding: 10px 12px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
   color: var(--color-muted);
   font-size: 0.78rem;
-  line-height: 1.55;
-  margin-top: 4px;
+  font-weight: 600;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition: opacity 0.18s, transform 0.18s;
 }
 
-.assumption-note strong { color: var(--color-text); font-weight: 800; }
-
-.assumption-note span {
-  display: block;
-  margin-top: 2px;
+.tooltip-panel strong {
+  color: var(--color-text);
+  font-weight: 800;
 }
 
-.assumption-note ul {
-  display: grid;
-  gap: 4px;
-  list-style: none;
-  margin-top: 8px;
-}
-
-.assumption-note li {
-  color: var(--color-muted);
+.info-tooltip:hover .tooltip-panel,
+.info-tooltip:focus .tooltip-panel,
+.info-tooltip:focus-within .tooltip-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
 }
 
 .inflation-row {
@@ -590,6 +614,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 .chart-btn:focus-visible,
 .calculate-btn:focus-visible,
 .share-btn:focus-visible,
+.info-tooltip:focus-visible,
 .mmiq-menu-btn:focus-visible {
   outline: 3px solid rgba(109, 93, 252, 0.22);
   outline-offset: 2px;
@@ -703,7 +728,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 .hero-result strong {
   display: block;
   color: var(--color-text);
-  font-size: clamp(3rem, 6vw, 4.75rem);
+  font-size: clamp(2.55rem, 4.6vw, 3.9rem);
   line-height: 1.05;
   font-weight: 800;
   letter-spacing: 0;
@@ -1063,7 +1088,7 @@ tr:hover td { background: #fbfcff; }
 .calc-footer-legal a:hover { color: #a78bfa; }
 
 /* ── RESPONSIVE ──────────────────────────────── */
-@media (max-width: 980px) {
+@media (max-width: 1120px) {
   .calculator-page { padding: 34px 18px 44px; }
   .calculator-shell { grid-template-columns: 1fr; }
   .result-panel { position: static; }
@@ -1085,13 +1110,28 @@ tr:hover td { background: #fbfcff; }
   .mode-btn,
   .toggle-btn { font-size: 0.82rem; padding: 8px 6px; }
   .results { grid-template-columns: 1fr; }
-  .hero-result strong { font-size: 1.65rem; }
+  .hero-result strong { font-size: clamp(2.05rem, 10vw, 2.75rem); }
+  .result-box strong {
+    font-size: clamp(1.55rem, 8vw, 2rem);
+    overflow-wrap: anywhere;
+  }
   .result-icon { width: 48px; height: 48px; }
   .result-icon svg { width: 24px; height: 24px; }
   .chart-header { align-items: flex-start; flex-direction: column; }
   .chart-view-control { width: 100%; justify-content: space-between; }
   .chart-view-control select { min-width: 150px; }
   .chart-legend { gap: 12px; font-size: 0.76rem; }
+  .tooltip-panel {
+    left: 0;
+    right: auto;
+    width: min(292px, calc(100vw - 48px));
+    transform: translate(0, 6px);
+  }
+  .info-tooltip:hover .tooltip-panel,
+  .info-tooltip:focus .tooltip-panel,
+  .info-tooltip:focus-within .tooltip-panel {
+    transform: translate(0, 0);
+  }
   .chart-wrapper { min-height: 230px; }
   .chart-wrapper canvas { height: 220px !important; }
   .mmiq-dropdown-panel {

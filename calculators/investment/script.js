@@ -77,7 +77,7 @@ function setResultsVisible(isVisible) {
 }
 
 function scrollToResultsIfNeeded() {
-  if (window.matchMedia('(max-width: 980px)').matches) {
+  if (window.matchMedia('(max-width: 1120px)').matches) {
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
@@ -240,7 +240,7 @@ function calculate() {
   setResultsVisible(true);
   showHeroResult('grow');
   updateHeroSubtext(yearsInput);
-  document.getElementById('growResults').style.display = 'flex';
+  document.getElementById('growResults').style.display = 'grid';
   document.getElementById('goalResult').style.display = 'none';
 
   animateCounter('heroFinalValue', final.portfolioValue);
@@ -298,7 +298,7 @@ function calculateGoal() {
   showHeroResult('goal');
   updateHeroSubtext(yearsInput);
   document.getElementById('growResults').style.display = 'none';
-  document.getElementById('goalResult').style.display = 'flex';
+  document.getElementById('goalResult').style.display = 'grid';
 
   animateCounter('heroRequiredMonthly', requiredMonthly);
   animateCounter('requiredMonthly', requiredMonthly);
