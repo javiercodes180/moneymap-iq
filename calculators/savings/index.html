@@ -19,6 +19,7 @@
     <meta name="twitter:image" content="https://moneymap-iq.vercel.app/assets/social/savings-goal-calculator.png" />
     <title>Savings Goal Calculator — MoneyMap IQ</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../../assets/css/calculator-premium.css" />
     <link rel="icon" type="image/png" href="../../logo.png" />
     <link rel="apple-touch-icon" href="../../logo.png" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -71,16 +72,21 @@
       </div>
     </nav>
 
-    <div class="container">
+    <main class="calculator-page">
 
-      <!-- TITLE -->
-      <div class="header">
-        <span class="emoji">🎯</span>
+      <header class="calculator-header">
+        <span class="eyebrow">Goal Planning</span>
         <h1>Savings Goal Planner</h1>
-      </div>
-      <p class="subtitle">Set a target, track your progress, and see how to get there faster.</p>
+        <p class="subtitle">Set a target, track your progress, and see how to get there faster.</p>
+      </header>
 
-      <div class="form">
+      <section class="calculator-shell">
+        <div class="input-panel form">
+          <div class="panel-intro">
+            <span class="panel-kicker">Inputs</span>
+            <h2>Build your savings plan</h2>
+            <p>Choose a goal, set your timeline, and compare savings assumptions.</p>
+          </div>
 
         <!-- GOAL SELECTOR -->
         <div class="input-group">
@@ -284,8 +290,8 @@
             <label>Saving Strategy</label>
           </div>
           <div class="toggle-group" style="margin-top: 8px;">
-            <button class="toggle-btn active" onclick="setStrategy('hysa', this)">💰 Cash / HYSA</button>
-            <button class="toggle-btn" onclick="setStrategy('invest', this)">📈 Invest While Saving</button>
+            <button class="toggle-btn active" onclick="setStrategy('hysa', this)">Cash / HYSA</button>
+            <button class="toggle-btn" onclick="setStrategy('invest', this)">Invest While Saving</button>
           </div>
 
           <!-- Strategy explainer -->
@@ -319,12 +325,16 @@
           <input type="text" id="annualReturn" placeholder="e.g. 4.5" oninput="formatPercentInput(this)" />
         </div>
 
-        <button class="calculate-btn" onclick="calculate()">Calculate 🎯</button>
+          <button class="calculate-btn" onclick="calculate()">Calculate</button>
 
-      </div>
+        </div>
 
       <!-- RESULTS -->
-      <div id="resultsSection" style="display:none">
+        <aside class="result-panel" id="resultsSection" style="display:none">
+          <div class="result-panel-top">
+            <span class="panel-kicker">Projection</span>
+            <button class="share-btn compact-share" onclick="shareResults()">Copy Results</button>
+          </div>
 
         <div class="summary-box" id="summaryBox"></div>
 
@@ -410,10 +420,11 @@
           </div>
         </div>
 
-        <button class="share-btn" onclick="shareResults()">📤 Copy Results to Share</button>
+        <button class="share-btn bottom-share" onclick="shareResults()">Copy Results to Share</button>
 
-      </div>
-    </div>
+        </aside>
+      </section>
+    </main>
 
     <!-- FOOTER -->
     <footer class="calc-footer">

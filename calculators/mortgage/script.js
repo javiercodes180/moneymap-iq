@@ -341,7 +341,11 @@ function calculate() {
   drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, totalMonthly);
   drawMainChart();
   buildAmortization(loanAmount, monthlyRate, numPayments, monthlyPI);
-  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+  if (window.matchMedia('(max-width: 1120px)').matches) {
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 // ─── SUMMARY ──────────────────────────────────────────────

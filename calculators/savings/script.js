@@ -378,7 +378,11 @@ function displayResults() {
   // Chart
   drawChart();
 
-  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (window.matchMedia('(max-width: 1120px)').matches) {
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 /* ── TABLE ───────────────────────────────────── */
@@ -536,9 +540,9 @@ function shareResults() {
   text += `Plan yours → moneymap-iq.vercel.app`;
 
   navigator.clipboard.writeText(text).then(() => {
-    let btn = document.querySelector('.share-btn');
+    let btn = document.querySelector('.bottom-share') || document.querySelector('.share-btn');
     btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📤 Copy Results to Share', 2000);
+    setTimeout(() => btn.textContent = 'Copy Results to Share', 2000);
   });
 }
 

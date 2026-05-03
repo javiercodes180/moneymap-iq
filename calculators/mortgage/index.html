@@ -19,6 +19,7 @@
     <meta name="twitter:image" content="https://moneymap-iq.vercel.app/assets/social/mortgage-calculator.png" />
     <title>Mortgage Calculator — MoneyMap IQ</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../../assets/css/calculator-premium.css" />
     <link rel="icon" type="image/png" href="../../logo.png" />
     <link rel="apple-touch-icon" href="../../logo.png" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -71,15 +72,21 @@
       </div>
     </nav>
 
-    <div class="container">
+    <main class="calculator-page">
 
-      <div class="header">
-        <span class="emoji">🏠</span>
+      <header class="calculator-header">
+        <span class="eyebrow">Mortgage Planning</span>
         <h1>Mortgage Calculator</h1>
-      </div>
-      <p class="subtitle">Calculate your monthly payment, closing costs, and total cost of your home loan.</p>
+        <p class="subtitle">Calculate your monthly payment, closing costs, and total cost of your home loan.</p>
+      </header>
 
-      <div class="form">
+      <section class="calculator-shell">
+        <div class="input-panel form">
+          <div class="panel-intro">
+            <span class="panel-kicker">Inputs</span>
+            <h2>Build your home loan estimate</h2>
+            <p>Start with the purchase details, then adjust loan, tax, insurance, and closing cost assumptions.</p>
+          </div>
 
         <!-- ZIP CODE -->
         <div class="input-group">
@@ -224,9 +231,7 @@
           </div>
         </div>
 
-        <button class="calculate-btn" onclick="calculate()">Calculate 🏠</button>
-
-      </div>
+          <button class="calculate-btn" onclick="calculate()">Calculate</button>
 
       <!-- PMI Explainer — can appear before calculate -->
       <div class="pmi-explainer" id="pmiExplainer" style="display:none">
@@ -238,11 +243,16 @@
           <li>Can be removed once you reach <strong>20% equity</strong> in your home</li>
           <li>To avoid PMI, put down <strong>20% or more</strong></li>
         </ul>
-        <button class="learn-more-btn pmi-hide-btn" onclick="togglePMISection()">📖 Hide PMI info</button>
+        <button class="learn-more-btn pmi-hide-btn" onclick="togglePMISection()">Hide PMI info</button>
       </div>
+        </div>
 
       <!-- RESULTS -->
-      <div id="resultsSection" style="display:none">
+        <aside class="result-panel" id="resultsSection" style="display:none">
+          <div class="result-panel-top">
+            <span class="panel-kicker">Projection</span>
+            <button class="share-btn compact-share" onclick="shareResults()">Copy Results</button>
+          </div>
 
         <!-- Summary -->
         <div class="summary-box" id="summaryBox"></div>
@@ -339,7 +349,7 @@
 
           <!-- Learn More — right under the options -->
           <button class="learn-more-btn" onclick="toggleClosingLearnMore()" id="closingLearnMoreBtn">
-            📖 Learn more about closing costs
+            Learn more about closing costs
           </button>
           <div class="closing-learn-more" id="closingLearnMore" style="display:none">
             <h3>📋 What are Closing Costs?</h3>
@@ -391,7 +401,7 @@
         <!-- Smart Connection -->
         <div class="smart-connection">
           <div class="smart-connection-inner">
-            <div class="smart-icon">🎯</div>
+            <div class="smart-icon">Goal</div>
             <div class="smart-content">
               <h3>Need to save for your down payment?</h3>
               <p>MoneyMap IQ can calculate exactly how much you need to save each month to reach your down payment goal.</p>
@@ -428,10 +438,11 @@
         </div>
 
         <!-- Share Button -->
-        <button class="share-btn" onclick="shareResults()">📤 Copy Results to Share</button>
+        <button class="share-btn bottom-share" onclick="shareResults()">Copy Results to Share</button>
 
-      </div>
-    </div>
+        </aside>
+      </section>
+    </main>
 
     <script src="script.js"></script>
 
