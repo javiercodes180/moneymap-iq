@@ -217,8 +217,12 @@ function calculate() {
 
   let monthlyContrib = 0;
   let months = 0;
+  let completed = remaining === 0;
 
-  if (calcMode === 'monthly') {
+  if (completed) {
+    monthlyContrib = 0;
+    months = 0;
+  } else if (calcMode === 'monthly') {
     monthlyContrib = parseNum('monthlyContrib');
     if (monthlyContrib <= 0) { alert('Please enter a monthly contribution.'); return; }
 
@@ -255,12 +259,13 @@ function calculate() {
   // Build yearly data
   let yearlyData = buildYearlyData(currentSavings, monthlyContrib, monthlyReturn, months, goalAmount);
   let totalContributed = monthlyContrib * months;
-  let totalInterest = yearlyData[yearlyData.length - 1].balance - currentSavings - totalContributed;
+  let finalBalance = yearlyData.length ? yearlyData[yearlyData.length - 1].balance : currentSavings;
+  let totalInterest = completed ? 0 : finalBalance - currentSavings - totalContributed;
 
   calculatedResults = {
     goalAmount, currentSavings, remaining, monthlyContrib, months,
     annualReturn, totalContributed, totalInterest, yearlyData,
-    calcMode, currentGoal
+    calcMode, currentGoal, completed, totalSaved: completed ? currentSavings : goalAmount
   };
 
   displayResults();
@@ -270,6 +275,16 @@ function buildYearlyData(startBalance, monthly, monthlyRate, totalMonths, goal) 
   let data = [];
   let balance = startBalance;
   let yearCount = Math.ceil(totalMonths / 12);
+
+  if (totalMonths === 0) {
+    return [{
+      year: 0,
+      contributed: 0,
+      interest: 0,
+      balance: startBalance,
+      progress: '100.0'
+    }];
+  }
 
   for (let y = 1; y <= yearCount; y++) {
     let monthsThisYear = Math.min(12, totalMonths - (y - 1) * 12);
@@ -306,9 +321,12 @@ function displayResults() {
   let remMonths = r.months % 12;
   let timeStr = years > 0 ? `${years} year${years > 1 ? 's' : ''}` : '';
   if (remMonths > 0) timeStr += (timeStr ? ' and ' : '') + `${remMonths} month${remMonths > 1 ? 's' : ''}`;
+  if (r.completed) timeStr = 'Already reached';
 
   let summary = '';
-  if (r.calcMode === 'monthly') {
+  if (r.completed) {
+    summary = `You've already reached your <strong>${formatMoneyShort(r.goalAmount)}</strong> goal with <strong>${formatMoney(r.currentSavings)}</strong> saved. Required monthly savings: <strong>${formatMoney(0)}/month</strong>.`;
+  } else if (r.calcMode === 'monthly') {
     summary = `Saving <strong>${formatMoney(r.monthlyContrib)}/month</strong> at <strong>${r.annualReturn}%</strong> annual return, you'll reach your <strong>${formatMoneyShort(r.goalAmount)}</strong> goal in <strong>${timeStr}</strong>.`;
   } else {
     summary = `To reach your <strong>${formatMoneyShort(r.goalAmount)}</strong> goal in <strong>${timeStr}</strong> at <strong>${r.annualReturn}%</strong> annual return, you need to save <strong>${formatMoney(r.monthlyContrib)}/month</strong>.`;
@@ -353,7 +371,7 @@ function displayResults() {
   if (document.getElementById('resInterest'))
     animateValue(document.getElementById('resInterest'), 0, Math.max(r.totalInterest, 0), 1000);
   if (document.getElementById('resTotal'))
-    animateValue(document.getElementById('resTotal'), 0, r.goalAmount, 1000);
+    animateValue(document.getElementById('resTotal'), 0, r.totalSaved, 1000);
 
   // Table
   buildTable();

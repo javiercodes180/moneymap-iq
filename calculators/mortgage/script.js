@@ -259,25 +259,28 @@ function animateCounter(elementId, targetValue) {
 // ─── MAIN CALCULATE ───────────────────────────────────────
 function calculate() {
   const homePrice = getRaw('homePrice');
-  const downPayment = getRaw('downPayment') || 0;
-  const interestRate = getRaw('interestRate');
+  const rawDownPayment = getRaw('downPayment') || 0;
+  const downPayment = Math.min(Math.max(rawDownPayment, 0), homePrice || 0);
+  const rawInterestRate = getRaw('interestRate');
+  const loanAmount = Math.max(homePrice - downPayment, 0);
+  const interestRate = loanAmount === 0 && isNaN(rawInterestRate) ? 0 : rawInterestRate;
   const propertyTax = getAnnualTax();
   const insurance = getAnnualInsurance();
 
   if (isNaN(homePrice) || isNaN(interestRate)) { alert('Please fill in Home Price and Interest Rate!'); return; }
 
-  const loanAmount = homePrice - downPayment;
   const monthlyRate = interestRate / 100 / 12;
   const numPayments = loanTerm * 12;
 
   let monthlyPI = 0;
-  if (monthlyRate === 0) monthlyPI = loanAmount / numPayments;
+  if (loanAmount === 0) monthlyPI = 0;
+  else if (monthlyRate === 0) monthlyPI = loanAmount / numPayments;
   else monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
 
   const monthlyTax = propertyTax / 12;
   const monthlyInsurance = insurance / 12;
   const downPercent = (downPayment / homePrice) * 100;
-  const monthlyPMI = downPercent < 20 ? (loanAmount * 0.005) / 12 : 0;
+  const monthlyPMI = loanAmount > 0 && downPercent < 20 ? (loanAmount * 0.005) / 12 : 0;
   const totalMonthly = monthlyPI + monthlyTax + monthlyInsurance + monthlyPMI;
   const totalPaid = monthlyPI * numPayments;
   const totalInterest = totalPaid - loanAmount;

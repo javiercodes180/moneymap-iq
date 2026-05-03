@@ -186,11 +186,15 @@ function calculate() {
 
     if (investmentType === 'monthly' && amount > 0) {
       const months = year * 12;
-      contribGrowth = amount * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
       contribInvested = amount * months;
+      contribGrowth = monthlyRate === 0
+        ? contribInvested
+        : amount * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
     } else if (investmentType === 'yearly' && amount > 0) {
-      contribGrowth = amount * ((Math.pow(1 + annualRate, year) - 1) / annualRate) * (1 + annualRate);
       contribInvested = amount * year;
+      contribGrowth = annualRate === 0
+        ? contribInvested
+        : amount * ((Math.pow(1 + annualRate, year) - 1) / annualRate) * (1 + annualRate);
     }
 
     const portfolioValue = lumpGrowth + contribGrowth;
@@ -247,13 +251,16 @@ function calculateGoal() {
   const remaining = goal - lumpFV;
   let requiredMonthly = 0;
   if (remaining > 0) {
-    requiredMonthly = remaining * monthlyRate / ((Math.pow(1 + monthlyRate, months) - 1) * (1 + monthlyRate));
+    requiredMonthly = monthlyRate === 0
+      ? remaining / months
+      : remaining * monthlyRate / ((Math.pow(1 + monthlyRate, months) - 1) * (1 + monthlyRate));
   }
 
   const totalInvested = lumpsum + requiredMonthly * months;
-  const growth = goal - totalInvested;
+  const growth = Math.max(0, goal - totalInvested);
   const inflationAdjustedTarget = adjustInflation ? goal / Math.pow(1.03, years) : null;
   const goalDate = getGoalDate(years);
+  const alreadyFunded = lumpFV >= goal;
 
   document.getElementById('growResults').style.display = 'none';
   document.getElementById('goalResult').style.display = 'flex';
@@ -274,17 +281,23 @@ function calculateGoal() {
   yearlyData = [];
   for (let year = 1; year <= years; year++) {
     const m = year * 12;
-    const contribGrowth = requiredMonthly * ((Math.pow(1 + monthlyRate, m) - 1) / monthlyRate) * (1 + monthlyRate);
+    const contribGrowth = monthlyRate === 0
+      ? requiredMonthly * m
+      : requiredMonthly * ((Math.pow(1 + monthlyRate, m) - 1) / monthlyRate) * (1 + monthlyRate);
     const lumpGrowth = lumpsum * Math.pow(1 + rate / 100, year);
     const portfolioValue = contribGrowth + lumpGrowth;
     const totalInv = lumpsum + requiredMonthly * m;
     const date = getGoalDate(year);
-    yearlyData.push({ year, date, totalInvested: totalInv, growth: portfolioValue - totalInv, portfolioValue });
+    yearlyData.push({ year, date, totalInvested: totalInv, growth: Math.max(0, portfolioValue - totalInv), portfolioValue });
   }
 
   // Summary
   const summaryBox = document.getElementById('summaryBox');
-  summaryBox.innerHTML = `To reach your goal of <strong>${formatMoney(goal)}</strong> by <strong>${goalDate}</strong> with a <strong>${rate}% annual return</strong>, you need to save <strong>${formatMoney(requiredMonthly)}/month</strong>. The market does the rest — <strong>${formatMoney(growth)}</strong> of your final balance comes from investment growth, not your own pocket.${adjustInflation ? ` In today's dollars, your inflation-adjusted target is <strong>${formatMoney(inflationAdjustedTarget)}</strong>.` : ''}`;
+  if (alreadyFunded) {
+    summaryBox.innerHTML = `Your starting investment of <strong>${formatMoney(lumpsum)}</strong> is already enough to reach your <strong>${formatMoney(goal)}</strong> goal by <strong>${goalDate}</strong>. Required monthly savings: <strong>${formatMoney(0)}/month</strong>.${adjustInflation ? ` In today's dollars, your inflation-adjusted target is <strong>${formatMoney(inflationAdjustedTarget)}</strong>.` : ''}`;
+  } else {
+    summaryBox.innerHTML = `To reach your goal of <strong>${formatMoney(goal)}</strong> by <strong>${goalDate}</strong> with a <strong>${rate}% annual return</strong>, you need to save <strong>${formatMoney(requiredMonthly)}/month</strong>. The market does the rest — <strong>${formatMoney(growth)}</strong> of your final balance comes from investment growth, not your own pocket.${adjustInflation ? ` In today's dollars, your inflation-adjusted target is <strong>${formatMoney(inflationAdjustedTarget)}</strong>.` : ''}`;
+  }
 
   drawChart();
   drawTable();
