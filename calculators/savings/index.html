@@ -284,45 +284,95 @@
         </div>
 
         <!-- SAVING STRATEGY -->
-        <div class="input-group">
+        <div class="input-group" id="savingStrategyGroup">
           <div class="step-label">
             <div class="step-number">6</div>
             <label>Saving Strategy</label>
           </div>
-          <div class="toggle-group" style="margin-top: 8px;">
-            <button class="toggle-btn active" onclick="setStrategy('hysa', this)">Cash / HYSA</button>
-            <button class="toggle-btn" onclick="setStrategy('invest', this)">Invest While Saving</button>
+          <p class="hint">How do you want to save?</p>
+          <div class="toggle-group strategy-toggle" id="strategyToggle">
+            <button class="toggle-btn" onclick="setStrategy('cash', this)">Cash</button>
+            <button class="toggle-btn active" onclick="setStrategy('hysa', this)">HYSA / Money Market</button>
+            <button class="toggle-btn" onclick="setStrategy('invest', this)">Invest <span>(Higher Risk)</span></button>
           </div>
 
-          <!-- Strategy explainer -->
-          <div class="strategy-explainer" id="strategyExplainer">
-            <div id="explainer-hysa">
-              <strong>Safer approach</strong>
-              <p>For short-term goals and big life purchases, saving in cash, a high-yield savings account (HYSA), or a money market fund is typically recommended. Your money stays stable and available when you need it.</p>
-              <p class="explainer-tip">Not sure? For goals under ~3 years, most people stick with cash or HYSA.</p>
+          <div class="strategy-card strategy-card-cash" id="strategyPanelCash" hidden>
+            <div class="strategy-icon" aria-hidden="true">◇</div>
+            <div class="strategy-card-body">
+              <strong>Maximum safety</strong>
+              <p>Cash guarantees stability with no risk of loss, but does not grow over time. Best for very short-term goals or when certainty is critical.</p>
+              <button class="strategy-detail-btn" type="button" onclick="toggleStrategyDetail('cashDetail')">Should I consider a HYSA instead? <span>⌄</span></button>
+              <div class="strategy-detail" id="cashDetail">
+                <p>A HYSA or money market account can earn 3%–5% on average, helping your savings grow while still staying stable and accessible. It is a smart option if your timeline allows.</p>
+              </div>
             </div>
-            <div id="explainer-invest" style="display:none">
-              <strong>Higher potential, more risk</strong>
-              <p>Investing can help your savings grow faster, but values can fluctuate in the short term. This may make sense if your timeline is longer or you're comfortable with market ups and downs.</p>
-              <p class="explainer-tip">Not sure? For goals under ~3 years, most people stick with cash or HYSA.</p>
+          </div>
+
+          <div class="strategy-card strategy-card-hysa is-active" id="strategyPanelHysa">
+            <div class="strategy-icon" aria-hidden="true">◇</div>
+            <div class="strategy-card-body">
+              <strong>Safer approach (recommended)</strong>
+              <p>For short-term goals and large purchases, keeping your money in a high-yield savings or money market account helps protect your progress while still earning a modest return. Your money stays stable and accessible when you need it.</p>
+              <button class="strategy-detail-btn" type="button" onclick="toggleStrategyDetail('hysaDetail')">When would investing make sense? <span>⌄</span></button>
+              <div class="strategy-detail" id="hysaDetail">
+                <p>If your timeline is longer (3+ years) and you're comfortable with market ups and downs, investing could help your money grow faster — but comes with risk.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="strategy-card strategy-card-invest" id="strategyPanelInvest" hidden>
+            <div class="strategy-icon" aria-hidden="true">↗</div>
+            <div class="strategy-card-body">
+              <strong>Higher risk, higher potential return</strong>
+              <p>Investing can grow your savings faster, but your balance may fluctuate. This can be risky for short-term goals.</p>
+              <button class="strategy-detail-btn" type="button" onclick="toggleStrategyDetail('investDetail')">Safer alternative <span>⌄</span></button>
+              <div class="strategy-detail" id="investDetail">
+                <p>For short-term goals, a HYSA or money market account offers stability and predictable returns without market risk.</p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- EXPECTED RETURN -->
-        <div class="input-group">
+        <div class="input-group conditional-return is-visible" id="expectedReturnGroup">
           <div class="step-label">
             <div class="step-number">7</div>
             <label>Expected Annual Return (%)</label>
           </div>
-          <p class="hint" id="returnHint">
-            Based on your strategy, here are some benchmarks:
-            <br />• <strong>4–5%</strong> — High-Yield Savings Account (HYSA)
-            <br />• <strong>5–6%</strong> — Money market / short-term bonds
-            <br />• <strong>7%</strong> — Balanced stock/bond mix
-            <br />• <strong>10%</strong> — S&P 500 index ETF (historical average)
-          </p>
+          <p class="hint" id="returnHint">Typical range: 3%–5% depending on rates</p>
           <input type="text" id="annualReturn" placeholder="e.g. 4.5" oninput="formatPercentInput(this)" />
+
+          <div class="return-presets" id="investReturnPresets" hidden>
+            <button type="button" onclick="setReturnPreset(6, this)">6%</button>
+            <button type="button" class="active" onclick="setReturnPreset(7, this)">7%</button>
+            <button type="button" onclick="setReturnPreset(8, this)">8%</button>
+            <button type="button" onclick="setReturnPreset(9, this)">9%</button>
+            <button type="button" onclick="setReturnPreset(10, this)">10%</button>
+          </div>
+
+          <button class="return-difference-btn" id="returnDifferenceBtn" type="button" onclick="toggleStrategyDetail('returnDifference')">
+            <span class="info-dot">i</span>
+            What's the difference?
+            <span>⌄</span>
+          </button>
+          <div class="return-difference strategy-detail" id="returnDifference">
+            <div>
+              <strong>HYSA (High-Yield Savings)</strong>
+              <ul>
+                <li>FDIC insured at banks</li>
+                <li>Usually has a fixed savings rate</li>
+                <li>Very stable and predictable</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Money Market Account</strong>
+              <ul>
+                <li>Often bank or fund based</li>
+                <li>Yield can vary over time</li>
+                <li>May offer checks or debit access</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
           <button class="calculate-btn" onclick="calculate()">Calculate</button>

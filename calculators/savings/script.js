@@ -1,6 +1,10 @@
 /* ── STATE ───────────────────────────────────── */
 let currentGoal = 'emergency';
 let currentStrategy = 'hysa';
+let strategyReturnValues = {
+  hysa: '3.5%',
+  invest: '7%'
+};
 let calcMode = 'monthly'; // 'monthly' or 'deadline'
 let efMonths = 6;
 let homeDownPct = 20;
@@ -187,26 +191,78 @@ function setCalcMode(mode, btn) {
 /* ── STRATEGY ────────────────────────────────── */
 function setStrategy(strategy, btn) {
   currentStrategy = strategy;
-  document.querySelectorAll('.input-group .toggle-btn').forEach(b => {
-    if (b.onclick && b.onclick.toString().includes('setStrategy')) b.classList.remove('active');
+  document.querySelectorAll('#strategyToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  document.querySelectorAll('.strategy-card').forEach(panel => {
+    panel.classList.remove('is-active');
+    panel.hidden = true;
   });
-  btn.classList.add('active');
 
-  document.getElementById('explainer-hysa').style.display = strategy === 'hysa' ? 'block' : 'none';
-  document.getElementById('explainer-invest').style.display = strategy === 'invest' ? 'block' : 'none';
-
-  // Suggest a default rate
-  let rateInput = document.getElementById('annualReturn');
-  if (!rateInput.dataset.userTyped) {
-    rateInput.value = strategy === 'hysa' ? '4.5%' : '7%';
+  let activePanel = document.getElementById(`strategyPanel${strategy.charAt(0).toUpperCase()}${strategy.slice(1)}`);
+  if (activePanel) {
+    activePanel.hidden = false;
+    requestAnimationFrame(() => activePanel.classList.add('is-active'));
   }
+
+  let returnGroup = document.getElementById('expectedReturnGroup');
+  let returnHint = document.getElementById('returnHint');
+  let rateInput = document.getElementById('annualReturn');
+  let presetRow = document.getElementById('investReturnPresets');
+  let differenceBtn = document.getElementById('returnDifferenceBtn');
+  let differencePanel = document.getElementById('returnDifference');
+
+  if (strategy === 'cash') {
+    returnGroup.hidden = true;
+    returnGroup.classList.remove('is-visible');
+    return;
+  }
+
+  returnGroup.hidden = false;
+  requestAnimationFrame(() => returnGroup.classList.add('is-visible'));
+
+  if (strategy === 'hysa') {
+    rateInput.value = strategyReturnValues.hysa || '3.5%';
+    returnHint.textContent = 'Typical range: 3%–5% depending on rates';
+    presetRow.hidden = true;
+    differenceBtn.hidden = false;
+  } else {
+    rateInput.value = strategyReturnValues.invest || '7%';
+    returnHint.textContent = 'Long-term average range: 6%–10%';
+    presetRow.hidden = false;
+    differenceBtn.hidden = true;
+    differencePanel.classList.remove('is-open');
+  }
+
+  syncReturnPresets();
+}
+
+function toggleStrategyDetail(id) {
+  let detail = document.getElementById(id);
+  if (!detail) return;
+  detail.classList.toggle('is-open');
+}
+
+function setReturnPreset(rate, btn) {
+  let rateInput = document.getElementById('annualReturn');
+  rateInput.value = `${rate}%`;
+  strategyReturnValues.invest = rateInput.value;
+  document.querySelectorAll('#investReturnPresets button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function syncReturnPresets() {
+  let currentRate = getPercentValue('annualReturn');
+  document.querySelectorAll('#investReturnPresets button').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.textContent) === currentRate);
+  });
 }
 
 /* ── CALCULATE ───────────────────────────────── */
 function calculate() {
   let goalAmount = parseNum('goalAmount');
   let currentSavings = parseNum('currentSavings');
-  let annualReturn = getPercentValue('annualReturn');
+  let annualReturn = currentStrategy === 'cash' ? 0 : getPercentValue('annualReturn');
   let monthlyReturn = annualReturn / 100 / 12;
   let remaining = Math.max(goalAmount - currentSavings, 0);
 
@@ -570,7 +626,7 @@ function readUrlParams() {
 /* ── INIT ────────────────────────────────────── */
 window.addEventListener('DOMContentLoaded', function () {
   // Set default rate
-  document.getElementById('annualReturn').value = '4.5%';
+  document.getElementById('annualReturn').value = strategyReturnValues.hysa;
 
   // Read URL params for cross-linking
   readUrlParams();
@@ -578,5 +634,9 @@ window.addEventListener('DOMContentLoaded', function () {
   // Mark rate input as user-typed when they type
   document.getElementById('annualReturn').addEventListener('input', function() {
     this.dataset.userTyped = '1';
+    if (currentStrategy !== 'cash') {
+      strategyReturnValues[currentStrategy] = this.value;
+    }
+    syncReturnPresets();
   });
 });

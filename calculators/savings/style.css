@@ -363,6 +363,280 @@ input::placeholder { color: #94a3b8; }
   font-size: 0.82rem;
 }
 
+#savingStrategyGroup,
+#expectedReturnGroup,
+#monthlyContribGroup,
+#deadlineGroup {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+#savingStrategyGroup .strategy-toggle.toggle-group {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding: 4px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+#savingStrategyGroup .strategy-toggle .toggle-btn {
+  border-radius: 8px;
+  min-width: 0;
+  padding: 13px 10px;
+  text-align: center;
+  line-height: 1.35;
+}
+
+#savingStrategyGroup .strategy-toggle .toggle-btn span {
+  display: block;
+  font-size: 0.78rem;
+  opacity: 0.9;
+}
+
+#savingStrategyGroup .strategy-toggle .toggle-btn.active {
+  background: linear-gradient(135deg, #7C3AED, #2563EB);
+  color: white;
+  box-shadow: 0 14px 28px rgba(124, 58, 237, 0.2);
+}
+
+.strategy-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 20px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 14px;
+  background: rgba(124, 58, 237, 0.06);
+  color: #0D1B2A;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.strategy-card[hidden],
+#expectedReturnGroup[hidden],
+#investReturnPresets[hidden],
+#returnDifferenceBtn[hidden] {
+  display: none !important;
+}
+
+.strategy-card.is-active,
+#expectedReturnGroup.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.strategy-card-cash {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.strategy-card-invest {
+  border-color: rgba(236, 72, 153, 0.25);
+  background: rgba(236, 72, 153, 0.06);
+}
+
+.strategy-icon {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #7C3AED;
+  border: 2px solid currentColor;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.strategy-card-cash .strategy-icon { color: #2563EB; }
+.strategy-card-invest .strategy-icon { color: #EC4899; }
+
+.strategy-card-body {
+  min-width: 0;
+}
+
+.strategy-card-body strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #7C3AED;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.strategy-card-cash .strategy-card-body strong { color: #2563EB; }
+.strategy-card-invest .strategy-card-body strong { color: #EC4899; }
+
+.strategy-card-body p,
+.strategy-detail p {
+  color: #475569;
+  line-height: 1.65;
+  font-size: 0.92rem;
+}
+
+.strategy-detail-btn,
+.return-difference-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #7C3AED;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.strategy-card-cash .strategy-detail-btn { color: #2563EB; }
+.strategy-card-invest .strategy-detail-btn { color: #EC4899; }
+
+.strategy-detail-btn span,
+.return-difference-btn > span:last-child {
+  transition: transform 220ms ease;
+}
+
+.strategy-detail {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: max-height 220ms ease, opacity 220ms ease, transform 220ms ease, margin-top 220ms ease, padding 220ms ease;
+}
+
+.strategy-detail.is-open {
+  max-height: 420px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 12px;
+}
+
+#expectedReturnGroup {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+#expectedReturnGroup:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.return-presets {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+.return-presets button {
+  border: 1px solid #e8eaf0;
+  border-radius: 10px;
+  background: white;
+  color: #0D1B2A;
+  padding: 12px 10px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.return-presets button.active {
+  background: linear-gradient(135deg, #7C3AED, #2563EB);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 12px 24px rgba(124, 58, 237, 0.18);
+}
+
+.return-difference-btn {
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  border-radius: 12px;
+  background: rgba(37, 99, 235, 0.05);
+  color: #2563EB;
+}
+
+.info-dot {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563EB;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.return-difference.strategy-detail.is-open {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  border-radius: 12px;
+  background: rgba(37, 99, 235, 0.04);
+}
+
+.return-difference strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #7C3AED;
+  font-weight: 800;
+}
+
+.return-difference ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  color: #475569;
+  line-height: 1.5;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 640px) {
+  #savingStrategyGroup .strategy-toggle.toggle-group {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #savingStrategyGroup .strategy-toggle .toggle-btn {
+    padding: 12px 6px;
+    font-size: 0.82rem;
+  }
+
+  .strategy-card {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .return-presets {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .return-presets button {
+    padding: 11px 6px;
+  }
+
+  .return-difference.strategy-detail.is-open {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── RESULTS ─────────────────────────────────── */
 .summary-box {
   background: #f5f3ff; border: 1px solid #e8eaf0; border-left: 3px solid #7C3AED;
