@@ -728,7 +728,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 .hero-result strong {
   display: block;
   color: var(--color-text);
-  font-size: clamp(2.55rem, 4.6vw, 3.9rem);
+  font-size: clamp(2.2rem, 3.6vw, 3.25rem);
   line-height: 1.05;
   font-weight: 800;
   letter-spacing: 0;
@@ -1110,7 +1110,7 @@ tr:hover td { background: #fbfcff; }
   .mode-btn,
   .toggle-btn { font-size: 0.82rem; padding: 8px 6px; }
   .results { grid-template-columns: 1fr; }
-  .hero-result strong { font-size: clamp(2.05rem, 10vw, 2.75rem); }
+  .hero-result strong { font-size: clamp(1.85rem, 8.5vw, 2.35rem); }
   .result-box strong {
     font-size: clamp(1.55rem, 8vw, 2rem);
     overflow-wrap: anywhere;

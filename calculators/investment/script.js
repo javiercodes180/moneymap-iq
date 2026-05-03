@@ -4,71 +4,6 @@ let myChart = null;
 let chartType = 'balance';
 let yearlyData = [];
 
-// ─── ON PAGE LOAD — RESTORE SAVED INPUTS ─────────────────
-window.onload = function () {
-  const saved = JSON.parse(localStorage.getItem('javierCalc'));
-  if (!saved) return;
-
-  if (saved.mode) {
-    currentMode = saved.mode;
-    if (saved.mode === 'goal') {
-      document.getElementById('growMode').style.display = 'none';
-      document.getElementById('goalMode').style.display = 'block';
-      document.querySelectorAll('.mode-btn')[1].classList.add('active');
-      document.querySelectorAll('.mode-btn')[0].classList.remove('active');
-    }
-  }
-
-  if (saved.lumpsum) setInputValue('lumpsum', saved.lumpsum);
-  if (saved.amount) setInputValue('amount', saved.amount);
-  if (saved.goalAmount) setInputValue('goalAmount', saved.goalAmount);
-  if (saved.goalLumpsum) setInputValue('goalLumpsum', saved.goalLumpsum);
-  if (saved.rate) {
-    const rateEl = document.getElementById('rate');
-    rateEl.dataset.raw = saved.rate;
-    rateEl.value = saved.rate;
-  }
-  if (saved.years) document.getElementById('years').value = saved.years;
-  if (saved.inflation) document.getElementById('inflationToggle').checked = true;
-  if (saved.investmentType) {
-    investmentType = saved.investmentType;
-    if (saved.investmentType === 'yearly') {
-      document.querySelectorAll('.toggle-btn')[1].classList.add('active');
-      document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
-      document.getElementById('amountLabel').textContent = 'Yearly Contribution';
-      document.getElementById('amountHint').textContent = 'How much will you invest each year? e.g. $6,000';
-    } else if (saved.investmentType === 'none') {
-      document.querySelectorAll('.toggle-btn')[2].classList.add('active');
-      document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
-      document.getElementById('contributionGroup').style.display = 'none';
-    }
-  }
-};
-
-function setInputValue(id, value) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const raw = String(value).replace(/[^0-9.]/g, '');
-  el.dataset.raw = raw;
-  el.value = Number(raw).toLocaleString('en-US');
-}
-
-// ─── SAVE INPUTS ──────────────────────────────────────────
-function saveInputs() {
-  const data = {
-    mode: currentMode,
-    investmentType,
-    lumpsum: getRaw('lumpsum') || '',
-    amount: getRaw('amount') || '',
-    goalAmount: getRaw('goalAmount') || '',
-    goalLumpsum: getRaw('goalLumpsum') || '',
-    rate: getRaw('rate') || '',
-    years: document.getElementById('years').value,
-    inflation: document.getElementById('inflationToggle').checked,
-  };
-  localStorage.setItem('javierCalc', JSON.stringify(data));
-}
-
 function setResultsVisible(isVisible) {
   document.body.classList.toggle('has-results', isVisible);
   const tableSection = document.getElementById('tableSection');
@@ -201,8 +136,6 @@ function calculate() {
     return;
   }
 
-  saveInputs();
-
   const monthlyRate = rate / 100 / 12;
   const annualRate = rate / 100;
   yearlyData = [];
@@ -274,8 +207,6 @@ function calculateGoal() {
     alert('Please fill in all fields!');
     return;
   }
-
-  saveInputs();
 
   const monthlyRate = rate / 100 / 12;
   const months = years * 12;
