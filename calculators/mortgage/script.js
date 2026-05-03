@@ -34,7 +34,7 @@ function toggleClosingLearnMore() {
   const btn = document.getElementById('closingLearnMoreBtn');
   const isVisible = section.style.display !== 'none';
   section.style.display = isVisible ? 'none' : 'block';
-  btn.textContent = isVisible ? '📖 Learn more about closing costs' : '📖 Hide closing costs info';
+  btn.innerHTML = isVisible ? '&#128214; Learn more about closing costs' : '&#128214; Hide closing costs info';
 }
 
 // ─── CLOSING COST % MODE ──────────────────────────────────
@@ -157,17 +157,35 @@ function setTerm(years, e) {
 }
 
 // ─── DOWN PAYMENT ─────────────────────────────────────────
+function updateDownQuickActive(percent) {
+  const numericPercent = parseFloat(percent);
+  document.querySelectorAll('.quick-btn[data-down-percent]').forEach(btn => {
+    const btnPercent = parseFloat(btn.dataset.downPercent);
+    btn.classList.toggle('active', Number.isFinite(numericPercent) && btnPercent === numericPercent);
+  });
+}
+
+function getSelectedDownPercent() {
+  const percentInput = document.getElementById('downPercent');
+  const rawPercent = parseFloat(percentInput.dataset.raw || percentInput.value.replace(/[^0-9.]/g, ''));
+  if (Number.isFinite(rawPercent) && rawPercent > 0) return rawPercent;
+
+  const activeBtn = document.querySelector('.quick-btn.active[data-down-percent]');
+  return activeBtn ? parseFloat(activeBtn.dataset.downPercent) : 10;
+}
+
 function setDownPercent(percent) {
   const homePrice = getRaw('homePrice');
+  updateDownQuickActive(percent);
+  const percentEl = document.getElementById('downPercent');
+  percentEl.dataset.raw = percent;
+  percentEl.value = percent + '%';
+  updateDownBadge(percent);
   if (isNaN(homePrice) || homePrice === 0) { alert('Please enter a home price first!'); return; }
   const downAmount = homePrice * (percent / 100);
   const dollarEl = document.getElementById('downPayment');
   dollarEl.dataset.raw = Math.round(downAmount);
   dollarEl.value = '$' + Math.round(downAmount).toLocaleString('en-US');
-  const percentEl = document.getElementById('downPercent');
-  percentEl.dataset.raw = percent;
-  percentEl.value = percent + '%';
-  updateDownBadge(percent);
 }
 
 function syncDownFromDollar() {
@@ -179,6 +197,7 @@ function syncDownFromDollar() {
     percentEl.dataset.raw = percent;
     percentEl.value = percent + '%';
     updateDownBadge(percent);
+    updateDownQuickActive(percent);
   }
 }
 
@@ -195,6 +214,7 @@ function syncDownFromPercent(input) {
     dollarEl.value = '$' + Math.round(downAmount).toLocaleString('en-US');
     updateDownBadge(raw);
   }
+  updateDownQuickActive(raw);
   setTimeout(() => { input.setSelectionRange(input.value.length - 1, input.value.length - 1); }, 0);
 }
 
@@ -202,7 +222,19 @@ function updateDownBadge(percent) {
   document.getElementById('downPercentBadge').textContent = parseFloat(percent).toFixed(1) + '%';
 }
 
-function updateDownPercent() { syncDownFromDollar(); }
+function updateDownPercent() {
+  const homePrice = getRaw('homePrice');
+  const dollarEl = document.getElementById('downPayment');
+  const hasDownPayment = dollarEl.dataset.raw || dollarEl.value.replace(/[^0-9.]/g, '');
+
+  if (!hasDownPayment && !isNaN(homePrice) && homePrice > 0) {
+    const percent = getSelectedDownPercent();
+    setDownPercent(percent);
+    return;
+  }
+
+  syncDownFromDollar();
+}
 
 // ─── FORMAT ───────────────────────────────────────────────
 function formatInput(input) {

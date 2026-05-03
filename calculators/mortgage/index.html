@@ -140,15 +140,15 @@
             <div class="down-divider">or</div>
             <div class="down-input-group">
               <span class="input-label">% of Price</span>
-              <input type="text" id="downPercent" placeholder="e.g. 20" oninput="syncDownFromPercent(this)" />
+              <input type="text" id="downPercent" placeholder="e.g. 20" value="10%" data-raw="10" oninput="syncDownFromPercent(this)" />
             </div>
-            <div class="down-percent-badge" id="downPercentBadge">0%</div>
+            <div class="down-percent-badge" id="downPercentBadge">10.0%</div>
           </div>
           <div class="quick-btns">
-            <button class="quick-btn" onclick="setDownPercent(5)">5%</button>
-            <button class="quick-btn" onclick="setDownPercent(10)">10%</button>
-            <button class="quick-btn" onclick="setDownPercent(20)">20%</button>
-            <button class="quick-btn" onclick="setDownPercent(25)">25%</button>
+            <button class="quick-btn" data-down-percent="5" onclick="setDownPercent(5)">5%</button>
+            <button class="quick-btn active" data-down-percent="10" onclick="setDownPercent(10)">10%</button>
+            <button class="quick-btn" data-down-percent="20" onclick="setDownPercent(20)">20%</button>
+            <button class="quick-btn" data-down-percent="25" onclick="setDownPercent(25)">25%</button>
           </div>
         </div>
 
@@ -231,7 +231,12 @@
           </div>
         </div>
 
-          <button class="calculate-btn" onclick="calculate()">Calculate</button>
+          <button class="calculate-btn" onclick="calculate()">
+            <span class="button-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M16 15h0M8 18h2M12 18h2M16 18h0"/></svg>
+            </span>
+            Calculate
+          </button>
 
       <!-- PMI Explainer — can appear before calculate -->
       <div class="pmi-explainer" id="pmiExplainer" style="display:none">
@@ -349,7 +354,7 @@
 
           <!-- Learn More — right under the options -->
           <button class="learn-more-btn" onclick="toggleClosingLearnMore()" id="closingLearnMoreBtn">
-            Learn more about closing costs
+            &#128214; Learn more about closing costs
           </button>
           <div class="closing-learn-more" id="closingLearnMore" style="display:none">
             <h3>📋 What are Closing Costs?</h3>
@@ -401,7 +406,9 @@
         <!-- Smart Connection -->
         <div class="smart-connection">
           <div class="smart-connection-inner">
-            <div class="smart-icon">Goal</div>
+            <div class="smart-icon">
+              <img src="../../assets/icons/target-focus.svg" alt="" aria-hidden="true" />
+            </div>
             <div class="smart-content">
               <h3>Need to save for your down payment?</h3>
               <p>MoneyMap IQ can calculate exactly how much you need to save each month to reach your down payment goal.</p>

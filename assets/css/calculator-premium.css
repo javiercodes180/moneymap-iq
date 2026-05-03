@@ -196,7 +196,13 @@ body {
   background: transparent;
   color: var(--color-text);
   border-radius: 0;
+  font-size: 1.05rem;
   font-weight: 800;
+  line-height: 1.3;
+}
+
+.step-number::after {
+  content: ".";
 }
 
 .step-label label,
@@ -278,6 +284,10 @@ input::placeholder {
   color: var(--color-primary-dark);
 }
 
+.down-percent-badge {
+  display: none;
+}
+
 .toggle-group,
 .quick-btns,
 .term-grid,
@@ -324,6 +334,12 @@ input::placeholder {
   box-shadow: 0 12px 24px rgba(109, 93, 252, 0.2);
 }
 
+.term-btn.active .term-years,
+.term-btn.active .term-months,
+.term-btn.active .term-label {
+  color: #ffffff;
+}
+
 .calculate-btn,
 .share-btn,
 .what-if-btn,
@@ -347,6 +363,29 @@ input::placeholder {
   color: #ffffff;
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   box-shadow: 0 14px 30px rgba(109, 93, 252, 0.24);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button-icon {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.button-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .calculate-btn:hover,
@@ -380,6 +419,44 @@ input::placeholder {
   flex: 0 0 auto;
   margin: 0;
   white-space: nowrap;
+}
+
+#closingLearnMoreBtn {
+  background: #f0fdfa;
+  border-color: #14b8a630;
+  color: #0d1b2a;
+  text-align: center;
+  box-shadow: none;
+}
+
+#closingLearnMoreBtn:hover,
+#closingLearnMoreBtn:focus {
+  background: #f0fdfa;
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.smart-icon {
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.smart-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.smart-connection .smart-btn {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-color: transparent;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: 0 12px 24px rgba(109, 93, 252, 0.16);
 }
 
 .bottom-share {
