@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Your MoneyMap Flow with MoneyMap IQ. Answer a few questions and see your recommended next financial step." />
+    <meta name="theme-color" content="#0d1b2a" />
+    <meta property="og:title" content="Your MoneyMap Flow — MoneyMap IQ" />
+    <meta property="og:description" content="Answer a few questions and see where to put your next dollar." />
+    <meta property="og:url" content="https://moneymap-iq.vercel.app/calculators/moneymap-flow/" />
+    <meta property="og:image" content="https://moneymap-iq.vercel.app/assets/social/moneymap-iq.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="MoneyMap IQ" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Your MoneyMap Flow — MoneyMap IQ" />
+    <meta name="twitter:description" content="Answer a few questions and see where to put your next dollar." />
+    <meta name="twitter:image" content="https://moneymap-iq.vercel.app/assets/social/moneymap-iq.png" />
+    <title>Your MoneyMap Flow — MoneyMap IQ</title>
+    <link rel="stylesheet" href="../../assets/css/calculator-premium.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="../../logo.png" />
+    <link rel="apple-touch-icon" href="../../logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+
+    <nav class="mmiq-nav">
+      <div class="mmiq-nav-inner">
+        <a href="../../index.html" class="mmiq-brand-link">
+          <img src="../../logo.png" alt="MoneyMap IQ" class="mmiq-logo" />
+          <span class="mmiq-name">MoneyMap<span class="mmiq-iq">IQ</span></span>
+        </a>
+        <div class="mmiq-nav-right">
+          <div class="mmiq-dropdown">
+            <button class="mmiq-menu-btn" aria-label="Menu" onclick="toggleCalcDropdown()">
+              <span class="mmiq-icon-open">☰</span>
+              <span class="mmiq-icon-close">✕</span>
+            </button>
+            <div class="mmiq-dropdown-panel">
+              <div class="mmiq-dd-section">
+                <a href="../../index.html" class="mmiq-dd-home">Home</a>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Tools</h4>
+                <a href="index.html">Your MoneyMap Flow</a>
+                <a href="../investment/index.html">Investment Calculator</a>
+                <a href="../mortgage/index.html">Mortgage Calculator</a>
+                <a href="../car/index.html">Car Payment Calculator</a>
+                <a href="../savings/index.html">Savings Goal Calculator</a>
+                <span class="mmiq-dd-coming">Debt Payoff Calculator <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>Learn</h4>
+                <a href="../../index.html#how-it-works">How MoneyMap IQ Works</a>
+                <span class="mmiq-dd-coming">How the Calculators Work <em>Coming Soon</em></span>
+              </div>
+              <div class="mmiq-dd-divider"></div>
+              <div class="mmiq-dd-section">
+                <h4>About</h4>
+                <span class="mmiq-dd-coming">Our Story <em>Coming Soon</em></span>
+                <span class="mmiq-dd-coming">Blog <em>Coming Soon</em></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="calculator-page flow-page">
+      <section class="calculator-shell flow-shell">
+        <div class="input-panel flow-panel">
+          <header class="flow-hero">
+            <span class="eyebrow">Your MoneyMap Flow</span>
+            <h1>Not sure where to start?</h1>
+            <p class="subtitle">Answer a few quick questions and MoneyMap IQ will show the next best place to focus your money.</p>
+            <button class="calculate-btn flow-start-btn" onclick="startFlow()">
+              <span class="button-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+              </span>
+              Start the flow
+            </button>
+          </header>
+
+          <div class="flow-preview" aria-label="MoneyMap roadmap preview">
+            <span>Emergency Fund</span>
+            <span>Debt</span>
+            <span>401(k)</span>
+            <span>Investing</span>
+          </div>
+
+          <section class="question-card" id="questionCard" aria-live="polite">
+            <div class="question-topline">
+              <span class="panel-kicker" id="questionKicker">Question 1 of 5</span>
+              <span class="progress-count" id="progressCount">20%</span>
+            </div>
+            <div class="flow-progress" aria-hidden="true">
+              <span id="progressBar"></span>
+            </div>
+
+            <div class="question-copy">
+              <span class="question-icon" id="questionIcon" aria-hidden="true"></span>
+              <div>
+                <h2 id="questionTitle"></h2>
+                <p id="questionText"></p>
+              </div>
+            </div>
+
+            <div class="answer-grid" id="answerGrid">
+              <button class="toggle-btn" data-answer="yes" onclick="selectAnswer('yes')">Yes</button>
+              <button class="toggle-btn" data-answer="no" onclick="selectAnswer('no')">No</button>
+              <button class="toggle-btn" data-answer="unsure" onclick="selectAnswer('unsure')">Not sure</button>
+            </div>
+
+            <div class="question-actions">
+              <button class="share-btn" id="backBtn" onclick="goBack()">Back</button>
+              <button class="calculate-btn" id="nextBtn" onclick="goNext()" disabled>Next</button>
+            </div>
+          </section>
+        </div>
+
+        <aside class="result-panel flow-result-panel" id="resultsSection" aria-label="MoneyMap Flow results">
+          <div class="result-panel-top">
+            <span class="panel-kicker">Your Roadmap</span>
+            <button class="share-btn compact-share" onclick="resetFlow()">Start Over</button>
+          </div>
+
+          <section class="recommendation-card" id="recommendationCard">
+            <span class="recommendation-status" id="recommendationStatus">Focus now</span>
+            <h2 id="recommendationTitle">Build your emergency fund</h2>
+            <p id="recommendationText">Start with a small cash cushion before taking bigger financial swings.</p>
+            <div class="recommendation-actions" id="recommendationActions"></div>
+            <p class="recommendation-note">MoneyMap IQ is educational and does not provide financial advice.</p>
+          </section>
+
+          <section class="roadmap" id="roadmapList" aria-label="Financial roadmap steps"></section>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="calc-footer">
+      <div class="calc-footer-inner">
+        <div class="calc-footer-top">
+          <div class="calc-footer-brand">
+            <a href="../../index.html" class="calc-footer-logo">
+              <img src="../../logo.png" alt="MoneyMap IQ" />
+              <span class="cf-name">MoneyMap</span>
+              <span class="cf-iq">IQ</span>
+            </a>
+            <p class="calc-footer-tagline">Map your money. Reach your goals.</p>
+          </div>
+        </div>
+        <div class="calc-footer-columns">
+          <div class="calc-footer-col">
+            <h4>Tools</h4>
+            <a href="index.html">Your MoneyMap Flow</a>
+            <a href="../investment/index.html">Investment Calculator</a>
+            <a href="../mortgage/index.html">Mortgage Calculator</a>
+            <a href="../car/index.html">Car Payment Calculator</a>
+            <a href="../savings/index.html">Savings Goal Calculator</a>
+            <span class="cf-coming">Debt Payoff Calculator</span>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Features</h4>
+            <a href="../../index.html#how-it-works">How It Works</a>
+            <a href="../../index.html#calculators">All Tools</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Privacy &amp; Security</a>
+          </div>
+          <div class="calc-footer-col">
+            <h4>Support</h4>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+          </div>
+        </div>
+        <div class="calc-footer-bottom">
+          <p class="calc-footer-disclaimer">MoneyMap IQ is for educational purposes only and does not provide financial advice. Always consult a qualified financial professional before making financial decisions.</p>
+          <div class="calc-footer-bottom-row">
+            <p class="calc-footer-copy">&copy; 2025 MoneyMap IQ. All rights reserved.</p>
+            <div class="calc-footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Use</a>
+              <a href="#">Disclaimer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
