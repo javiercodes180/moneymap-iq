@@ -193,6 +193,7 @@ function calculate() {
   generateSummary(final, rate, years, lumpsum, amount, adjustInflation);
   drawChart();
   drawTable();
+  if (typeof showEmailCapture === 'function') showEmailCapture('investment');
   scrollToResultsIfNeeded();
 }
 
@@ -269,6 +270,7 @@ function calculateGoal() {
 
   drawChart();
   drawTable();
+  if (typeof showEmailCapture === 'function') showEmailCapture('investment');
   scrollToResultsIfNeeded();
 }
 

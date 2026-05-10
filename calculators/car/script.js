@@ -395,6 +395,7 @@ function displayResults() {
 
   buildDonutChart();
   buildAmortization();
+  if (typeof showEmailCapture === 'function') showEmailCapture('car');
 
   if (window.matchMedia('(max-width: 1120px)').matches) {
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });

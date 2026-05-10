@@ -433,6 +433,7 @@ function displayResults() {
   buildTable();
   // Chart
   drawChart();
+  if (typeof showEmailCapture === 'function') showEmailCapture('savings');
 
   if (window.matchMedia('(max-width: 1120px)').matches) {
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });

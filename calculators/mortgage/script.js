@@ -373,6 +373,7 @@ function calculate() {
   drawDonutChart(monthlyPI, monthlyTax, monthlyInsurance, monthlyPMI, totalMonthly);
   drawMainChart();
   buildAmortization(loanAmount, monthlyRate, numPayments, monthlyPI);
+  if (typeof showEmailCapture === 'function') showEmailCapture('mortgage');
   if (window.matchMedia('(max-width: 1120px)').matches) {
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else {

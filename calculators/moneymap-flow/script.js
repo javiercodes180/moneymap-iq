@@ -114,6 +114,7 @@ function goNext() {
     currentStepIndex += 1;
     renderQuestion();
   } else {
+    if (typeof showEmailCapture === 'function') showEmailCapture('flow');
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
@@ -127,6 +128,11 @@ function goBack() {
 function resetFlow() {
   answers = {};
   currentStepIndex = 0;
+  const capture = document.getElementById('results-capture');
+  if (capture) {
+    capture.style.display = 'none';
+    capture.dataset.formKey = '';
+  }
   renderQuestion();
   updateRecommendation();
   document.getElementById('questionCard').scrollIntoView({ behavior: 'smooth', block: 'center' });

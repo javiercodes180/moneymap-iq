@@ -470,6 +470,19 @@
           </div>
         </div>
 
+        <!-- Post-Results Email Capture -->
+        <div id="results-capture" class="results-email-capture" style="display:none;">
+          <div class="results-capture-inner">
+            <p class="capture-headline">Save your results + get your plan</p>
+            <p class="capture-sub">We'll email you a summary and a free checklist of next steps.</p>
+            <div class="capture-row">
+              <input type="email" id="results-email" placeholder="your@email.com" autocomplete="email" />
+              <button onclick="handleResultsSubmit()">Email me this</button>
+            </div>
+            <p id="results-msg" class="capture-msg"></p>
+          </div>
+        </div>
+
         <button class="share-btn bottom-share" onclick="shareResults()">Copy Results to Share</button>
 
         </aside>
@@ -531,6 +544,7 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="../../js/email-capture.js"></script>
 
     <script>
       function toggleCalcDropdown() {

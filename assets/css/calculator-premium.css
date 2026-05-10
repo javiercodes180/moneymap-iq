@@ -625,6 +625,96 @@ td {
   background: var(--color-primary-soft);
 }
 
+/* ── Post-Results Capture ────────────────────── */
+.results-email-capture {
+  margin-top: 24px;
+}
+
+.results-capture-inner {
+  padding: 20px 24px;
+  border: 1px solid #ede9fc;
+  border-left: 4px solid #7C3AED;
+  border-radius: 0 12px 12px 0;
+  background: #f0ecff;
+}
+
+.results-capture-inner .capture-headline {
+  margin: 0 0 4px;
+  color: #0d1b2a;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.results-capture-inner .capture-sub {
+  margin: 0 0 14px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.results-capture-inner .capture-row {
+  display: flex;
+  gap: 10px;
+}
+
+.results-capture-inner .capture-row input[type="email"] {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  outline: none;
+  background: #ffffff;
+  color: var(--color-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+}
+
+.results-capture-inner .capture-row input[type="email"]:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(109, 93, 252, 0.12);
+}
+
+.results-capture-inner .capture-row button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: #7C3AED;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.results-capture-inner .capture-row button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.results-capture-inner .capture-row button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.results-capture-inner .capture-msg {
+  min-height: 20px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.capture-success {
+  margin: 0;
+  padding: 12px 0;
+  color: #10b981;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 @media (max-width: 1120px) {
   .calculator-page {
     padding: 34px 18px 44px;
@@ -700,5 +790,13 @@ td {
 
   .compact-share {
     padding: 10px 12px;
+  }
+
+  .results-capture-inner .capture-row {
+    flex-direction: column;
+  }
+
+  .results-capture-inner .capture-row button {
+    width: 100%;
   }
 }
