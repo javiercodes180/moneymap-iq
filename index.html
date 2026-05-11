@@ -17,35 +17,34 @@
     <meta name="twitter:title" content="MoneyMap IQ" />
     <meta name="twitter:description" content="Use the right financial tool for your next money decision." />
     <meta name="twitter:image" content="https://moneymap-iq.vercel.app/assets/social/moneymap-iq.png" />
-    <title>MoneyMap IQ — Financial Decisions, Made Clearer</title>
+    <title>MoneyMap IQ - Financial Decisions, Made Clearer</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/png" href="logo.png" />
     <link rel="apple-touch-icon" href="logo.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
-
-    <!-- NAVIGATION -->
     <nav class="nav">
-      <div class="nav-inner">
-        <div class="nav-logo">
+      <div class="container nav-inner">
+        <a class="nav-logo" href="index.html" aria-label="MoneyMap IQ home">
           <img src="logo.png" alt="MoneyMap IQ Logo" class="nav-logo-img" />
-          <div class="nav-logo-text">
+          <span class="nav-logo-text">
             <span class="logo-money">MoneyMap</span>
             <span class="logo-iq">IQ</span>
-          </div>
-        </div>
+          </span>
+        </a>
         <div class="nav-links">
+          <a href="#calculators" class="nav-text-link">Tools</a>
           <a href="#why-moneymap" class="nav-text-link">Why MoneyMap IQ</a>
-          <a href="#calculators" class="nav-cta nav-cta-desktop">Browse Tools</a>
+          <a href="#flow" class="nav-cta nav-cta-desktop">Find my move</a>
           <div class="nav-dropdown">
             <button class="nav-menu-btn" aria-label="Menu" onclick="toggleDropdown()">
               <span class="menu-icon-open">☰</span>
-              <span class="menu-icon-close">✕</span>
+              <span class="menu-icon-close">×</span>
             </button>
             <div class="dropdown-panel">
-            <div class="dropdown-section">
-              <h4>Tools</h4>
+              <div class="dropdown-section">
+                <h4>Tools</h4>
                 <a href="calculators/moneymap-flow/index.html">Your MoneyMap Flow</a>
                 <a href="calculators/investment/index.html">Investment Calculator</a>
                 <a href="calculators/mortgage/index.html">Mortgage Calculator</a>
@@ -62,8 +61,8 @@
               <div class="dropdown-divider"></div>
               <div class="dropdown-section">
                 <h4>About</h4>
-                <span class="dropdown-coming">Our Story <em>Coming Soon</em></span>
-                <span class="dropdown-coming">Blog <em>Coming Soon</em></span>
+                <a href="about/index.html">About</a>
+                <a href="blog/index.html">Blog</a>
               </div>
             </div>
           </div>
@@ -71,433 +70,465 @@
       </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-shell">
-        <div class="hero-copy-panel">
-          <p class="hero-eyebrow">Financial decisions, made clearer</p>
-          <h1 class="hero-title">Use the right tool for your next money decision.</h1>
-          <p class="hero-subtitle">
-            MoneyMap IQ helps you understand big financial choices like saving, investing, buying a home, financing a car, and paying down debt, with easy to use tools that show what the numbers actually mean.
-          </p>
-          <div class="hero-ctas">
-            <a href="#calculators" class="btn-primary">Browse tools</a>
-            <a href="#why-moneymap" class="btn-secondary">Why we built this</a>
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Map your money. Reach your goals.</p>
+          <div class="hero-question-wrap" aria-live="polite">
+            <h1 class="hero-question active">Can I afford a $450,000 home?</h1>
+            <h1 class="hero-question">How fast can I pay off $8,000 in credit card debt?</h1>
+            <h1 class="hero-question">What does $200/month invested for 20 years become?</h1>
+            <h1 class="hero-question">How much do I save monthly for a $30k down payment?</h1>
           </div>
+          <p class="hero-support">Plain-English financial tools. Free. No signup. Built for the moment before you feel confident.</p>
+          <div class="hero-cta-row">
+            <a href="calculators/mortgage/index.html?home=450000&amp;down=10&amp;rate=7.1" class="btn-primary" id="heroPrimaryCta">Run the numbers →</a>
+            <a href="#lead" class="btn-secondary">Not sure? Get our 5 Money Moves →</a>
+          </div>
+          <div class="hero-dots" aria-label="Hero question controls">
+            <button class="hero-dot active" type="button" data-hero-dot="0" aria-label="Show home affordability question"></button>
+            <button class="hero-dot" type="button" data-hero-dot="1" aria-label="Show debt payoff question"></button>
+            <button class="hero-dot" type="button" data-hero-dot="2" aria-label="Show investment growth question"></button>
+            <button class="hero-dot" type="button" data-hero-dot="3" aria-label="Show down payment savings question"></button>
+          </div>
+        </div>
 
-          <div class="email-capture-strip hero-capture-card">
-            <p class="capture-eyebrow">Free Starter Kit</p>
-            <h2 class="capture-headline">Get your first 5 money moves</h2>
-            <p class="capture-sub">A plain-English guide to help you decide what to do next with your money.</p>
-            <div class="capture-row">
-              <input type="email" id="hero-email" placeholder="your@email.com" autocomplete="email" />
-              <button onclick="handleHeroSubmit()">Send it free</button>
+        <div class="result-card-wrap" aria-live="polite">
+          <article class="result-card active" data-hero-card="0">
+            <div class="result-label">
+              <span class="result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </span>
+              <span class="result-label-text">Monthly mortgage payment</span>
             </div>
-            <p class="capture-reassurance">No spam. Unsubscribe anytime.</p>
+            <div class="result-number-row">
+              <span class="result-number" data-target="2847" data-prefix="$">$0</span>
+              <span class="result-unit">/month</span>
+            </div>
+            <svg class="result-viz" viewBox="0 0 320 80" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Mortgage payment breakdown">
+              <rect x="0" y="32" width="180" height="16" rx="8" fill="#7C3AED"/>
+              <rect x="184" y="32" width="60" height="16" rx="8" fill="#EC4899"/>
+              <rect x="248" y="32" width="40" height="16" rx="8" fill="#14B8A6"/>
+              <rect x="292" y="32" width="28" height="16" rx="8" fill="#fcd34d"/>
+              <text x="0" y="64">Principal &amp; Interest</text>
+              <text x="184" y="64">Tax</text>
+              <text x="248" y="64">Ins</text>
+              <text x="292" y="64">PMI</text>
+            </svg>
+            <p class="result-interp">You'd need about a <strong>$241k household income</strong> to keep this within the 28% rule lenders prefer.</p>
+          </article>
+
+          <article class="result-card" data-hero-card="1">
+            <div class="result-label">
+              <span class="result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </span>
+              <span class="result-label-text">Months to debt-free</span>
+            </div>
+            <div class="result-number-row">
+              <span class="result-number" data-target="18">0</span>
+              <span class="result-unit">months</span>
+            </div>
+            <svg class="result-viz debt-viz" viewBox="0 0 320 80" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Debt payoff progress">
+              <defs><linearGradient id="debtGradient" x1="0" x2="1"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#EC4899"/></linearGradient></defs>
+              <rect x="0" y="36" width="320" height="8" rx="4" fill="#ede9fc"/>
+              <rect x="0" y="36" width="320" height="8" rx="4" fill="url(#debtGradient)"/>
+              <text x="0" y="20" fill="#0d1b2a">$8,000</text>
+              <text x="290" y="20" fill="#10b981">$0</text>
+              <text x="0" y="64">Today</text>
+              <text x="285" y="64">Month 18</text>
+            </svg>
+            <p class="result-interp">Paying <strong>$500/month</strong> on $8,000 at 22% APR. You'd save about <strong>$1,400 in interest</strong> vs. minimums.</p>
+          </article>
+
+          <article class="result-card" data-hero-card="2">
+            <div class="result-label">
+              <span class="result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              </span>
+              <span class="result-label-text">In 20 years, you'd have</span>
+            </div>
+            <div class="result-number-row">
+              <span class="result-number" data-target="98400" data-prefix="$">$0</span>
+            </div>
+            <svg class="result-viz" viewBox="0 0 320 80" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Investment growth curve">
+              <defs><linearGradient id="investGradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#7C3AED" stop-opacity=".32"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></linearGradient></defs>
+              <path class="chart-area" d="M0 70 Q80 65 120 55 T220 30 T320 10 L320 80 L0 80Z" fill="url(#investGradient)"/>
+              <path class="chart-line" d="M0 70 Q80 65 120 55 T220 30 T320 10"/>
+              <circle class="chart-dot" cx="320" cy="10" r="4"/>
+            </svg>
+            <p class="result-interp"><strong>$48k of that is growth.</strong> $200/month invested at a 7% average return — time is doing most of the work.</p>
+          </article>
+
+          <article class="result-card" data-hero-card="3">
+            <div class="result-label">
+              <span class="result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+              </span>
+              <span class="result-label-text">Save per month</span>
+            </div>
+            <div class="result-number-row">
+              <span class="result-number" data-target="833" data-prefix="$">$0</span>
+              <span class="result-unit">/month</span>
+            </div>
+            <svg class="result-viz result-bars" viewBox="0 0 320 80" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Savings progress bars">
+              <rect x="0" y="60" width="24" height="14" rx="2" fill="#ede9fc"/>
+              <rect x="30" y="50" width="24" height="24" rx="2" fill="#ede9fc"/>
+              <rect x="60" y="42" width="24" height="32" rx="2" fill="#c4b5fd"/>
+              <rect x="90" y="34" width="24" height="40" rx="2" fill="#c4b5fd"/>
+              <rect x="120" y="26" width="24" height="48" rx="2" fill="#a78bfa"/>
+              <rect x="150" y="18" width="24" height="56" rx="2" fill="#a78bfa"/>
+              <rect x="180" y="14" width="24" height="60" rx="2" fill="#8b5cf6"/>
+              <rect x="210" y="10" width="24" height="64" rx="2" fill="#8b5cf6"/>
+              <rect x="240" y="6" width="24" height="68" rx="2" fill="#7C3AED"/>
+              <rect x="270" y="2" width="24" height="72" rx="2" fill="#7C3AED"/>
+            </svg>
+            <p class="result-interp">To hit <strong>$30,000 in 36 months</strong>. Automate it on payday — money without a job tends to get spent.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust">
+      <div class="container trust-inner">
+        <div class="trust-pill"><span>✓</span> Free core tools</div>
+        <div class="trust-pill"><span>✓</span> No signup</div>
+        <div class="trust-pill"><span>✓</span> Plain-English</div>
+        <div class="trust-pill"><span>✓</span> Built with education in mind</div>
+      </div>
+    </div>
+
+    <section class="decision-tiles" id="decision-tiles">
+      <div class="container">
+        <p class="sec-eyebrow">Start with the decision</p>
+        <h2 class="sec-heading">What are you trying to decide?</h2>
+        <p class="sec-sub">Tap the question that fits your situation. We'll take you straight to the right tool with the right defaults.</p>
+        <div class="tiles">
+          <a href="calculators/moneymap-flow/index.html" class="tile t1">
+            <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            <span class="tile-q">Where should I start?</span>
+            <span class="tile-sub">Not sure what to focus on first. Answer 5 quick questions and we'll point you somewhere useful.</span>
+            <span class="tile-arrow">Take the Flow →</span>
+          </a>
+          <a href="calculators/mortgage/index.html?home=450000&amp;down=10&amp;rate=7.1" class="tile t2">
+            <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span class="tile-q">Can I afford this home?</span>
+            <span class="tile-sub">See the full monthly payment with taxes, insurance, and PMI — plus what income lenders expect.</span>
+            <span class="tile-arrow">Mortgage tool →</span>
+          </a>
+          <a href="calculators/car/index.html" class="tile t3">
+            <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17H3v-6l2-5h9l4 5h2v6h-2"/></svg></span>
+            <span class="tile-q">What will this car really cost?</span>
+            <span class="tile-sub">Look past the sticker price. See the monthly payment and how much you'll pay in interest.</span>
+            <span class="tile-arrow">Car tool →</span>
+          </a>
+          <a href="calculators/savings/index.html?goal=30000&amp;months=36" class="tile t4">
+            <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg></span>
+            <span class="tile-q">How much should I save?</span>
+            <span class="tile-sub">Pick a goal and a timeline. We'll tell you the monthly number to automate on payday.</span>
+            <span class="tile-arrow">Savings tool →</span>
+          </a>
+          <a href="calculators/investment/index.html?monthly=200&amp;years=20&amp;rate=7" class="tile t5">
+            <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>
+            <span class="tile-q">What could investing grow into?</span>
+            <span class="tile-sub">See what time and compound growth can do — even with small monthly contributions.</span>
+            <span class="tile-arrow">Investment tool →</span>
+          </a>
+          <a href="calculators/savings/index.html?goal=8000&amp;months=18" class="tile t6">
+            <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
+            <span class="tile-q">How fast can I pay off debt?</span>
+            <span class="tile-sub">Compare snowball vs. avalanche. See how much faster you'd be free with even $50 more.</span>
+            <span class="tile-arrow">Coming soon</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="lead-section email-capture-strip" id="lead">
+      <div class="container">
+        <div class="lead-card">
+          <div class="lead-copy">
+            <p class="lead-eye">Free starter kit</p>
+            <h2>Not sure where to start? Get our 5 Money Moves.</h2>
+            <p>A plain-English starter guide. The 5 moves we suggest everyone make, in order — from emergency buffer to first dollar invested.</p>
+            <div class="lead-form">
+              <input class="lead-input" type="email" id="hero-email" placeholder="your@email.com" autocomplete="email" />
+              <button class="lead-submit" type="button" onclick="handleHeroSubmit()">Get my 5 money moves</button>
+            </div>
+            <div class="lead-fine">No spam. Unsubscribe anytime.</div>
             <p id="hero-msg" class="capture-msg"></p>
           </div>
-        </div>
-
-        <div class="hero-preview-panel decision-hub" aria-label="MoneyMap IQ decision hub preview">
-          <div class="preview-topline">
-            <span>What are you trying to decide?</span>
-            <a href="#calculators">View all</a>
-          </div>
-
-          <div class="decision-grid">
-            <button class="decision-card is-active" type="button" data-decision-card>
-              <span class="decision-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2z"/></svg>
-              </span>
-              <span>Where should I start?</span>
-            </button>
-
-            <button class="decision-card" type="button" data-decision-card>
-              <span class="decision-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/></svg>
-              </span>
-              <span>Can I afford this home?</span>
-            </button>
-
-            <button class="decision-card" type="button" data-decision-card>
-              <span class="decision-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M6 16h12"/><path d="M5 16l1.5-5h11L19 16"/><path d="M7 16v3"/><path d="M17 16v3"/><circle cx="8" cy="19" r="1"/><circle cx="16" cy="19" r="1"/></svg>
-              </span>
-              <span>What will this car really cost?</span>
-            </button>
-
-            <button class="decision-card" type="button" data-decision-card>
-              <span class="decision-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-              </span>
-              <span>How much should I save?</span>
-            </button>
-
-            <button class="decision-card" type="button" data-decision-card>
-              <span class="decision-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 18h16"/><path d="M6 15l4-4 3 3 5-7"/><path d="M15 7h3v3"/></svg>
-              </span>
-              <span>What could investing grow into?</span>
-            </button>
-          </div>
-
-          <div class="decision-result-shell" aria-live="polite">
-            <article class="decision-result is-active" data-decision-result>
-              <p class="decision-result-label">Recommended tool</p>
-              <h2>Your MoneyMap Flow</h2>
-              <p>Answer a few questions and see the next best place to focus your money.</p>
-              <a href="calculators/moneymap-flow/index.html">Find your starting point</a>
-            </article>
-
-            <article class="decision-result" data-decision-result>
-              <p class="decision-result-label">Recommended tool</p>
-              <h2>Mortgage Calculator</h2>
-              <p>Estimate the monthly payment, cash to close, PMI, taxes, and insurance before you shop.</p>
-              <a href="calculators/mortgage/index.html">Estimate monthly payment</a>
-            </article>
-
-            <article class="decision-result" data-decision-result>
-              <p class="decision-result-label">Recommended tool</p>
-              <h2>Car Payment Calculator</h2>
-              <p>Look past the sticker price and compare the full monthly cost of financing a car.</p>
-              <a href="calculators/car/index.html">See total car cost</a>
-            </article>
-
-            <article class="decision-result" data-decision-result>
-              <p class="decision-result-label">Recommended tool</p>
-              <h2>Savings Goal Planner</h2>
-              <p>Turn a goal into a monthly savings target and timeline you can actually use.</p>
-              <a href="calculators/savings/index.html">Build a savings plan</a>
-            </article>
-
-            <article class="decision-result" data-decision-result>
-              <p class="decision-result-label">Recommended tool</p>
-              <h2>Investment Calculator</h2>
-              <p>See how starting amount, contributions, and time can change the future value of your money.</p>
-              <a href="calculators/investment/index.html">Project investment growth</a>
-            </article>
-          </div>
-
-          <div class="hero-trust-row">
-            <span><i aria-hidden="true">✓</i> Free to use</span>
-            <span><i aria-hidden="true">✓</i> No account required</span>
-            <span><i aria-hidden="true">✓</i> Plain-English explanations</span>
+          <div class="lead-preview" aria-label="Five Money Moves preview">
+            <p class="lead-preview-h">Your first 5 money moves</p>
+            <h3>A plain-English starter guide</h3>
+            <div class="lead-move"><span>1</span><p>Build a $1,000 emergency buffer</p></div>
+            <div class="lead-move"><span>2</span><p>Move savings to a high-yield account</p></div>
+            <div class="lead-move"><span>3</span><p>Understand what your debt costs</p></div>
+            <div class="lead-move"><span>4</span><p>Know your savings number for any goal</p></div>
+            <div class="lead-move"><span>5</span><p>Start investing — even $50/month</p></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FEATURED FLOW -->
-    <section class="featured-flow">
-      <div class="section-inner">
-        <div class="featured-flow-card">
-          <div class="featured-flow-copy">
-            <p class="section-eyebrow">Start here</p>
-            <h2>Start with your MoneyMap Flow</h2>
-            <p>Answer a few questions and we'll point you to the tool that fits your next decision.</p>
-            <a href="calculators/moneymap-flow/index.html" class="btn-primary">Start Your MoneyMap Flow</a>
-          </div>
-          <div class="featured-roadmap" aria-label="Mini roadmap">
-            <span>Emergency Fund</span>
-            <i aria-hidden="true"></i>
-            <span>Debt</span>
-            <i aria-hidden="true"></i>
-            <span>401(k)</span>
-            <i aria-hidden="true"></i>
-            <span>Investing</span>
-          </div>
+    <section class="flow-section" id="flow">
+      <div class="container flow-grid">
+        <div>
+          <div class="flow-tag">⚡ Our signature tool</div>
+          <h2 class="sec-heading">Not sure where to start? In 5 questions, we'll tell you.</h2>
+          <p class="sec-sub">The MoneyMap Flow is a 5-question diagnostic that tells you the single most useful next move for your money — and which tool to use to figure it out.</p>
+          <a href="calculators/moneymap-flow/index.html" class="btn-primary">Start the Flow →</a>
         </div>
-      </div>
-    </section>
-
-    <!-- TOOLS -->
-    <section class="calculators" id="calculators">
-      <div class="section-inner">
-        <div class="section-header">
-          <h2>Financial Tools</h2>
-          <p>Tools for the money decisions people actually face.</p>
-        </div>
-        <div class="card-grid">
-
-          <a href="calculators/moneymap-flow/index.html" class="calc-card available">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8 4.8-2.2z"/></svg>
+        <div class="flow-mock" aria-label="MoneyMap Flow preview">
+          <div class="flow-mock-card">
+            <div class="flow-progress">
+              <span>Question 2 of 5</span>
+              <strong>40%</strong>
             </div>
-            <div class="card-content">
-              <span class="card-kicker">Recommended</span>
-              <h3>Your MoneyMap Flow</h3>
-              <p>Answer a few questions and find your next best money move</p>
-            </div>
-            <div class="card-arrow">→</div>
-          </a>
-
-          <a href="calculators/investment/index.html" class="calc-card available">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 18h16"/><path d="M6 15l4-4 3 3 5-7"/><path d="M15 7h3v3"/></svg>
-            </div>
-            <div class="card-content">
-              <span class="card-kicker">Calculator</span>
-              <h3>Investment Calculator</h3>
-              <p>See how your money grows over time with compound interest</p>
-            </div>
-            <div class="card-arrow">→</div>
-          </a>
-
-          <a href="calculators/mortgage/index.html" class="calc-card available">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/></svg>
-            </div>
-            <div class="card-content">
-              <span class="card-kicker">Calculator</span>
-              <h3>Mortgage Calculator</h3>
-              <p>Calculate monthly payments and total cost of your home loan</p>
-            </div>
-            <div class="card-arrow">→</div>
-          </a>
-
-          <a href="calculators/car/index.html" class="calc-card available">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M6 16h12"/><path d="M5 16l1.5-5h11L19 16"/><path d="M7 16v3"/><path d="M17 16v3"/><circle cx="8" cy="19" r="1"/><circle cx="16" cy="19" r="1"/></svg>
-            </div>
-            <div class="card-content">
-              <span class="card-kicker">Calculator</span>
-              <h3>Car Payment Calculator</h3>
-              <p>Figure out your monthly payments and total car loan cost</p>
-            </div>
-            <div class="card-arrow">→</div>
-          </a>
-
-          <a href="#" class="calc-card coming-soon">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg>
-            </div>
-            <div class="card-content">
-              <span class="card-kicker">Coming soon</span>
-              <h3>Debt Payoff Calculator</h3>
-              <p>Create a plan to eliminate credit card and loan debt faster</p>
-            </div>
-            <div class="card-badge">Coming Soon</div>
-          </a>
-
-          <a href="calculators/savings/index.html" class="calc-card available">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-            </div>
-            <div class="card-content">
-              <span class="card-kicker">Calculator</span>
-              <h3>Savings Goal Planner</h3>
-              <p>Find out how long it takes to reach any savings target</p>
-            </div>
-            <div class="card-arrow">→</div>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- WHY MONEYMAP IQ EXISTS -->
-    <section class="why-moneymap" id="why-moneymap">
-      <div class="section-inner">
-        <div class="why-card">
-          <div>
-            <p class="section-eyebrow">Why MoneyMap IQ exists</p>
-            <h2>Personal finance should not feel like rocket science.</h2>
-          </div>
-          <div class="why-copy">
-            <p>People make big money decisions every day: buying a home, financing a car, paying down debt, saving for the future. Too often, the tools assume you already know what you are doing.</p>
-            <p>MoneyMap IQ is built for the moment before you feel confident. It gives you plain-English tools, clearer tradeoffs, and a practical next step.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DECISION PROCESS -->
-    <section class="how-it-works decision-process" id="decision-process">
-      <div class="section-inner">
-        <div class="section-header">
-          <h2>From question to decision</h2>
-          <p>Use MoneyMap IQ when you need the numbers, the tradeoff, and the next step to make sense.</p>
-        </div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">1</div>
-            <div class="step-content">
-              <h3>Pick the decision in front of you</h3>
-              <p>Start with the real choice you are trying to make right now.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">2</div>
-            <div class="step-content">
-              <h3>Run the matching tool</h3>
-              <p>Use a calculator built for that specific money question.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">3</div>
-            <div class="step-content">
-              <h3>Understand the tradeoff</h3>
-              <p>See what the result means before you make the decision.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">4</div>
-            <div class="step-content">
-              <h3>Take the next step</h3>
-              <p>Move forward with a clearer number and a practical action.</p>
+            <div class="flow-bar"><span></span></div>
+            <p class="flow-q-num">Step 2</p>
+            <h3>Do you have any high-interest debt right now?</h3>
+            <div class="flow-options">
+              <span>Yes — credit cards or payday</span>
+              <span class="selected">Just student loans</span>
+              <span>Just a mortgage / car loan</span>
+              <span>No debt at all</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FINAL CTA -->
-    <section class="final-cta footer-capture">
-      <div class="section-inner">
-        <div class="final-cta-card">
-          <div>
-            <p class="section-eyebrow">Free Starter Kit</p>
-            <h2>Want the starter kit before you calculate?</h2>
-            <p>Get the free guide and come back when you are ready to run the numbers.</p>
+    <section class="tools-section" id="calculators">
+      <div class="container">
+        <p class="sec-eyebrow">All financial tools</p>
+        <h2 class="sec-heading">Tools for the money decisions people actually face.</h2>
+        <p class="sec-sub">Every tool is free. No signup. No data sold. Each one explains the answer in plain English, not just the number.</p>
+        <div class="tools-grid">
+          <a href="calculators/moneymap-flow/index.html" class="tool-card">
+            <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            <h3>MoneyMap Flow</h3>
+            <p>5 questions, one clear next move.</p>
+            <div class="tool-example">Sarah was overwhelmed → <strong>got pointed to her emergency fund first</strong></div>
+            <span class="tool-cta">Take the Flow →</span>
+          </a>
+          <a href="calculators/mortgage/index.html" class="tool-card">
+            <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <h3>Mortgage Calculator</h3>
+            <p>Full monthly payment including PMI, taxes, and insurance.</p>
+            <div class="tool-example">Marcus on a $450k home → <strong>$2,847/mo with 10% down</strong></div>
+            <span class="tool-cta">Run the numbers →</span>
+          </a>
+          <a href="calculators/investment/index.html" class="tool-card">
+            <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>
+            <h3>Investment Calculator</h3>
+            <p>See what time and compound growth can really do.</p>
+            <div class="tool-example">$200/mo for 20 years → <strong>~$98,400 at a 7% return</strong></div>
+            <span class="tool-cta">Project growth →</span>
+          </a>
+          <a href="calculators/savings/index.html" class="tool-card">
+            <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg></span>
+            <h3>Savings Goal Planner</h3>
+            <p>Turn any goal into a monthly number you can automate.</p>
+            <div class="tool-example">$30k down payment in 36 months → <strong>$833/month</strong></div>
+            <span class="tool-cta">Plan your goal →</span>
+          </a>
+          <a href="calculators/car/index.html" class="tool-card">
+            <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17H3v-6l2-5h9l4 5h2v6h-2"/></svg></span>
+            <h3>Car Payment Calculator</h3>
+            <p>Look past the sticker price at the true cost of financing.</p>
+            <div class="tool-example">$32k car at 7% for 60mo → <strong>$634/mo, $6k in interest</strong></div>
+            <span class="tool-cta">See total cost →</span>
+          </a>
+          <div class="tool-card soon">
+            <span class="tool-badge">Coming soon</span>
+            <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
+            <h3>Debt Payoff Calculator</h3>
+            <p>Compare snowball vs. avalanche. See your debt-free date.</p>
+            <div class="tool-example">$8k credit card at 22% → <strong>see how $50 extra cuts months</strong></div>
+            <span class="tool-cta">Coming soon</span>
           </div>
-          <div class="capture-row">
-            <input type="email" id="footer-email" placeholder="your@email.com" autocomplete="email" />
-            <button onclick="handleFooterSubmit()">Get the free guide</button>
-          </div>
-          <p id="footer-msg" class="capture-msg"></p>
         </div>
       </div>
     </section>
 
-    <!-- FOOTER -->
+    <section class="promise-section" id="why-moneymap">
+      <div class="container">
+        <p class="sec-eyebrow">Why MoneyMap IQ</p>
+        <h2 class="sec-heading">Other calculators give you a number. We tell you what it means.</h2>
+        <p class="sec-sub">Most financial tools assume you already know what you're looking at. Ours don't. Every result comes with a plain-English read of what those numbers actually mean for you.</p>
+        <div class="promise-compare">
+          <div class="compare-card">
+            <p class="compare-h">Typical calculator</p>
+            <div class="compare-num-row"><strong>$2,847.13</strong><span>/month</span></div>
+            <div class="compare-line"><span>Principal &amp; Interest</span><strong>$2,392.18</strong></div>
+            <div class="compare-line"><span>Property Tax</span><strong>$367.50</strong></div>
+            <div class="compare-line"><span>Home Insurance</span><strong>$87.45</strong></div>
+            <div class="compare-line"><span>PMI</span><strong>$300.00</strong></div>
+            <p class="compare-empty">— that's it. Good luck.</p>
+          </div>
+          <div class="compare-card ours">
+            <span class="compare-tag">MoneyMap IQ</span>
+            <p class="compare-h">Same numbers, with what they mean</p>
+            <div class="compare-num-row"><strong>$2,847</strong><span>/month</span></div>
+            <div class="compare-line"><span>Principal &amp; Interest</span><strong>$2,392</strong></div>
+            <div class="compare-line"><span>Tax + Insurance</span><strong>$455</strong></div>
+            <div class="compare-line"><span>PMI (under 20% down)</span><strong>$300</strong></div>
+            <p class="compare-interp">Based on a <strong>$450,000 home</strong> with 10% down at 7.1%, you'd need a household income of about <strong>$241k</strong> to stay under the 28% rule. Putting 20% down drops your payment by roughly <strong>$540/month</strong> and removes PMI entirely.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="weekly footer-capture">
+      <div class="container weekly-inner">
+        <div class="weekly-text">
+          <strong>The MoneyMap Weekly</strong>
+          <span>One money tip, every Friday. Free.</span>
+        </div>
+        <div class="weekly-form">
+          <input type="email" id="footer-email" placeholder="your@email.com" autocomplete="email" />
+          <button type="button" onclick="handleFooterSubmit()">Subscribe</button>
+        </div>
+        <p id="footer-msg" class="capture-msg"></p>
+      </div>
+    </div>
+
     <footer class="footer">
-      <div class="footer-inner">
-
-        <!-- Top row: logo + tagline -->
-        <div class="footer-top">
+      <div class="container footer-inner">
+        <div class="footer-columns">
           <div class="footer-brand">
-            <div class="footer-logo">
+            <a class="footer-logo" href="index.html">
               <img src="logo.png" alt="MoneyMap IQ Logo" class="footer-logo-img" />
               <span class="logo-money">MoneyMap</span>
               <span class="logo-iq">IQ</span>
-            </div>
-            <p class="footer-tagline">Map your money. Reach your goals.</p>
+            </a>
+            <p class="foot-tagline">Map your money. Reach your goals.</p>
           </div>
-        </div>
-
-        <!-- Link columns -->
-        <div class="footer-columns">
-
           <div class="footer-col">
-            <h4>Financial Tools</h4>
-            <a href="calculators/moneymap-flow/index.html">Your MoneyMap Flow</a>
-            <a href="calculators/investment/index.html">Investment Calculator</a>
-            <a href="calculators/mortgage/index.html">Mortgage Calculator</a>
-            <a href="calculators/car/index.html">Car Payment Calculator</a>
-            <span class="footer-coming">Debt Payoff Calculator</span>
-            <a href="calculators/savings/index.html">Savings Goal Planner</a>
+            <h4>Tools</h4>
+            <a href="calculators/moneymap-flow/index.html">MoneyMap Flow</a>
+            <a href="calculators/mortgage/index.html">Mortgage</a>
+            <a href="calculators/investment/index.html">Investment</a>
+            <a href="calculators/savings/index.html">Savings Goal</a>
+            <a href="calculators/car/index.html">Car Payment</a>
           </div>
-
           <div class="footer-col">
-            <h4>Features</h4>
-            <a href="#why-moneymap">Why MoneyMap IQ Exists</a>
-            <a href="#decision-process">From Question to Decision</a>
-            <a href="#calculators">All Tools</a>
+            <h4>Learn</h4>
+            <a href="#why-moneymap">Why MoneyMap IQ</a>
+            <a href="blog/index.html">Blog</a>
+            <a href="faq/index.html">FAQ</a>
           </div>
-
           <div class="footer-col">
             <h4>Company</h4>
-            <a href="#">About</a>
-            <a href="#">Blog</a>
-            <a href="#">Privacy &amp; Security</a>
+            <a href="about/index.html">About</a>
+            <a href="contact/index.html">Contact</a>
           </div>
-
           <div class="footer-col">
             <h4>Support</h4>
-            <a href="#">Contact</a>
-            <a href="#">FAQ</a>
+            <a href="privacy/index.html">Privacy Policy</a>
+            <a href="terms/index.html">Terms of Use</a>
+            <a href="disclaimer/index.html">Disclaimer</a>
           </div>
-
         </div>
-
-        <!-- Disclaimer + copyright -->
         <div class="footer-bottom">
-          <p class="footer-disclaimer">MoneyMap IQ is for educational purposes only and does not provide financial advice. Always consult a qualified financial professional before making financial decisions.</p>
-          <div class="footer-bottom-row">
-            <p class="footer-copy">&copy; 2025 MoneyMap IQ. All rights reserved.</p>
-            <div class="footer-legal-links">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Use</a>
-              <a href="#">Disclaimer</a>
-            </div>
-          </div>
+          <p class="footer-disclaimer">MoneyMap IQ is for educational purposes only and does not provide financial, legal, or tax advice. Always consult a qualified financial professional before making major financial decisions.</p>
+          <p class="footer-copy">&copy; 2026 MoneyMap IQ</p>
         </div>
-
       </div>
     </footer>
 
     <script src="js/email-capture.js"></script>
-
-    <!-- Dropdown menu script -->
     <script>
-      function initDecisionHub() {
-        var cards = Array.prototype.slice.call(document.querySelectorAll('[data-decision-card]'));
-        var results = Array.prototype.slice.call(document.querySelectorAll('[data-decision-result]'));
-
-        if (!cards.length || !results.length) {
-          return;
-        }
-
-        var activeIndex = 0;
-        var timer = null;
-        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        function showDecision(index) {
-          activeIndex = index;
-          cards.forEach(function(card, cardIndex) {
-            card.classList.toggle('is-active', cardIndex === activeIndex);
-          });
-          results.forEach(function(result, resultIndex) {
-            result.classList.toggle('is-active', resultIndex === activeIndex);
-          });
-        }
-
-        function showNextDecision() {
-          showDecision((activeIndex + 1) % cards.length);
-        }
-
-        function restartTimer() {
-          if (reduceMotion) {
-            return;
-          }
-          if (timer) {
-            clearInterval(timer);
-          }
-          timer = window.setInterval(showNextDecision, 2400);
-        }
-
-        cards.forEach(function(card, index) {
-          card.addEventListener('click', function() {
-            showDecision(index);
-            restartTimer();
-          });
-        });
-
-        showDecision(0);
-        restartTimer();
-      }
-
-      document.addEventListener('DOMContentLoaded', initDecisionHub);
+      const heroItems = [
+        'calculators/mortgage/index.html?home=450000&down=10&rate=7.1',
+        'calculators/savings/index.html?goal=8000&months=18',
+        'calculators/investment/index.html?monthly=200&years=20&rate=7',
+        'calculators/savings/index.html?goal=30000&months=36'
+      ];
 
       function toggleDropdown() {
         document.querySelector('.nav-dropdown').classList.toggle('open');
       }
 
-      document.addEventListener('click', function(e) {
-        var dropdown = document.querySelector('.nav-dropdown');
-        if (!dropdown.contains(e.target)) {
-          dropdown.classList.remove('open');
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function animateHeroNumber(card) {
+        const el = card.querySelector('.result-number');
+        if (!el) return;
+        const target = Number(el.dataset.target || 0);
+        const prefix = el.dataset.prefix || '';
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          el.textContent = prefix + Math.round(target).toLocaleString('en-US');
+          return;
         }
+        const start = performance.now();
+        const duration = 850;
+
+        function tick(now) {
+          const progress = Math.min(1, (now - start) / duration);
+          const value = Math.round(target * easeOutCubic(progress));
+          el.textContent = prefix + value.toLocaleString('en-US');
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      function initHeroRotator() {
+        const hero = document.querySelector('.hero');
+        const questions = Array.from(document.querySelectorAll('.hero-question'));
+        const cards = Array.from(document.querySelectorAll('[data-hero-card]'));
+        const dots = Array.from(document.querySelectorAll('[data-hero-dot]'));
+        const primaryCta = document.getElementById('heroPrimaryCta');
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let current = 0;
+        let timer = null;
+
+        function show(index) {
+          current = index;
+          questions.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === current));
+          cards.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === current));
+          dots.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === current));
+          primaryCta.href = heroItems[current];
+          animateHeroNumber(cards[current]);
+        }
+
+        function start() {
+          if (reduceMotion) return;
+          clearInterval(timer);
+          timer = setInterval(() => show((current + 1) % questions.length), 4000);
+        }
+
+        function stop() {
+          clearInterval(timer);
+        }
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => {
+            stop();
+            show(index);
+            start();
+          });
+        });
+
+        if (hero) {
+          hero.addEventListener('mouseenter', stop);
+          hero.addEventListener('mouseleave', start);
+          hero.addEventListener('touchstart', stop, { passive: true });
+        }
+
+        show(0);
+        start();
+      }
+
+      document.addEventListener('DOMContentLoaded', initHeroRotator);
+
+      document.addEventListener('click', function(e) {
+        const dropdown = document.querySelector('.nav-dropdown');
+        if (dropdown && !dropdown.contains(e.target)) dropdown.classList.remove('open');
       });
 
       document.querySelectorAll('.dropdown-panel a').forEach(function(link) {
@@ -506,6 +537,5 @@
         });
       });
     </script>
-
   </body>
 </html>

@@ -608,19 +608,36 @@ function readUrlParams() {
   let params = new URLSearchParams(window.location.search);
   let goal = params.get('goal');
   let amount = params.get('amount');
+  let monthsParam = params.get('months');
+  let numericGoal = goal ? parseFloat(goal) : NaN;
+  let months = monthsParam ? parseInt(monthsParam, 10) : NaN;
 
-  if (goal) {
+  if (goal && isNaN(numericGoal)) {
     let card = document.querySelector(`.goal-card[data-goal="${goal}"]`);
     if (card) {
       selectGoal(goal, card);
     }
   }
 
-  if (amount) {
-    let num = parseFloat(amount);
+  if (amount || Number.isFinite(numericGoal)) {
+    let num = Number.isFinite(numericGoal) ? numericGoal : parseFloat(amount);
     if (!isNaN(num)) {
       document.getElementById('goalAmount').value = '$' + num.toLocaleString('en-US');
     }
+  }
+
+  if (Number.isFinite(months) && months > 0) {
+    let deadlineBtn = Array.from(document.querySelectorAll('.toggle-btn')).find(btn => btn.textContent.toLowerCase().includes('deadline'));
+    if (deadlineBtn) setCalcMode('deadline', deadlineBtn);
+
+    let target = new Date();
+    target.setMonth(target.getMonth() + months);
+    let targetValue = `${target.getFullYear()}-${String(target.getMonth() + 1).padStart(2, '0')}`;
+    document.getElementById('targetDate').value = targetValue;
+  }
+
+  if (!isNaN(numericGoal) && numericGoal > 0 && Number.isFinite(months) && months > 0) {
+    setTimeout(calculate, 0);
   }
 }
 

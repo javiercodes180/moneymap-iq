@@ -501,3 +501,39 @@ Try it yourself: https://moneymap-iq.vercel.app/calculators/investment/`;
 function formatMoney(amount) {
   return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+function applyInvestmentUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const monthly = parseFloat(params.get('monthly'));
+  const years = parseFloat(params.get('years'));
+  const rate = parseFloat(params.get('rate'));
+  const hasValidParams = Number.isFinite(monthly) && monthly > 0 && Number.isFinite(years) && years > 0 && Number.isFinite(rate) && rate >= 0;
+  if (!hasValidParams) return;
+
+  currentMode = 'grow';
+  investmentType = 'monthly';
+  document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.mode-btn')[0]?.classList.add('active');
+  document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn')[0]?.classList.add('active');
+  document.getElementById('growMode').style.display = 'block';
+  document.getElementById('goalMode').style.display = 'none';
+  document.getElementById('contributionGroup').style.display = 'flex';
+  document.getElementById('amountLabel').textContent = 'Monthly Contribution';
+  document.getElementById('amountHint').textContent = 'How much will you invest each month? e.g. $500';
+
+  const amountEl = document.getElementById('amount');
+  amountEl.dataset.raw = String(Math.round(monthly));
+  amountEl.value = Math.round(monthly).toLocaleString('en-US');
+
+  const yearsEl = document.getElementById('years');
+  yearsEl.value = String(years);
+
+  const rateEl = document.getElementById('rate');
+  rateEl.dataset.raw = String(rate);
+  rateEl.value = String(rate);
+
+  calculate();
+}
+
+window.addEventListener('DOMContentLoaded', applyInvestmentUrlParams);

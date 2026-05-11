@@ -573,3 +573,27 @@ function formatMoney(amount) {
   if (isNaN(amount)) return '$0.00';
   return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+function applyMortgageUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const home = parseFloat(params.get('home'));
+  const down = parseFloat(params.get('down'));
+  const rate = parseFloat(params.get('rate'));
+  const hasValidParams = Number.isFinite(home) && home > 0 && Number.isFinite(down) && down >= 0 && Number.isFinite(rate) && rate >= 0;
+  if (!hasValidParams) return;
+
+  const homeEl = document.getElementById('homePrice');
+  homeEl.dataset.raw = String(Math.round(home));
+  homeEl.value = '$' + Math.round(home).toLocaleString('en-US');
+
+  const rateEl = document.getElementById('interestRate');
+  rateEl.dataset.raw = String(rate);
+  rateEl.value = rate + '%';
+
+  setDownPercent(down);
+  updateTaxEstimate();
+  updateInsEstimate();
+  calculate();
+}
+
+window.addEventListener('DOMContentLoaded', applyMortgageUrlParams);

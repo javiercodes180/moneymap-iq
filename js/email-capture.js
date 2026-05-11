@@ -74,7 +74,7 @@ async function submitToKit(email, formKey) {
 //   <p class="capture-sub">Your first 5 money moves — plain English, no jargon</p>
 //   <div class="capture-row">
 //     <input type="email" id="hero-email" placeholder="your@email.com" />
-//     <button onclick="handleHeroSubmit()">Send it free</button>
+//     <button onclick="handleHeroSubmit()">Get my 5 money moves</button>
 //   </div>
 //   <p id="hero-msg" class="capture-msg"></p>
 // </div>
@@ -106,7 +106,7 @@ async function handleHeroSubmit() {
     msg.style.color = '#EC4899';
   }
 
-  btn.textContent = 'Send it free';
+  btn.textContent = 'Get my 5 money moves';
   btn.disabled = false;
 }
 
@@ -118,7 +118,7 @@ async function handleHeroSubmit() {
 //   <p class="capture-sub">We'll email you a summary and a free checklist of next steps.</p>
 //   <div class="capture-row">
 //     <input type="email" id="results-email" placeholder="your@email.com" />
-//     <button onclick="handleResultsSubmit()">Email me this</button>
+//     <button onclick="handleResultsSubmit()">Save my plan</button>
 //   </div>
 //   <p id="results-msg" class="capture-msg"></p>
 // </div>
@@ -160,7 +160,7 @@ async function handleResultsSubmit() {
   } else {
     msg.textContent = 'Something went wrong — please try again.';
     msg.style.color = '#EC4899';
-    if (btn) { btn.textContent = 'Email me this'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'Save my plan'; btn.disabled = false; }
   }
 }
 
