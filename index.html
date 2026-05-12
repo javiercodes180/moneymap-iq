@@ -73,23 +73,27 @@
     <section class="hero" id="top">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <p class="hero-eyebrow">Map your money. Reach your goals.</p>
-          <div class="hero-question-wrap" aria-live="polite">
-            <h1 class="hero-question active">Can I afford a $450,000 home?</h1>
-            <h1 class="hero-question">How fast can I pay off $8,000 in credit card debt?</h1>
-            <h1 class="hero-question">What does $200/month invested for 20 years become?</h1>
-            <h1 class="hero-question">How much do I save monthly for a $30k down payment?</h1>
+          <div class="hero-question-block">
+            <p class="hero-eyebrow">Map your money. Reach your goals.</p>
+            <div class="hero-question-wrap" aria-live="polite">
+              <h1 class="hero-question active">Can I afford a $450,000 home?</h1>
+              <h1 class="hero-question">How fast can I pay off $8,000 in credit card debt?</h1>
+              <h1 class="hero-question">What does $200/month invested for 20 years become?</h1>
+              <h1 class="hero-question">How much do I save monthly for a $30k down payment?</h1>
+            </div>
           </div>
-          <p class="hero-support">Plain-English financial tools. Free. No signup. Built for the moment before you feel confident.</p>
-          <div class="hero-cta-row">
-            <a href="calculators/mortgage/index.html?home=450000&amp;down=10&amp;rate=7.1" class="btn-primary" id="heroPrimaryCta">Run the numbers →</a>
-            <a href="#lead" class="btn-secondary">Not sure? Get our 5 Money Moves →</a>
-          </div>
-          <div class="hero-dots" aria-label="Hero question controls">
-            <button class="hero-dot active" type="button" data-hero-dot="0" aria-label="Show home affordability question"></button>
-            <button class="hero-dot" type="button" data-hero-dot="1" aria-label="Show debt payoff question"></button>
-            <button class="hero-dot" type="button" data-hero-dot="2" aria-label="Show investment growth question"></button>
-            <button class="hero-dot" type="button" data-hero-dot="3" aria-label="Show down payment savings question"></button>
+          <div class="hero-action-block">
+            <p class="hero-support">Plain-English financial tools. Free. No signup. Built for the moment before you feel confident.</p>
+            <div class="hero-cta-row">
+              <a href="#decision-tiles" class="btn-primary" id="heroPrimaryCta">Map your next move →</a>
+              <a href="#lead" class="btn-secondary">Not sure? Get our 5 Money Moves →</a>
+            </div>
+            <div class="hero-dots" aria-label="Hero question controls">
+              <button class="hero-dot active" type="button" data-hero-dot="0" aria-label="Show home affordability question"></button>
+              <button class="hero-dot" type="button" data-hero-dot="1" aria-label="Show debt payoff question"></button>
+              <button class="hero-dot" type="button" data-hero-dot="2" aria-label="Show investment growth question"></button>
+              <button class="hero-dot" type="button" data-hero-dot="3" aria-label="Show down payment savings question"></button>
+            </div>
           </div>
         </div>
 
@@ -316,7 +320,7 @@
             <span class="tool-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
             <h3>Mortgage Calculator</h3>
             <p>Full monthly payment including PMI, taxes, and insurance.</p>
-            <div class="tool-example">Marcus on a $450k home → <strong>$2,847/mo with 10% down</strong></div>
+            <div class="tool-example">Example: $450k home with 10% down → <strong>$2,847/mo</strong></div>
             <span class="tool-cta">Run the numbers →</span>
           </a>
           <a href="calculators/investment/index.html" class="tool-card">
@@ -356,7 +360,25 @@
       <div class="container">
         <p class="sec-eyebrow">Why MoneyMap IQ</p>
         <h2 class="sec-heading">Other calculators give you a number. We tell you what it means.</h2>
-        <p class="sec-sub">Most financial tools assume you already know what you're looking at. Ours don't. Every result comes with a plain-English read of what those numbers actually mean for you.</p>
+        <p class="sec-sub">Most financial tools assume you already know what you're looking at. Ours don't. We built MoneyMap IQ because personal finance should not feel like rocket science, and people should not stay stuck because the tools were built for someone who already knows the rules. Every result comes with a plain-English read of what those numbers actually mean for you.</p>
+        <div class="promise-points" aria-label="What makes MoneyMap IQ different">
+          <div class="promise-point">
+            <span>Meaning</span>
+            <p>Explains what the number means in plain English.</p>
+          </div>
+          <div class="promise-point">
+            <span>Assumptions</span>
+            <p>Shows the inputs and tradeoffs driving the result.</p>
+          </div>
+          <div class="promise-point">
+            <span>Next step</span>
+            <p>Points you toward the decision you actually need to make.</p>
+          </div>
+          <div class="promise-point">
+            <span>Real life</span>
+            <p>Starts with everyday money moments, not abstract math.</p>
+          </div>
+        </div>
         <div class="promise-compare">
           <div class="compare-card">
             <p class="compare-h">Typical calculator</p>
@@ -440,13 +462,6 @@
 
     <script src="js/email-capture.js"></script>
     <script>
-      const heroItems = [
-        'calculators/mortgage/index.html?home=450000&down=10&rate=7.1',
-        'calculators/savings/index.html?goal=8000&months=18',
-        'calculators/investment/index.html?monthly=200&years=20&rate=7',
-        'calculators/savings/index.html?goal=30000&months=36'
-      ];
-
       function toggleDropdown() {
         document.querySelector('.nav-dropdown').classList.toggle('open');
       }
@@ -482,7 +497,6 @@
         const questions = Array.from(document.querySelectorAll('.hero-question'));
         const cards = Array.from(document.querySelectorAll('[data-hero-card]'));
         const dots = Array.from(document.querySelectorAll('[data-hero-dot]'));
-        const primaryCta = document.getElementById('heroPrimaryCta');
         const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let current = 0;
         let timer = null;
@@ -492,7 +506,6 @@
           questions.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === current));
           cards.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === current));
           dots.forEach((item, itemIndex) => item.classList.toggle('active', itemIndex === current));
-          primaryCta.href = heroItems[current];
           animateHeroNumber(cards[current]);
         }
 
